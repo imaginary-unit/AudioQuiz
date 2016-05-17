@@ -1,12 +1,18 @@
 package ru.imunit.maquiz.playlists;
 
 import android.app.Activity;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import ru.imunit.maquiz.R;
 
@@ -22,6 +28,7 @@ public class PlaylistViewerActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist);
         initToolbar();
+        getAllMusic();
 //        initRecycler();
     }
 
@@ -48,6 +55,22 @@ public class PlaylistViewerActivity extends Activity {
 
     private void onEditPlaylist() {
 
+    }
+
+    private void getAllMusic() {
+        String[] STAR = { "*" };
+        Uri allSongsUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0";
+        Cursor cur = getContentResolver().query(allSongsUri, STAR, selection, null, null);
+        if (cur != null) {
+            ArrayList<String> songs = new ArrayList<String>();
+            if (cur.moveToFirst()) {
+                do {
+                    songs.add(cur.getString(cur.getColumnIndex(MediaStore.Audio.Media.DATA)));
+                } while (cur.moveToNext());
+            }
+            cur.close();
+        }
     }
 
 //    @Override
