@@ -19,9 +19,9 @@ import ru.imunit.maquiz.R;
 public class PlaylistViewerActivity extends Activity {
 
     Toolbar mToolbar;
-//    RecyclerView mRecycler;
-//    RecyclerView.Adapter mRecyclerAdapter;
-//    RecyclerView.LayoutManager mRecyclerLayout;
+    RecyclerView mRecycler;
+    RecyclerView.Adapter mRecyclerAdapter;
+    RecyclerView.LayoutManager mRecyclerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,18 +29,18 @@ public class PlaylistViewerActivity extends Activity {
         setContentView(R.layout.activity_playlist);
         initToolbar();
         getAllMusic();
-//        initRecycler();
+        initRecycler();
     }
 
 
-//    private void initRecycler() {
-//        mRecycler = (RecyclerView)findViewById(R.id.recycler);
-//        mRecycler.setHasFixedSize(true);
-//        mRecyclerLayout = new LinearLayoutManager(this);
-//        mRecycler.setLayoutManager(mRecyclerLayout);
-//        mRecyclerAdapter = new PlaylistRecyclerAdapter(mModel.getPlaylists());
-//        mRecycler.setAdapter(mRecyclerAdapter);
-//    }
+    private void initRecycler() {
+        mRecycler = (RecyclerView)findViewById(R.id.recycler);
+        mRecycler.setHasFixedSize(true);
+        mRecyclerLayout = new LinearLayoutManager(this);
+        mRecycler.setLayoutManager(mRecyclerLayout);
+        // mRecyclerAdapter = new PlaylistRecyclerAdapter(mModel.getPlaylists());
+        mRecycler.setAdapter(mRecyclerAdapter);
+    }
 
     private void initToolbar() {
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
