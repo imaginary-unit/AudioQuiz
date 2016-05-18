@@ -1,4 +1,4 @@
-package ru.imunit.maquiz.playlists;
+package ru.imunit.maquiz;
 
 import android.app.Activity;
 import android.database.Cursor;
@@ -66,7 +66,9 @@ public class PlaylistViewerActivity extends Activity {
             ArrayList<String> songs = new ArrayList<String>();
             if (cur.moveToFirst()) {
                 do {
-                    songs.add(cur.getString(cur.getColumnIndex(MediaStore.Audio.Media.DATA)));
+                    String s = cur.getString(cur.getColumnIndex(MediaStore.Audio.Media.DATA));
+                    songs.add(s);
+                    Log.i("Song found:", s);
                 } while (cur.moveToNext());
             }
             cur.close();

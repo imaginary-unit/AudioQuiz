@@ -19,10 +19,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".playlists.PlaylistViewerActivity"
+            android:name=".PlaylistViewerActivity"
             android:label="@string/title_activity_playlist" >
-        </activity>
-        <activity android:name=".playlists.DirectorySelectActivity" >
         </activity>
     </application>
 

@@ -1,7 +1,5 @@
 package ru.imunit.maquiz;
 
-import ru.imunit.maquiz.playlists.PlaylistViewerActivity;
-
 /**
  * Created by smirnov on 16.10.2015.
  */
@@ -17,7 +15,6 @@ public class ActivityFactory {
         switch (id) {
             case START_SCREEN: return StartActivity.class;
             case PLAYLISTS_VIEWER: return PlaylistViewerActivity.class;
-            case PLAYLIST_EDITOR:
             case GAME_SCREEN:
             case RESULTS_SCREEN:
             default: return null;
