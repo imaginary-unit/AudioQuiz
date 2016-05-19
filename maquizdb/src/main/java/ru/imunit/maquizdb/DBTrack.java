@@ -13,6 +13,20 @@ public class DBTrack {
     private long correctGuess;
     private  short isBlacklisted;
 
+    public DBTrack() {
+        this("", "", "");
+    }
+
+    public DBTrack(String name, String artist, String uri) {
+        this.name = name;
+        this.artist = artist;
+        this.uri = uri;
+        this.isRemote = 0;
+        this.guess = 0;
+        this.correctGuess = 0;
+        this.isBlacklisted = 0;
+    }
+
     public String getName() {
         return name;
     }

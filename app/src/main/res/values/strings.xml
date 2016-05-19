@@ -10,5 +10,6 @@
 
     <string name="title_activity_playlist">PlaylistActivity</string>
     <string name="title_activity_start">StartActivity</string>
+    <string name="title_activity_sync">SyncActivity</string>
 
 </resources>
