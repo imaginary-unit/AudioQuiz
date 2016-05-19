@@ -28,7 +28,7 @@ public class TracksTable {
                     + COLUMN_NAME + "` text not null, `"
                     + COLUMN_ARTIST + "` text not null, `"
                     + COLUMN_URI + "` text not null, `"
-                    + COLUMN_IS_REMOTE + "` integer not null, `"
+                    + COLUMN_IS_REMOTE + "` integer not null default 0, `"
                     + COLUMN_GUESS + "` integer not null default 0, `"
                     + COLUMN_CORRECT_GUESS + "` integer not null default 0, `"
                     + COLUMN_IS_BLACKLISTED + "` integer not null default 0, "

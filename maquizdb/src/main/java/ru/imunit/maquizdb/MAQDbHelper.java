@@ -21,7 +21,7 @@ public class MAQDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         GamesTable.onCreate(db);
         TracksTable.onCreate(db);
-        DirectoriesTable.onCreate(db);
+        BlackDirsTable.onCreate(db);
     }
 
     @Override
@@ -30,6 +30,6 @@ public class MAQDbHelper extends SQLiteOpenHelper {
                 DATABASE_NAME, oldVersion, newVersion));
         GamesTable.onUpgrade(oldVersion, newVersion, db);
         TracksTable.onUpgrade(oldVersion, newVersion, db);
-        DirectoriesTable.onUpgrade(oldVersion, newVersion, db);
+        BlackDirsTable.onUpgrade(oldVersion, newVersion, db);
     }
 }

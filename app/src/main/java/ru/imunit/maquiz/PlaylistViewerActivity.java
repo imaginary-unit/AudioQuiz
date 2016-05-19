@@ -1,20 +1,17 @@
 package ru.imunit.maquiz;
 
 import android.app.Activity;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
 
-import ru.imunit.maquiz.R;
+import ru.imunit.maquizdb.DBTrack;
+import ru.imunit.maquizdb.MAQDataSource;
 
 public class PlaylistViewerActivity extends Activity {
 
@@ -28,8 +25,8 @@ public class PlaylistViewerActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist);
         initToolbar();
-        getAllMusic();
         initRecycler();
+        getAllTracks();
     }
 
 
@@ -53,26 +50,16 @@ public class PlaylistViewerActivity extends Activity {
 //        mModel.addPlaylist("New playlist");
     }
 
-    private void onEditPlaylist() {
-
-    }
-
-    private void getAllMusic() {
-        String[] STAR = { "*" };
-        Uri allSongsUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0";
-        Cursor cur = getContentResolver().query(allSongsUri, STAR, selection, null, null);
-        if (cur != null) {
-            ArrayList<String> songs = new ArrayList<String>();
-            if (cur.moveToFirst()) {
-                do {
-                    String s = cur.getString(cur.getColumnIndex(MediaStore.Audio.Media.DATA));
-                    songs.add(s);
-                    Log.i("Song found:", s);
-                } while (cur.moveToNext());
-            }
-            cur.close();
+    private void getAllTracks() {
+        MAQDataSource dataSource = new MAQDataSource(this);
+        try {
+            dataSource.openReadable();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return;
         }
+        DBTrack[] tracks = dataSource.getAllTracks();
+        dataSource.close();
     }
 
 //    @Override

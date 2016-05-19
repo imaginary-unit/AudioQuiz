@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by imunit on 29.09.2015.
@@ -43,9 +41,20 @@ public class MAQDataSource {
 
     // Database operations
 
+    public void addTracks(DBTrack[] tracks) {
+        database.beginTransaction();
+        for (DBTrack track : tracks) {
+            ContentValues cvals = new ContentValues();
+            cvals.put(TracksTable.COLUMN_NAME, track.getName());
+            cvals.put(TracksTable.COLUMN_ARTIST, track.getArtist());
+            cvals.put(TracksTable.COLUMN_URI, track.getUri());
+            database.insert(TracksTable.TABLE_NAME, null, cvals);
+        }
+        database.setTransactionSuccessful();
+        database.endTransaction();
+    }
 
-    public DBTrack addOrFindTrack(String name, String artist, String uri, boolean isRemote)
-    {
+    public DBTrack addOrFindTrack(String name, String artist, String uri) {
         // check if entry already exists
         String[] selArgs = { name, artist };
         Cursor cur = database.query(TracksTable.TABLE_NAME, trackCols,
@@ -58,7 +67,6 @@ public class MAQDataSource {
             cvals.put(TracksTable.COLUMN_NAME, name);
             cvals.put(TracksTable.COLUMN_ARTIST, artist);
             cvals.put(TracksTable.COLUMN_URI, uri);
-            cvals.put(TracksTable.COLUMN_IS_REMOTE, isRemote);
 
             database.insert(TracksTable.TABLE_NAME, null, cvals);
             cur = database.query(TracksTable.TABLE_NAME, trackCols,
@@ -74,7 +82,26 @@ public class MAQDataSource {
     }
 
     public DBTrack addOrFindTrack(String name, String artist) {
-        return addOrFindTrack(name, artist, "", false);
+        return addOrFindTrack(name, artist, "");
+    }
+
+    public DBTrack[] getAllTracks() {
+        Cursor cur = database.query(TracksTable.TABLE_NAME, trackCols,
+                null, null, null, null, null);
+        if (cur != null) {
+            int n = cur.getCount();
+            DBTrack[] result = new DBTrack[n];
+            if (n != 0) {
+                cur.moveToFirst();
+                int i = 0;
+                do {
+                    result[i] = cursorToTrack(cur);
+                } while (cur.moveToNext());
+            }
+            return result;
+        } else {
+            return new DBTrack[0];
+        }
     }
 
     public DBTrack getTrack(String name, String artist) {
@@ -94,8 +121,8 @@ public class MAQDataSource {
         }
     }
 
-    public String[] getDirectories() {
-        Cursor cur = database.query(DirectoriesTable.TABLE_NAME,
+    public String[] getBlackDirs() {
+        Cursor cur = database.query(BlackDirsTable.TABLE_NAME,
                 null, null, null, null, null, null);
         int cnt = cur.getCount();
         String[] res = new String[cnt];
@@ -107,14 +134,25 @@ public class MAQDataSource {
         return res;
     }
 
+    public void deleteTracks(DBTrack[] tracks) {
+        String where = TracksTable.COLUMN_NAME + "=? AND " + TracksTable.COLUMN_ARTIST + "=?";
+        database.beginTransaction();
+        for (DBTrack track : tracks) {
+            String[] whereArgs = { track.getName(), track.getArtist() };
+            database.delete(TracksTable.TABLE_NAME, where, whereArgs);
+        }
+        database.setTransactionSuccessful();
+        database.endTransaction();
+    }
+
     private DBTrack cursorToTrack(Cursor cur) {
         DBTrack track = new DBTrack();
         track.setName(cur.getString(0));
         track.setArtist(cur.getString(1));
-        track.setUri(cur.getString(4));
-        track.setIsRemote(cur.getShort(5));
-        track.setGuess(cur.getLong(6));
-        track.setCorrectGuess(cur.getLong(7));
+        track.setUri(cur.getString(2));
+        track.setIsRemote(cur.getShort(3));
+        track.setGuess(cur.getLong(4));
+        track.setCorrectGuess(cur.getLong(5));
         return track;
     }
 }
