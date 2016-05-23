@@ -8,8 +8,11 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.sql.SQLException;
-import java.sql.Time;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import ru.imunit.maquizdb.DBTrack;
 import ru.imunit.maquizdb.MAQDataSource;
@@ -21,22 +24,13 @@ import ru.imunit.maquizdb.MAQDataSource;
 @Config(manifest=Config.NONE)
 public class BasicTests {
 
-    private DBTrack[] addRandomTracks(int count) {
-        DBTrack[] tracks = new DBTrack[count];
+    private ArrayList<DBTrack> getRandomTracks(int count) {
+        ArrayList<DBTrack> tracks = new ArrayList<>();
         Random rnd = new Random();
         for (int i=0; i < count; i++) {
-            tracks[i] = new DBTrack(String.valueOf(rnd.nextInt()),
-                    String.valueOf(rnd.nextInt()), "");
+            tracks.add(new DBTrack(String.valueOf(rnd.nextInt()),
+                    String.valueOf(rnd.nextInt()), ""));
         }
-        Activity activity = Robolectric.setupActivity(Activity.class);
-        MAQDataSource dataSource = new MAQDataSource(activity);
-        try {
-            dataSource.openWritable();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        dataSource.addTracks(tracks);
-        dataSource.close();
         return tracks;
     }
 
@@ -45,13 +39,16 @@ public class BasicTests {
         Activity activity = Robolectric.setupActivity(Activity.class);
         MAQDataSource dataSource = new MAQDataSource(activity);
         try {
-            dataSource.openReadable();
+            dataSource.openWritable();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         DBTrack[] tracks0 = dataSource.getAllTracks();
         int c0 = tracks0.length;
-        addRandomTracks(10);
+        // adding
+        ArrayList<DBTrack> newTracks = getRandomTracks(10);
+        dataSource.addTracks(newTracks.toArray(new DBTrack[newTracks.size()]));
+        //
         tracks0 = dataSource.getAllTracks();
         int c1 = tracks0.length;
         dataSource.close();
@@ -60,6 +57,52 @@ public class BasicTests {
 
     @Test
     public void tracksIntersectionTest() {
+        // This implementation outperforms loops and ArrayLists
+        long t = System.nanoTime();
+        List<DBTrack> trackList = getRandomTracks(100);
+        List<DBTrack> A = trackList.subList(0, 80);
+        List<DBTrack> B = trackList.subList(10, 100);
+        Set<DBTrack> sA = new HashSet<>(A);
+        Set<DBTrack> sB = new HashSet<>(B);
+        Set<DBTrack> intersect = new HashSet<>(sA);
+        intersect.retainAll(sB);
+        Assert.assertEquals(70, intersect.size());
+        Set<DBTrack> toAdd = new HashSet<>(A);
+        toAdd.removeAll(intersect);
+        Set<DBTrack> toDel = new HashSet<>(B);
+        toDel.removeAll(intersect);
+        DBTrack[] addArr = toAdd.toArray(new DBTrack[toAdd.size()]);
+        DBTrack[] delArr = toDel.toArray(new DBTrack[toDel.size()]);
+        Assert.assertEquals(10, addArr.length);
+        Assert.assertEquals(20, delArr.length);
+        double dt = (double)(System.nanoTime() - t) / (double)(1E9);
+        System.out.println(dt);
+    }
 
+    @Test
+    public void tracksSimpleLoopTest() {
+        long t = System.nanoTime();
+        List<DBTrack> trackList = getRandomTracks(100);
+        List<DBTrack> A = trackList.subList(0, 80);
+        List<DBTrack> B = trackList.subList(10, 100);
+        List<DBTrack> toAdd = new ArrayList<>();
+        List<DBTrack> toDel = new ArrayList<>();
+
+        int an = A.size();
+        int bn = B.size();
+        for (int i=0; i < an; i++) {
+            DBTrack tmp = A.get(i);
+            if (!B.contains(tmp)) toAdd.add(tmp);
+        }
+        for (int i=0; i < bn; i++) {
+            DBTrack tmp = B.get(i);
+            if (!A.contains(tmp)) toDel.add(tmp);
+        }
+        DBTrack[] addArr = toAdd.toArray(new DBTrack[toAdd.size()]);
+        DBTrack[] delArr = toDel.toArray(new DBTrack[toDel.size()]);
+        Assert.assertEquals(10, addArr.length);
+        Assert.assertEquals(20, delArr.length);
+        double dt = (double)(System.nanoTime() - t) / (double)(1E9);
+        System.out.println(dt);
     }
 }

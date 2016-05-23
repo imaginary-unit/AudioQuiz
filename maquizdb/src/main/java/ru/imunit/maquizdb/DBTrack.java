@@ -27,6 +27,30 @@ public class DBTrack {
         this.isBlacklisted = 0;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        DBTrack other = (DBTrack)obj;
+        if (!name.equals(other.getName()) |
+            !artist.equals(other.getArtist()))
+            return false;
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + name.hashCode();
+        result = prime * result + artist.hashCode();
+        return result;
+    }
+
     public String getName() {
         return name;
     }
