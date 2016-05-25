@@ -59,22 +59,22 @@ public class BasicTests {
     public void tracksIntersectionTest() {
         // This implementation outperforms loops and ArrayLists
         long t = System.nanoTime();
-        List<DBTrack> trackList = getRandomTracks(100);
-        List<DBTrack> A = trackList.subList(0, 80);
-        List<DBTrack> B = trackList.subList(10, 100);
+        List<DBTrack> trackList = getRandomTracks(1000);
+        List<DBTrack> A = trackList.subList(0, 800);
+        List<DBTrack> B = trackList.subList(100, 1000);
         Set<DBTrack> sA = new HashSet<>(A);
         Set<DBTrack> sB = new HashSet<>(B);
-        Set<DBTrack> intersect = new HashSet<>(sA);
-        intersect.retainAll(sB);
-        Assert.assertEquals(70, intersect.size());
-        Set<DBTrack> toAdd = new HashSet<>(A);
-        toAdd.removeAll(intersect);
-        Set<DBTrack> toDel = new HashSet<>(B);
-        toDel.removeAll(intersect);
+//        Set<DBTrack> intersect = new HashSet<>(sA);
+//        intersect.retainAll(sB);
+//        Assert.assertEquals(700, intersect.size());
+        Set<DBTrack> toAdd = new HashSet<>(sA);
+        toAdd.removeAll(sB);
+        Set<DBTrack> toDel = new HashSet<>(sB);
+        toDel.removeAll(sA);
         DBTrack[] addArr = toAdd.toArray(new DBTrack[toAdd.size()]);
         DBTrack[] delArr = toDel.toArray(new DBTrack[toDel.size()]);
-        Assert.assertEquals(10, addArr.length);
-        Assert.assertEquals(20, delArr.length);
+        Assert.assertEquals(100, addArr.length);
+        Assert.assertEquals(200, delArr.length);
         double dt = (double)(System.nanoTime() - t) / (double)(1E9);
         System.out.println(dt);
     }
@@ -82,9 +82,9 @@ public class BasicTests {
     @Test
     public void tracksSimpleLoopTest() {
         long t = System.nanoTime();
-        List<DBTrack> trackList = getRandomTracks(100);
-        List<DBTrack> A = trackList.subList(0, 80);
-        List<DBTrack> B = trackList.subList(10, 100);
+        List<DBTrack> trackList = getRandomTracks(1000);
+        List<DBTrack> A = trackList.subList(0, 800);
+        List<DBTrack> B = trackList.subList(100, 1000);
         List<DBTrack> toAdd = new ArrayList<>();
         List<DBTrack> toDel = new ArrayList<>();
 
@@ -100,8 +100,8 @@ public class BasicTests {
         }
         DBTrack[] addArr = toAdd.toArray(new DBTrack[toAdd.size()]);
         DBTrack[] delArr = toDel.toArray(new DBTrack[toDel.size()]);
-        Assert.assertEquals(10, addArr.length);
-        Assert.assertEquals(20, delArr.length);
+        Assert.assertEquals(100, addArr.length);
+        Assert.assertEquals(200, delArr.length);
         double dt = (double)(System.nanoTime() - t) / (double)(1E9);
         System.out.println(dt);
     }
