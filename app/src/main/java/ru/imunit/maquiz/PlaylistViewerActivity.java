@@ -8,11 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
-import java.sql.SQLException;
-
-import ru.imunit.maquizdb.DBTrack;
-import ru.imunit.maquizdb.MAQDataSource;
-
 public class PlaylistViewerActivity extends Activity {
 
     Toolbar mToolbar;
@@ -26,7 +21,7 @@ public class PlaylistViewerActivity extends Activity {
         setContentView(R.layout.activity_playlist);
         initToolbar();
         initRecycler();
-        getAllTracks();
+        updateMusic();
     }
 
 
@@ -50,16 +45,9 @@ public class PlaylistViewerActivity extends Activity {
 //        mModel.addPlaylist("New playlist");
     }
 
-    private void getAllTracks() {
-        MAQDataSource dataSource = new MAQDataSource(this);
-        try {
-            dataSource.openReadable();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return;
-        }
-        DBTrack[] tracks = dataSource.getAllTracks();
-        dataSource.close();
+    private void updateMusic() {
+        MusicUpdater updater = new MusicUpdater(this);
+        updater.updateSync();
     }
 
 //    @Override
