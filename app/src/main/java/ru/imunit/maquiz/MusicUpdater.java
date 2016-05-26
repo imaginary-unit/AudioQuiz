@@ -23,21 +23,21 @@ public class MusicUpdater {
 
     Context mContext;
 
-    class UpdateTask extends AsyncTask<Void, Integer, Boolean> {
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            return doUpdate();
-        }
-    }
+//    class UpdateTask extends AsyncTask<Void, Integer, Boolean> {
+//
+//        @Override
+//        protected Boolean doInBackground(Void... params) {
+//            return doUpdate();
+//        }
+//    }
 
     public MusicUpdater(Context context) {
         mContext = context;
     }
 
-    public void startUpdate() {
-
-    }
+//    public void startUpdate() {
+//
+//    }
 
     public boolean updateSync() {
         return doUpdate();
@@ -54,9 +54,11 @@ public class MusicUpdater {
         DBTrack[] appTracks = dataSource.getAllTracks();
         HashSet<DBTrack> appSet = new HashSet<>();
         Collections.addAll(appSet, appTracks);
+        Log.i("Tracks:", String.format("%d found on app DB", appSet.size()));
 
         // obtain MediaStore tracks
         HashSet<DBTrack> sysSet = getSystemMusic();
+        Log.i("Tracks:", String.format("%d found on MediaStore", sysSet.size()));
 
         // compare sets and make DB insertions / deletions
         HashSet<DBTrack> delSet = new HashSet<>(appSet);
@@ -65,7 +67,9 @@ public class MusicUpdater {
         addSet.removeAll(appSet);
 
         dataSource.deleteTracks(delSet.toArray(new DBTrack[delSet.size()]));
+        Log.i("Tracks:", String.format("Deleting %d tracks from app DB", delSet.size()));
         dataSource.addTracks(addSet.toArray(new DBTrack[addSet.size()]));
+        Log.i("Tracks:", String.format("Inserting %d tracks into app DB", addSet.size()));
         dataSource.close();
         return true;
     }

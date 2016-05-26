@@ -96,6 +96,7 @@ public class MAQDataSource {
                 int i = 0;
                 do {
                     result[i] = cursorToTrack(cur);
+                    i++;
                 } while (cur.moveToNext());
             }
             return result;
