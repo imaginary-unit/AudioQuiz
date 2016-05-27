@@ -30,7 +30,7 @@ public class PlaylistViewerActivity extends Activity {
         mRecycler.setHasFixedSize(true);
         mRecyclerLayout = new LinearLayoutManager(this);
         mRecycler.setLayoutManager(mRecyclerLayout);
-        // mRecyclerAdapter = new PlaylistRecyclerAdapter(mModel.getPlaylists());
+        // mRecyclerAdapter = new PlaylistRecyclerAdapter();
         mRecycler.setAdapter(mRecyclerAdapter);
     }
 
