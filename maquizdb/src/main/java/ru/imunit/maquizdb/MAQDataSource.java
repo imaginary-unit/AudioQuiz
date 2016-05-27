@@ -4,13 +4,14 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 
 import java.sql.SQLException;
 
 /**
  * Created by imunit on 29.09.2015.
  */
-public class MAQDataSource {
+public class MAQDataSource implements IDataSource {
 
     private SQLiteDatabase database;
     private MAQDbHelper dbHelper;
@@ -26,12 +27,28 @@ public class MAQDataSource {
         dbHelper = new MAQDbHelper(context);
     }
 
-    public void openReadable() throws SQLException {
+    public void foo() {
         database = dbHelper.getReadableDatabase();
     }
 
-    public void openWritable() throws SQLException {
-        database = dbHelper.getWritableDatabase();
+    public boolean openReadable() {
+        try {
+            database = dbHelper.getReadableDatabase();
+        }
+        catch (SQLiteException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean openWritable() {
+        try {
+            database = dbHelper.getWritableDatabase();
+        }
+        catch (SQLiteException e) {
+            return false;
+        }
+        return true;
     }
 
     public void close() {
