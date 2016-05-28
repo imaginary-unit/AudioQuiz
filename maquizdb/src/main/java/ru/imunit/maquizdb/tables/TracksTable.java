@@ -1,4 +1,4 @@
-package ru.imunit.maquizdb;
+package ru.imunit.maquizdb.tables;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;

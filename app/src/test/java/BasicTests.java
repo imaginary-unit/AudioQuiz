@@ -7,15 +7,15 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import ru.imunit.maquizdb.DBTrack;
-import ru.imunit.maquizdb.MAQDataSource;
+import ru.imunit.maquizdb.entities.DBTrack;
+import ru.imunit.maquizdb.DataSourceFactory;
+import ru.imunit.maquizdb.IDataSource;
 
 /**
  * Created by theuser on 21.05.16.
@@ -37,12 +37,9 @@ public class BasicTests {
     @Test
     public void randomTracksAddingTest() {
         Activity activity = Robolectric.setupActivity(Activity.class);
-        MAQDataSource dataSource = new MAQDataSource(activity);
-        try {
-            dataSource.openWritable();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        IDataSource dataSource = DataSourceFactory.getDataSource(activity);
+        dataSource.openWritable();
+
         DBTrack[] tracks0 = dataSource.getAllTracks();
         int c0 = tracks0.length;
         // adding

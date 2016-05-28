@@ -1,20 +1,17 @@
-package ru.imunit.maquiz;
+package ru.imunit.maquiz.utils;
 
-import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.util.Log;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
-import ru.imunit.maquizdb.DBTrack;
-import ru.imunit.maquizdb.MAQDataSource;
+import ru.imunit.maquizdb.entities.DBTrack;
+import ru.imunit.maquizdb.DataSourceFactory;
+import ru.imunit.maquizdb.IDataSource;
 
 /**
  * Created by lemoist on 19.05.16.
@@ -45,12 +42,12 @@ public class MusicUpdater {
 
     private boolean doUpdate() {
         // obtain app DB tracs
-        MAQDataSource dataSource = new MAQDataSource(mContext);
-        try {
-            dataSource.openWritable();
-        } catch (SQLException e) {
+        IDataSource dataSource = DataSourceFactory.getDataSource(mContext);
+
+        if (!dataSource.openWritable()) {
             return false;
         }
+
         DBTrack[] appTracks = dataSource.getAllTracks();
         HashSet<DBTrack> appSet = new HashSet<>();
         Collections.addAll(appSet, appTracks);

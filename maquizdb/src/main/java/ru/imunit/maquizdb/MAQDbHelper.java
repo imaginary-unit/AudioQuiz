@@ -5,6 +5,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import ru.imunit.maquizdb.tables.BlackDirsTable;
+import ru.imunit.maquizdb.tables.GamesTable;
+import ru.imunit.maquizdb.tables.TracksTable;
+
 /**
  * Created by imunit on 26.09.15.
  */

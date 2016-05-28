@@ -1,4 +1,4 @@
-package ru.imunit.maquiz;
+package ru.imunit.maquiz.activities;
 
 /**
  * Created by smirnov on 16.10.2015.

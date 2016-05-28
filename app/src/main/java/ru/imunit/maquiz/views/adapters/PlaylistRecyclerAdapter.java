@@ -1,4 +1,4 @@
-package ru.imunit.maquiz;
+package ru.imunit.maquiz.views.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,7 +9,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import ru.imunit.maquizdb.DBTrack;
+import ru.imunit.maquiz.R;
+import ru.imunit.maquizdb.entities.DBTrack;
 
 /**
  * Created by lemoist on 19.05.16.

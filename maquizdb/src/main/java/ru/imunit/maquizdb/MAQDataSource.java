@@ -6,7 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
-import java.sql.SQLException;
+import ru.imunit.maquizdb.entities.DBTrack;
+import ru.imunit.maquizdb.tables.BlackDirsTable;
+import ru.imunit.maquizdb.tables.TracksTable;
 
 /**
  * Created by imunit on 29.09.2015.

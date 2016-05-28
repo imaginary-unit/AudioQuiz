@@ -1,4 +1,4 @@
-package ru.imunit.maquizdb;
+package ru.imunit.maquizdb.entities;
 
 /**
  * Created by smirnov on 29.09.2015.

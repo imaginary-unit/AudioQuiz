@@ -1,4 +1,4 @@
-package ru.imunit.maquiz;
+package ru.imunit.maquiz.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,6 +8,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ru.imunit.maquiz.utils.MusicUpdater;
+import ru.imunit.maquiz.R;
+import ru.imunit.maquizdb.entities.DBTrack;
+import ru.imunit.maquizdb.DataSourceFactory;
+import ru.imunit.maquizdb.IDataSource;
+
 public class PlaylistViewerActivity extends Activity {
 
     Toolbar mToolbar;
@@ -15,17 +24,22 @@ public class PlaylistViewerActivity extends Activity {
     RecyclerView.Adapter mRecyclerAdapter;
     RecyclerView.LayoutManager mRecyclerLayout;
 
+    List<DBTrack> mTrackList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist);
         initToolbar();
-        initRecycler();
         updateMusic();
+        initRecycler();
     }
 
 
     private void initRecycler() {
+        mTrackList = new ArrayList<>();
+        IDataSource dataSource = DataSourceFactory.getDataSource(this);
+        dataSource.openReadable();
         mRecycler = (RecyclerView)findViewById(R.id.recycler);
         mRecycler.setHasFixedSize(true);
         mRecyclerLayout = new LinearLayoutManager(this);

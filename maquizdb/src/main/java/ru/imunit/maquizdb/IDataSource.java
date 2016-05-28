@@ -1,5 +1,7 @@
 package ru.imunit.maquizdb;
 
+import ru.imunit.maquizdb.entities.DBTrack;
+
 /**
  * Created by lemoist on 27.05.16.
  */
