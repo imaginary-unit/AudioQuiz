@@ -9,10 +9,12 @@ import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import ru.imunit.maquiz.utils.MusicUpdater;
+import ru.imunit.maquiz.managers.MusicUpdater;
 import ru.imunit.maquiz.R;
+import ru.imunit.maquiz.views.adapters.PlaylistRecyclerAdapter;
 import ru.imunit.maquizdb.entities.DBTrack;
 import ru.imunit.maquizdb.DataSourceFactory;
 import ru.imunit.maquizdb.IDataSource;
@@ -37,14 +39,16 @@ public class PlaylistViewerActivity extends Activity {
 
 
     private void initRecycler() {
-        mTrackList = new ArrayList<>();
         IDataSource dataSource = DataSourceFactory.getDataSource(this);
+        // TODO: handle exception
         dataSource.openReadable();
+        mTrackList = new ArrayList<>(Arrays.asList(dataSource.getAllTracks()));
+
         mRecycler = (RecyclerView)findViewById(R.id.recycler);
         mRecycler.setHasFixedSize(true);
         mRecyclerLayout = new LinearLayoutManager(this);
         mRecycler.setLayoutManager(mRecyclerLayout);
-        // mRecyclerAdapter = new PlaylistRecyclerAdapter();
+        mRecyclerAdapter = new PlaylistRecyclerAdapter(mTrackList);
         mRecycler.setAdapter(mRecyclerAdapter);
     }
 

@@ -1,4 +1,4 @@
-package ru.imunit.maquiz.utils;
+package ru.imunit.maquiz.managers;
 
 import android.content.Context;
 import android.database.Cursor;
