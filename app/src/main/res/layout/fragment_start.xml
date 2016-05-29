@@ -1,0 +1,27 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBack1"
+    android:clipToPadding="false"
+    android:orientation="vertical"
+    tools:context="ru.imunit.maquiz.fragments.StartFragment">
+
+    <!-- Toolbar -->
+    <include android:id="@+id/toolbar"
+        layout="@layout/toolbar_base" />
+
+    <android.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="60dp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Playlist"
+        android:id="@+id/playlists"
+        android:background="@color/colorPrimary"
+        android:layout_margin="20dp"/>
+
+</LinearLayout>
