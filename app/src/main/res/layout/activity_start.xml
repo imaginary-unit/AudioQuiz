@@ -7,10 +7,6 @@
     android:background="@color/colorBack1"
     android:clipToPadding="false">
 
-    <!-- Toolbar -->
-    <!--<include android:id="@+id/toolbar"-->
-        <!--layout="@layout/toolbar_base" />-->
-
     <fragment
         class="ru.imunit.maquiz.fragments.StartFragment"
         android:id="@+id/fragment_start"
