@@ -1,25 +1,22 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBack1"
-    android:clipToPadding="false"
-    android:orientation="vertical">
+    android:clipToPadding="false">
 
     <!-- Toolbar -->
-    <include android:id="@+id/toolbar"
-        layout="@layout/toolbar_base" />
+    <!--<include android:id="@+id/toolbar"-->
+        <!--layout="@layout/toolbar_base" />-->
 
-    <android.widget.Space
+    <fragment
+        class="ru.imunit.maquiz.fragments.StartFragment"
+        android:id="@+id/fragment_start"
         android:layout_width="match_parent"
-        android:layout_height="60dp" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="Playlist"
-        android:id="@+id/playlists"
-        android:background="@color/colorPrimary"
-        android:layout_margin="20dp"/>
+        android:layout_height="match_parent"
+        tools:layout="@layout/fragment_start">
+    </fragment>
 
 </LinearLayout>

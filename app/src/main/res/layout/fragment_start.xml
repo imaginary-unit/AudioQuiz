@@ -8,10 +8,6 @@
     android:orientation="vertical"
     tools:context="ru.imunit.maquiz.fragments.StartFragment">
 
-    <!-- Toolbar -->
-    <include android:id="@+id/toolbar"
-        layout="@layout/toolbar_base" />
-
     <android.widget.Space
         android:layout_width="match_parent"
         android:layout_height="60dp" />
