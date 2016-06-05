@@ -1,9 +1,15 @@
 package ru.imunit.maquiz.managers;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import java.util.Collections;
@@ -16,7 +22,9 @@ import ru.imunit.maquizdb.IDataSource;
 /**
  * Created by lemoist on 19.05.16.
  */
-public class MusicUpdater {
+public class MusicUpdater implements ActivityCompat.OnRequestPermissionsResultCallback {
+
+    private static final int PERMISSION_REQUEST_READ_STORAGE = 1;
 
     Context mContext;
 
@@ -41,6 +49,10 @@ public class MusicUpdater {
     }
 
     private boolean doUpdate() {
+
+        if (!checkStoragePermission())
+            return false;
+
         // obtain app DB tracs
         IDataSource dataSource = DataSourceFactory.getDataSource(mContext);
 
@@ -91,5 +103,30 @@ public class MusicUpdater {
             cur.close();
         }
         return songs;
+    }
+
+    private boolean checkStoragePermission() {
+        boolean ok = ContextCompat.checkSelfPermission(mContext,
+                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        if (!ok) {
+            if (mContext instanceof Activity) {
+                Activity a = (Activity)mContext;
+                ActivityCompat.requestPermissions(a,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        PERMISSION_REQUEST_READ_STORAGE);
+            }
+        }
+        return ok;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_READ_STORAGE) {
+            if (grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            }
+        }
     }
 }
