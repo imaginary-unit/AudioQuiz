@@ -22,11 +22,12 @@ import ru.imunit.maquizdb.IDataSource;
 /**
  * Created by lemoist on 19.05.16.
  */
-public class MusicUpdater implements ActivityCompat.OnRequestPermissionsResultCallback {
+public class MusicUpdater {
 
-    private static final int PERMISSION_REQUEST_READ_STORAGE = 1;
+    private Context mContext;
 
-    Context mContext;
+    public static final int RESULT_OK = 0;
+    public static final int RESULT_ERROR = 1;
 
 //    class UpdateTask extends AsyncTask<Void, Integer, Boolean> {
 //
@@ -44,20 +45,16 @@ public class MusicUpdater implements ActivityCompat.OnRequestPermissionsResultCa
 //
 //    }
 
-    public boolean updateSync() {
+    public int updateSync() {
         return doUpdate();
     }
 
-    private boolean doUpdate() {
-
-        if (!checkStoragePermission())
-            return false;
-
+    private int doUpdate() {
         // obtain app DB tracs
         IDataSource dataSource = DataSourceFactory.getDataSource(mContext);
 
         if (!dataSource.openWritable()) {
-            return false;
+            return RESULT_ERROR;
         }
 
         DBTrack[] appTracks = dataSource.getAllTracks();
@@ -80,7 +77,8 @@ public class MusicUpdater implements ActivityCompat.OnRequestPermissionsResultCa
         dataSource.addTracks(addSet.toArray(new DBTrack[addSet.size()]));
         Log.i("Tracks:", String.format("Inserting %d tracks into app DB", addSet.size()));
         dataSource.close();
-        return true;
+
+        return RESULT_OK;
     }
 
     private HashSet<DBTrack> getSystemMusic() {
@@ -105,28 +103,4 @@ public class MusicUpdater implements ActivityCompat.OnRequestPermissionsResultCa
         return songs;
     }
 
-    private boolean checkStoragePermission() {
-        boolean ok = ContextCompat.checkSelfPermission(mContext,
-                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-        if (!ok) {
-            if (mContext instanceof Activity) {
-                Activity a = (Activity)mContext;
-                ActivityCompat.requestPermissions(a,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        PERMISSION_REQUEST_READ_STORAGE);
-            }
-        }
-        return ok;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode == PERMISSION_REQUEST_READ_STORAGE) {
-            if (grantResults.length > 0
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-            }
-        }
-    }
 }

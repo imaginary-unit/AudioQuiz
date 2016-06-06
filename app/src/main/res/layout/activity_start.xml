@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBack1"
-    android:clipToPadding="false">
+    android:clipToPadding="false"
+    android:id="@+id/start_layout">
 
     <fragment
         class="ru.imunit.maquiz.fragments.StartFragment"

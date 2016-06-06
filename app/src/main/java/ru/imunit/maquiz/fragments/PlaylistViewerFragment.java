@@ -53,7 +53,6 @@ public class PlaylistViewerFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         updateMusic();
         initRecycler();
-
         FloatingActionButton fab = (FloatingActionButton)getView().findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
