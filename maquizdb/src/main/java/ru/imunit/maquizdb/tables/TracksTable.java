@@ -17,12 +17,6 @@ public class TracksTable {
     public static final String COLUMN_CORRECT_GUESS = "correct_guess";
     public static final String COLUMN_IS_BLACKLISTED = "is_blacklisted";
 
-//
-//    public static final String[] allColumns =
-//            { COLUMN_NAME, COLUMN_ARTIST, COLUMN_ALBUM, COLUMN_YEAR,
-//              COLUMN_URI, COLUMN_IS_REMOTE, COLUMN_GUESS, COLUMN_CORRECT_GUESS
-//            };
-
     private static final String TABLE_CREATE =
             "create table if not exists `" + TABLE_NAME + "` ( `"
                     + COLUMN_NAME + "` text not null, `"

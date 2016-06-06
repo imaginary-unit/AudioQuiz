@@ -11,7 +11,7 @@ public class DBTrack {
     private short isRemote;
     private long guess;
     private long correctGuess;
-    private  short isBlacklisted;
+    private short isBlacklisted;
 
     public DBTrack() {
         this("", "", "");

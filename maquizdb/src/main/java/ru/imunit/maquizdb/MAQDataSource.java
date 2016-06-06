@@ -23,7 +23,7 @@ public class MAQDataSource implements IDataSource {
     private static final String[] trackCols =
             { TracksTable.COLUMN_NAME, TracksTable.COLUMN_ARTIST, TracksTable.COLUMN_URI,
               TracksTable.COLUMN_IS_REMOTE, TracksTable.COLUMN_GUESS,
-              TracksTable.COLUMN_CORRECT_GUESS };
+              TracksTable.COLUMN_CORRECT_GUESS, TracksTable.COLUMN_IS_BLACKLISTED };
 
     public MAQDataSource(Context context) {
         dbHelper = new MAQDbHelper(context);
@@ -151,6 +151,7 @@ public class MAQDataSource implements IDataSource {
             res[i] = cur.getString(0);
             cur.moveToNext();
         }
+        cur.close();
         return res;
     }
 
@@ -173,6 +174,7 @@ public class MAQDataSource implements IDataSource {
         track.setIsRemote(cur.getShort(3));
         track.setGuess(cur.getLong(4));
         track.setCorrectGuess(cur.getLong(5));
+        track.setIsBlacklisted(cur.getShort(6));
         return track;
     }
 }
