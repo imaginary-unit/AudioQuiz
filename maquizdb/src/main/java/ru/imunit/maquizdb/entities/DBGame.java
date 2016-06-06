@@ -9,6 +9,8 @@ public class DBGame {
     private long score;
     private long avgGuessTime;
     private long bestGuessTime;
+    private long guess;
+    private long correct_guess;
 
     public long getId() {
         return id;
@@ -40,6 +42,22 @@ public class DBGame {
 
     public void setBestGuessTime(long bestGuessTime) {
         this.bestGuessTime = bestGuessTime;
+    }
+
+    public long getGuess() {
+        return guess;
+    }
+
+    public void setGuess(long guess) {
+        this.guess = guess;
+    }
+
+    public long getCorrectGuess() {
+        return correct_guess;
+    }
+
+    public void setCorrectGuess(long correct_guess) {
+        this.correct_guess = correct_guess;
     }
 
 }
