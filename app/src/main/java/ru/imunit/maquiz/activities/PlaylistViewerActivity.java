@@ -2,24 +2,10 @@ package ru.imunit.maquiz.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.View;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import ru.imunit.maquiz.R;
 import ru.imunit.maquiz.fragments.PlaylistViewerFragment;
-import ru.imunit.maquiz.managers.MusicUpdater;
-import ru.imunit.maquiz.views.adapters.PlaylistRecyclerAdapter;
-import ru.imunit.maquizdb.DataSourceFactory;
-import ru.imunit.maquizdb.IDataSource;
-import ru.imunit.maquizdb.entities.DBTrack;
 
 public class PlaylistViewerActivity extends AppCompatActivity
         implements PlaylistViewerFragment.OnFragmentInteractionListener {

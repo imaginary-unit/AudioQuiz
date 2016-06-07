@@ -1,0 +1,30 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="ru.imunit.maquiz.fragments.GameFragment">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:foreground="@color/colorPrimary">
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="80dp" />
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:foreground="@color/colorPrimary">
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="120dp" />
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
