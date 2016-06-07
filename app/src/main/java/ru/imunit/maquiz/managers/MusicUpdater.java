@@ -1,23 +1,17 @@
 package ru.imunit.maquiz.managers;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import java.util.Collections;
 import java.util.HashSet;
 
-import ru.imunit.maquizdb.entities.DBTrack;
 import ru.imunit.maquizdb.DataSourceFactory;
 import ru.imunit.maquizdb.IDataSource;
+import ru.imunit.maquizdb.entities.DBTrack;
 
 /**
  * Created by lemoist on 19.05.16.
