@@ -1,6 +1,6 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -11,10 +11,69 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:layout_margin="10dp"
-        android:foreground="@color/colorPrimary">
-        <Space
+        app:cardBackgroundColor="@color/colorPrimary">
+        <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp" />
+            android:layout_height="match_parent"
+            android:rowCount="2"
+            android:columnCount="6">
+            <ImageView
+                android:id="@+id/iconTracks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:src="@drawable/library_music"/>
+            <TextView
+                android:id="@+id/textTracks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:layout_columnWeight="1"
+                android:text="3 / 10"/>
+
+            <ImageView
+                android:id="@+id/iconTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="2"
+                android:src="@drawable/timer"/>
+            <TextView
+                android:id="@+id/textTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="3"
+                android:layout_columnWeight="1"
+                android:text="10 s"/>
+
+            <ImageView
+                android:id="@+id/iconScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="4"
+                android:src="@drawable/star"/>
+            <TextView
+                android:id="@+id/textScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="5"
+                android:layout_columnWeight="1"
+                android:text="100500"/>
+
+            <Space
+                android:id="@+id/musicVisualizer"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_row="1"
+                android:layout_column="0"
+                android:layout_columnSpan="6"/>
+
+        </GridLayout>
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
