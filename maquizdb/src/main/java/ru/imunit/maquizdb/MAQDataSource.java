@@ -6,8 +6,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.StringTokenizer;
+
+import ru.imunit.maquizdb.entities.DBGame;
 import ru.imunit.maquizdb.entities.DBTrack;
 import ru.imunit.maquizdb.tables.BlackDirsTable;
+import ru.imunit.maquizdb.tables.GamesTable;
 import ru.imunit.maquizdb.tables.TracksTable;
 
 /**
@@ -118,6 +125,30 @@ public class MAQDataSource implements IDataSource {
                     i++;
                 } while (cur.moveToNext());
             }
+            cur.close();
+            return result;
+        } else {
+            return new DBTrack[0];
+        }
+    }
+
+    @Override
+    public DBTrack[] getRandomTracks(int count) {
+        String sql = String.format(Locale.ENGLISH, "select * from `%s` order by random() limit %d",
+                TracksTable.TABLE_NAME, count);
+        Cursor cur = database.rawQuery(sql, null);
+        if (cur != null) {
+            int n = cur.getCount();
+            DBTrack[] result = new DBTrack[n];
+            if (n != 0) {
+                cur.moveToFirst();
+                int i = 0;
+                do {
+                    result[i] = cursorToTrack(cur);
+                    i++;
+                } while (cur.moveToNext());
+            }
+            cur.close();
             return result;
         } else {
             return new DBTrack[0];
@@ -161,6 +192,46 @@ public class MAQDataSource implements IDataSource {
         for (DBTrack track : tracks) {
             String[] whereArgs = { track.getName(), track.getArtist() };
             database.delete(TracksTable.TABLE_NAME, where, whereArgs);
+        }
+        database.setTransactionSuccessful();
+        database.endTransaction();
+    }
+
+    @Override
+    public void addGame(DBGame game) {
+        ContentValues cvals = new ContentValues();
+        cvals.put(GamesTable.COLUMN_SCORE, game.getScore());
+        cvals.put(GamesTable.COLUMN_GUESS, game.getGuess());
+        cvals.put(GamesTable.COLUMN_CORRECT_GUESS, game.getCorrectGuess());
+        cvals.put(GamesTable.COLUMN_AVG_GUESS_TIME, game.getAvgGuessTime());
+        cvals.put(GamesTable.COLUMN_BEST_GUESS_TIME, game.getBestGuessTime());
+        database.insert(GamesTable.TABLE_NAME, null, cvals);
+    }
+
+    @Override
+    public void updateTracksGuesses(DBTrack[] tracks, int[] addGuesses, int[] addCorrectGuesses) {
+        int n = tracks.length;
+
+        List<DBTrack> tracksFull = new ArrayList<>();
+        String selection = String.format("`%s` =? and `%s`=?",
+                TracksTable.COLUMN_ARTIST, TracksTable.COLUMN_NAME);
+        for (DBTrack track : tracks) {
+            Cursor cur = database.query(TracksTable.TABLE_NAME, trackCols, selection,
+                    new String[]{track.getArtist(), track.getName()}, null, null, null);
+            if (cur != null && cur.moveToFirst()) {
+                tracksFull.add(cursorToTrack(cur));
+            }
+        }
+
+        database.beginTransaction();
+        for (int i=0; i < n; i ++) {
+            long g = tracksFull.get(i).getGuess() + addGuesses[i];
+            long cg = tracksFull.get(i).getCorrectGuess() + addCorrectGuesses[i];
+            ContentValues cvals = new ContentValues();
+            cvals.put(TracksTable.COLUMN_GUESS, g);
+            cvals.put(TracksTable.COLUMN_CORRECT_GUESS, cg);
+            database.update(TracksTable.TABLE_NAME, cvals, selection,
+                    new String[]{tracksFull.get(i).getArtist(), tracksFull.get(i).getName()});
         }
         database.setTransactionSuccessful();
         database.endTransaction();

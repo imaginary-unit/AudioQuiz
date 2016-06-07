@@ -21,8 +21,8 @@ public class GamesTable {
             + COLUMN_ID + "` integer primary key, `"
             + COLUMN_SCORE + "` integer not null, `"
             + COLUMN_AVG_GUESS_TIME + "` integer not null, `"
-            + COLUMN_BEST_GUESS_TIME + "` integer not null, "
-            + COLUMN_GUESS + "` integer not null, "
+            + COLUMN_BEST_GUESS_TIME + "` integer not null, `"
+            + COLUMN_GUESS + "` integer not null, `"
             + COLUMN_CORRECT_GUESS + "` integer not null"
             + ");";
 

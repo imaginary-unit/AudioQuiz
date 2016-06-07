@@ -35,24 +35,6 @@ public class BasicTests {
     }
 
     @Test
-    public void randomTracksAddingTest() {
-        Activity activity = Robolectric.setupActivity(Activity.class);
-        IDataSource dataSource = DataSourceFactory.getDataSource(activity);
-        dataSource.openWritable();
-
-        DBTrack[] tracks0 = dataSource.getAllTracks();
-        int c0 = tracks0.length;
-        // adding
-        ArrayList<DBTrack> newTracks = getRandomTracks(10);
-        dataSource.addTracks(newTracks.toArray(new DBTrack[newTracks.size()]));
-        //
-        tracks0 = dataSource.getAllTracks();
-        int c1 = tracks0.length;
-        dataSource.close();
-        Assert.assertEquals(10, c1-c0);
-    }
-
-    @Test
     public void tracksIntersectionTest() {
         // This implementation outperforms loops and ArrayLists
         long t = System.nanoTime();
@@ -102,4 +84,5 @@ public class BasicTests {
         double dt = (double)(System.nanoTime() - t) / (double)(1E9);
         System.out.println(dt);
     }
+
 }

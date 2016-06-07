@@ -1,5 +1,6 @@
 package ru.imunit.maquizdb;
 
+import ru.imunit.maquizdb.entities.DBGame;
 import ru.imunit.maquizdb.entities.DBTrack;
 
 /**
@@ -11,5 +12,8 @@ public interface IDataSource {
     void close();
     void addTracks(DBTrack[] tracks);
     void deleteTracks(DBTrack[] tracks);
+    void addGame(DBGame game);
+    void updateTracksGuesses(DBTrack[] tracks, int[] addGuesses, int[] addCorrectGuesses);
     DBTrack[] getAllTracks();
+    DBTrack[] getRandomTracks(int count);
 }
