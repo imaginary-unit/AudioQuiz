@@ -34,7 +34,7 @@ public class GameModel implements IGameModel {
     private long mGameScore;
     private int mOptionsCount;
 
-    public GameModel(IDataSource dataSrc, int options, int rounds) {
+    public GameModel(IDataSource dataSrc) {
         mDataSource = dataSrc;
         mListeners = new ArrayList<>();
         mTracks = new ArrayList<>();
@@ -43,20 +43,15 @@ public class GameModel implements IGameModel {
         mGuessTime = new ArrayList<>();
     }
 
-    // Game logic
-
-    private void initGame(int options, int rounds) {
-        mTracks.clear();
-        mGuess.clear();
-        mCorrectGuess.clear();
-        mGuessTime.clear();
-        mOptionsCount = options;
-        mRoundsCount = rounds;
-        mCurrentRound = 0;
-        mTimerData = 0;
-        mRoundScore = 0;
-        mGameScore = 0;
+    public void subscribe(ModelUpdateListener listener) {
+        mListeners.add(listener);
     }
+
+    public void unsubscribe(ModelUpdateListener listener) {
+        mListeners.remove(listener);
+    }
+
+    // Game logic
 
     private Handler timerHandler = new Handler();
     private long mStartTime;
@@ -72,7 +67,19 @@ public class GameModel implements IGameModel {
         }
     };
 
-    // Public interface
+    public void initGame(int options, int rounds) {
+        mTracks.clear();
+        mGuess.clear();
+        mCorrectGuess.clear();
+        mGuessTime.clear();
+        mOptionsCount = options;
+        mRoundsCount = rounds;
+        mCurrentRound = 0;
+        mTimerData = 0;
+        mRoundScore = 0;
+        mGameScore = 0;
+        nextRound();
+    }
 
     public void nextRound() {
         mCurrentRound++;
@@ -113,6 +120,8 @@ public class GameModel implements IGameModel {
             listener.onGuessVerified(true);
         }
     }
+
+    // Public interface
 
     @Override
     public int getCurrentRound() {
