@@ -1,5 +1,6 @@
 package ru.imunit.maquiz.activities;
 
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,7 +12,7 @@ import ru.imunit.maquizdb.DataSourceFactory;
 import ru.imunit.maquizdb.entities.DBTrack;
 
 public class GameActivity extends AppCompatActivity
-        implements GameFragment.OnFragmentInteractionListener {
+        implements GameFragment.GameFragmentListener {
 
     private GameFragment mFragment;
     private GameModel mModel;
@@ -20,8 +21,10 @@ public class GameActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        // TODO: refactor with dynamic adding (game result will be a separate fragment)
-        mFragment = (GameFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_game);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_placeholder, new GameFragment(), "GAMEFRAGMENT");
+        ft.commit();
+        mFragment = (GameFragment)getSupportFragmentManager().findFragmentByTag("GAMEFRAGMENT");
         initModel();
     }
 

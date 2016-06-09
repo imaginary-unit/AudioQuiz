@@ -1,7 +1,6 @@
 package ru.imunit.maquiz.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,14 +21,14 @@ import ru.imunit.maquizdb.entities.DBTrack;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link GameFragment.OnFragmentInteractionListener} interface
+ * {@link GameFragmentListener} interface
  * to handle interaction events.
  */
 public class GameFragment extends Fragment
             implements GameModel.ModelUpdateListener {
 
     private IGameModel mModel;
-    private OnFragmentInteractionListener mListener;
+    private GameFragmentListener mListener;
     private TextView mTextRound;
     private TextView mTextScore;
     private TextView mTextTime;
@@ -43,6 +42,9 @@ public class GameFragment extends Fragment
         mModel = model;
     }
 
+    public void setListener(GameFragmentListener listener) {
+        mListener = listener;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,11 +55,11 @@ public class GameFragment extends Fragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof GameFragmentListener) {
+            mListener = (GameFragmentListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement GameFragmentListener");
         }
     }
 
@@ -80,13 +82,17 @@ public class GameFragment extends Fragment
      *  Model events listener
      */
 
-    @Override
+    private LinearLayout.LayoutParams params;
+
     public void onRoundUpdated() {
         mTextRound.setText(String.format(Locale.ENGLISH, "%d / %d",
                 mModel.getCurrentRound(), mModel.getRoundsCount()));
         mTextTime.setText(String.format(Locale.ENGLISH, "%f.2",
                 ((float)mModel.getTimerData() / 1000f)));
         mTextScore.setText(String.valueOf(mModel.getGameScore()));
+
+        // TODO: play metronome before playback
+        mListener.onStartPlayback();
     }
 
     @Override
@@ -122,7 +128,7 @@ public class GameFragment extends Fragment
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface GameFragmentListener {
         void onNextRound();
         void onStartPlayback();
         void onMakeGuess(DBTrack track);

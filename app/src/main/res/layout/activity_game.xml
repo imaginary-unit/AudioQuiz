@@ -7,12 +7,9 @@
     android:layout_height="match_parent"
     tools:context="ru.imunit.maquiz.activities.GameActivity">
 
-    <fragment
-        class="ru.imunit.maquiz.fragments.GameFragment"
-        android:id="@+id/fragment_game"
+    <FrameLayout
+        android:id="@+id/fragment_placeholder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout="@layout/fragment_game">
-    </fragment>
+        android:layout_height="match_parent"/>
 
 </FrameLayout>

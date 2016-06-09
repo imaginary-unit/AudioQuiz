@@ -87,7 +87,10 @@ public class GameModel implements IGameModel {
             // End game and show results
         }
         // obtain random tracks from data source
+        // TODO: handle possible exception
+        mDataSource.openReadable();
         mTracks = Arrays.asList(mDataSource.getRandomTracks(mOptionsCount));
+        mDataSource.close();
         // set correct tracks randomly
         mCorrectTrack = mTracks.get(new Random().nextInt(mOptionsCount));
         mTimerData = 0;
