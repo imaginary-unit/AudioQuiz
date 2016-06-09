@@ -4,12 +4,10 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 
@@ -35,8 +33,15 @@ public class StartActivity extends AppCompatActivity
     @Override
     public void onPlaylistOpen() {
         Intent playlistsIntent = new Intent(this,
-                ActivityFactory.getActivity(ActivityFactory.PLAYLISTS_VIEWER));
+                ActivityFactory.getActivity(ActivityFactory.PLAYLIST_ACTIVITY));
         startActivity(playlistsIntent);
+    }
+
+    @Override
+    public void onPlay() {
+        Intent gameIntent = new Intent(this,
+                ActivityFactory.getActivity(ActivityFactory.GAME_ACTIVTY));
+        startActivity(gameIntent);
     }
 
     @Override

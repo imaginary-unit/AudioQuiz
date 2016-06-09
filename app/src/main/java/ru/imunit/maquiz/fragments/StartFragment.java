@@ -43,14 +43,23 @@ public class StartFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Button bPlaylists = (Button)getView().findViewById(R.id.playlists);
-        bPlaylists.setOnClickListener(
-                new View.OnClickListener() {
+        bPlaylists.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         playlistsClick();
                     }
                 }
         );
+
+        Button bPlay = (Button)getView().findViewById(R.id.play);
+        bPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.onPlay();
+                }
+            }
+        });
     }
 
     private void playlistsClick() {
@@ -78,5 +87,6 @@ public class StartFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         void onPlaylistOpen();
+        void onPlay();
     }
 }

@@ -88,11 +88,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
-        android:foreground="@color/colorPrimary">
+        app:cardBackgroundColor="@color/colorPrimary">
         <LinearLayout
             android:id="@+id/layoutTracks"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
         </LinearLayout>
     </android.support.v7.widget.CardView>

@@ -58,8 +58,7 @@ public class GameModel implements IGameModel {
     private Runnable timerUpdate = new Runnable() {
         @Override
         public void run() {
-            long millis = System.currentTimeMillis() - mStartTime;
-            mTimerData += millis;
+            mTimerData = System.currentTimeMillis() - mStartTime;
             for (ModelUpdateListener listener : mListeners) {
                 listener.onTimerUpdated(mTimerData);
             }
@@ -91,8 +90,9 @@ public class GameModel implements IGameModel {
         mDataSource.openReadable();
         mTracks = Arrays.asList(mDataSource.getRandomTracks(mOptionsCount));
         mDataSource.close();
-        // set correct tracks randomly
-        mCorrectTrack = mTracks.get(new Random().nextInt(mOptionsCount));
+        // in case we don't have enough tracks in the playlist - take as many as possible
+        int n = Math.min(mTracks.size(), mOptionsCount);
+        mCorrectTrack = mTracks.get(new Random().nextInt(n));
         mTimerData = 0;
         mRoundScore = 0;
         // notify all listeners

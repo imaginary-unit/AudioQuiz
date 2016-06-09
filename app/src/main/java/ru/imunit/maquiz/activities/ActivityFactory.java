@@ -5,18 +5,15 @@ package ru.imunit.maquiz.activities;
  */
 public class ActivityFactory {
 
-    public static final int START_SCREEN = 1;
-    public static final int PLAYLISTS_VIEWER = 2;
-    public static final int PLAYLIST_EDITOR = 3;
-    public static final int GAME_SCREEN = 4;
-    public static final int RESULTS_SCREEN = 5;
+    public static final int START_ACTIVITY = 1;
+    public static final int PLAYLIST_ACTIVITY = 2;
+    public static final int GAME_ACTIVTY = 3;
 
     public static Class<?> getActivity(int id) {
         switch (id) {
-            case START_SCREEN: return StartActivity.class;
-            case PLAYLISTS_VIEWER: return PlaylistViewerActivity.class;
-            case GAME_SCREEN:
-            case RESULTS_SCREEN:
+            case START_ACTIVITY: return StartActivity.class;
+            case PLAYLIST_ACTIVITY: return PlaylistViewerActivity.class;
+            case GAME_ACTIVTY: return GameActivity.class;
             default: return null;
         }
     }

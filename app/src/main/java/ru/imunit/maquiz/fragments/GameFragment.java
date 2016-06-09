@@ -11,11 +11,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
 import java.util.Locale;
 
 import ru.imunit.maquiz.R;
 import ru.imunit.maquiz.models.GameModel;
 import ru.imunit.maquiz.models.IGameModel;
+import ru.imunit.maquiz.views.widgets.TrackView;
 import ru.imunit.maquizdb.entities.DBTrack;
 
 /**
@@ -33,6 +35,18 @@ public class GameFragment extends Fragment
     private TextView mTextScore;
     private TextView mTextTime;
     private LinearLayout mTracksLayout;
+
+//    private View getTrackView(DBTrack track) {
+//        View v = LayoutInflater.from(getActivity()).inflate(R.layout.recycler_item_2,
+//                this.mTracksLayout, false);
+//        ImageView iv = (ImageView)v.findViewById(R.id.icon);
+//        iv.setVisibility(View.GONE);
+//        TextView txtArtist = (TextView)v.findViewById(R.id.firstLine);
+//        TextView txtTitle = (TextView)v.findViewById(R.id.secondLine);
+//        txtArtist.setText(track.getArtist());
+//        txtTitle.setText(track.getName());
+//        return v;
+//    }
 
     public GameFragment() {
         // Required empty public constructor
@@ -70,6 +84,7 @@ public class GameFragment extends Fragment
         mTextScore = (TextView)getView().findViewById(R.id.textScore);
         mTextTime = (TextView)getView().findViewById(R.id.textTime);
         mTracksLayout = (LinearLayout)getView().findViewById(R.id.layoutTracks);
+        mListener.onFragmentInitialized();
     }
 
     @Override
@@ -82,14 +97,22 @@ public class GameFragment extends Fragment
      *  Model events listener
      */
 
-    private LinearLayout.LayoutParams params;
-
     public void onRoundUpdated() {
         mTextRound.setText(String.format(Locale.ENGLISH, "%d / %d",
                 mModel.getCurrentRound(), mModel.getRoundsCount()));
-        mTextTime.setText(String.format(Locale.ENGLISH, "%f.2",
-                ((float)mModel.getTimerData() / 1000f)));
+        mTextTime.setText(String.format(Locale.ENGLISH, "%.2f",
+                ((float)mModel.getTimerData() / 1E3f)));
         mTextScore.setText(String.valueOf(mModel.getGameScore()));
+
+        mTracksLayout.removeAllViews();
+        List<DBTrack> tracks = mModel.getTracks();
+        for (DBTrack track : tracks) {
+            TrackView tv = new TrackView(getActivity());
+            tv.setLayoutParams(new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, 0, 1.0f));
+            tv.setTrack(track);
+            mTracksLayout.addView(tv);
+        }
 
         // TODO: play metronome before playback
         mListener.onStartPlayback();
@@ -105,7 +128,7 @@ public class GameFragment extends Fragment
 
     @Override
     public void onTimerUpdated(long time) {
-        mTextTime.setText(String.format(Locale.ENGLISH, "%f.2", (float)time / 1000f));
+        mTextTime.setText(String.format(Locale.ENGLISH, "%.2f", (float)time / 1E3f));
     }
 
     @Override
@@ -115,7 +138,7 @@ public class GameFragment extends Fragment
 
     @Override
     public void onPlaybackStarted(float position) {
-
+        Toast.makeText(getActivity(), "Playback started..", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -129,6 +152,7 @@ public class GameFragment extends Fragment
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface GameFragmentListener {
+        void onFragmentInitialized();
         void onNextRound();
         void onStartPlayback();
         void onMakeGuess(DBTrack track);

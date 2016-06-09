@@ -14,7 +14,15 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="Playlist"
+        android:text="Play"
+        android:id="@+id/play"
+        android:background="@color/colorPrimary"
+        android:layout_margin="20dp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Show playlist"
         android:id="@+id/playlists"
         android:background="@color/colorPrimary"
         android:layout_margin="20dp"/>

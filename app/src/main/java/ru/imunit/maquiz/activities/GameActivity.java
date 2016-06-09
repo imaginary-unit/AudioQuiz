@@ -24,8 +24,8 @@ public class GameActivity extends AppCompatActivity
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_placeholder, new GameFragment(), "GAMEFRAGMENT");
         ft.commit();
+        getSupportFragmentManager().executePendingTransactions();
         mFragment = (GameFragment)getSupportFragmentManager().findFragmentByTag("GAMEFRAGMENT");
-        initModel();
     }
 
     private void initModel() {
@@ -43,6 +43,11 @@ public class GameActivity extends AppCompatActivity
     }
 
     // Fragment listener
+
+    @Override
+    public void onFragmentInitialized() {
+        initModel();
+    }
 
     @Override
     public void onNextRound() {
