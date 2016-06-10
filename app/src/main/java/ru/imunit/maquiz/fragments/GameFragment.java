@@ -1,9 +1,13 @@
 package ru.imunit.maquiz.fragments;
 
 import android.content.Context;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 import java.util.Locale;
 
@@ -35,18 +42,7 @@ public class GameFragment extends Fragment
     private TextView mTextScore;
     private TextView mTextTime;
     private LinearLayout mTracksLayout;
-
-//    private View getTrackView(DBTrack track) {
-//        View v = LayoutInflater.from(getActivity()).inflate(R.layout.recycler_item_2,
-//                this.mTracksLayout, false);
-//        ImageView iv = (ImageView)v.findViewById(R.id.icon);
-//        iv.setVisibility(View.GONE);
-//        TextView txtArtist = (TextView)v.findViewById(R.id.firstLine);
-//        TextView txtTitle = (TextView)v.findViewById(R.id.secondLine);
-//        txtArtist.setText(track.getArtist());
-//        txtTitle.setText(track.getName());
-//        return v;
-//    }
+    private MediaPlayer mMediaPlayer;
 
     public GameFragment() {
         // Required empty public constructor
@@ -59,6 +55,10 @@ public class GameFragment extends Fragment
     public void setListener(GameFragmentListener listener) {
         mListener = listener;
     }
+
+    /**
+     * Fragment lifecycle handlers
+     */
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,9 +88,36 @@ public class GameFragment extends Fragment
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        if (mMediaPlayer != null) {
+            mMediaPlayer.release();
+        }
+        // TODO: save the state
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mMediaPlayer != null) {
+            mMediaPlayer.release();
+        }
+        // TODO: save the state
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // TODO: restore saved state
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        if (mMediaPlayer != null) {
+            mMediaPlayer.release();
+        }
     }
 
     /**
@@ -111,6 +138,15 @@ public class GameFragment extends Fragment
             tv.setLayoutParams(new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, 0, 1.0f));
             tv.setTrack(track);
+            tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (v instanceof TrackView) {
+                        TrackView t = (TrackView)v;
+                        mListener.onMakeGuess(t.getTrack());
+                    }
+                }
+            });
             mTracksLayout.addView(tv);
         }
 
@@ -133,13 +169,41 @@ public class GameFragment extends Fragment
 
     @Override
     public void onGuessVerified(boolean result) {
-
+        if (result) {
+            mMediaPlayer.stop();
+            mMediaPlayer.release();
+            // display correct guess notification, congrats and so on (may be animated..
+            // ..so consider extraction to another method
+            mListener.onNextRound();
+        } else {
+            // display wrong guess notification, animation, whatever..
+        }
     }
 
     @Override
-    public void onPlaybackStarted(float position) {
-        Toast.makeText(getActivity(), "Playback started..", Toast.LENGTH_SHORT).show();
+    public void onPlaybackStarted(final float position) {
+        Uri trackUri = Uri.fromFile(new File(mModel.getCorrectTrack().getUri()));
+        mMediaPlayer = new MediaPlayer();
+        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        try {
+            mMediaPlayer.setDataSource(getContext(), trackUri);
+        } catch (IOException e) {
+            // TODO: handle exception
+        }
+        mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                int len = mMediaPlayer.getDuration();
+                int start = (int)(len * position);
+                mMediaPlayer.seekTo(start);
+                Log.i("Playing media from:", String.format("%d / %d", start, len));
+                mMediaPlayer.start();
+                mListener.onMediaReady();
+            }
+        });
+        mMediaPlayer.prepareAsync();
     }
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -155,6 +219,7 @@ public class GameFragment extends Fragment
         void onFragmentInitialized();
         void onNextRound();
         void onStartPlayback();
+        void onMediaReady();
         void onMakeGuess(DBTrack track);
     }
 }

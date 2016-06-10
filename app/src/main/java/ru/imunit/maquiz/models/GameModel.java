@@ -94,7 +94,7 @@ public class GameModel implements IGameModel {
         int n = Math.min(mTracks.size(), mOptionsCount);
         mCorrectTrack = mTracks.get(new Random().nextInt(n));
         mTimerData = 0;
-        mRoundScore = 0;
+        mRoundScore = 10; // just for testing purposes
         // notify all listeners
         for (ModelUpdateListener listener : mListeners) {
             listener.onRoundUpdated();
@@ -102,10 +102,13 @@ public class GameModel implements IGameModel {
     }
 
     public void startPlayback() {
-        float pos = (new Random().nextFloat()) / PLAYBACK_START_THRESHOLD;
+        float pos = (new Random().nextFloat()) * PLAYBACK_START_THRESHOLD;
         for (ModelUpdateListener listener : mListeners) {
             listener.onPlaybackStarted(pos);
         }
+    }
+
+    public void startTimer() {
         mStartTime = System.currentTimeMillis();
         timerHandler.postDelayed(timerUpdate, 0);
     }
@@ -120,7 +123,7 @@ public class GameModel implements IGameModel {
             }
         }
         for (ModelUpdateListener listener : mListeners) {
-            listener.onGuessVerified(true);
+            listener.onGuessVerified(result);
         }
     }
 

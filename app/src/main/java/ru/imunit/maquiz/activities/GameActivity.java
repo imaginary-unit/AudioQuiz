@@ -60,6 +60,11 @@ public class GameActivity extends AppCompatActivity
     }
 
     @Override
+    public void onMediaReady() {
+        mModel.startTimer();
+    }
+
+    @Override
     public void onMakeGuess(DBTrack track) {
         mModel.makeGuess(track);
     }
