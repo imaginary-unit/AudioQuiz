@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.util.List;
 import java.util.Locale;
 
@@ -210,10 +209,6 @@ public class GameFragment extends Fragment
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
      */
     public interface GameFragmentListener {
         void onFragmentInitialized();

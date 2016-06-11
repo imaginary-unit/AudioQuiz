@@ -1,0 +1,84 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ru.imunit.maquiz.fragments.ResultsFragment"
+    android:orientation="vertical">
+
+    <android.support.v4.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0"
+        android:text="You're awesome! :)"
+        android:textSize="30dp"
+        android:textColor="@color/colorAccent"
+        />
+
+    <android.support.v4.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/game_results_score"
+            android:textSize="22sp"
+            android:textColor="@color/colorForeground"
+            android:id="@+id/textView" />
+        <TextView
+            android:id="@+id/textScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100500"
+            android:textSize="22sp"
+            android:textColor="@color/colorForeground" />
+    </LinearLayout>
+
+    <android.support.v4.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        android:layout_gravity="right">
+        <Button
+            android:id="@+id/btnStatistics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:layout_marginRight="20dp"
+            android:text="Statistics" />
+        <Button
+            android:id="@+id/btnPlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:layout_marginRight="20dp"
+            android:text="Restart" />
+        <Button
+            android:id="@+id/btnQuit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:text="Menu" />
+
+    </LinearLayout>
+
+</LinearLayout>
