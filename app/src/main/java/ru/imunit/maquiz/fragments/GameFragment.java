@@ -51,10 +51,6 @@ public class GameFragment extends Fragment
         mModel = model;
     }
 
-    public void setListener(GameFragmentListener listener) {
-        mListener = listener;
-    }
-
     /**
      * Fragment lifecycle handlers
      */
@@ -83,7 +79,7 @@ public class GameFragment extends Fragment
         mTextScore = (TextView)getView().findViewById(R.id.textScore);
         mTextTime = (TextView)getView().findViewById(R.id.textTime);
         mTracksLayout = (LinearLayout)getView().findViewById(R.id.layoutTracks);
-        mListener.onFragmentInitialized();
+        mListener.onGameFragmentInitialized();
     }
 
     @Override
@@ -203,6 +199,11 @@ public class GameFragment extends Fragment
         mMediaPlayer.prepareAsync();
     }
 
+    @Override
+    public void onGameFinished() {
+        mListener.onGameFinished();
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -211,10 +212,11 @@ public class GameFragment extends Fragment
      * activity.
      */
     public interface GameFragmentListener {
-        void onFragmentInitialized();
+        void onGameFragmentInitialized();
         void onNextRound();
         void onStartPlayback();
         void onMediaReady();
         void onMakeGuess(DBTrack track);
+        void onGameFinished();
     }
 }

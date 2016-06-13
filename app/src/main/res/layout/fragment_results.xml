@@ -16,7 +16,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_weight="0"
         android:text="You're awesome! :)"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:textColor="@color/colorAccent"
         />
 
@@ -66,14 +66,14 @@
             android:layout_marginRight="20dp"
             android:text="Statistics" />
         <Button
-            android:id="@+id/btnPlay"
+            android:id="@+id/btnRestart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:layout_marginRight="20dp"
             android:text="Restart" />
         <Button
-            android:id="@+id/btnQuit"
+            android:id="@+id/btnMenu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"

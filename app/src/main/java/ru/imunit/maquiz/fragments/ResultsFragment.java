@@ -3,12 +3,16 @@ package ru.imunit.maquiz.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import ru.imunit.maquiz.R;
+import ru.imunit.maquiz.models.IGameModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,9 +23,22 @@ import ru.imunit.maquiz.R;
 public class ResultsFragment extends Fragment {
 
     private ResultsFragmentListener mListener;
+    private IGameModel mModel;
+    private TextView mTextScore;
+    private Button mBtnRestart;
+    private Button mBtnStatistics;
+    private Button mBtnMenu;
 
     public ResultsFragment() {
         // Required empty public constructor
+    }
+
+    public void setModel(IGameModel model) {
+        mModel = model;
+    }
+
+    public void updateResults() {
+        mTextScore.setText(String.valueOf(mModel.getGameScore()));
     }
 
     @Override
@@ -42,9 +59,41 @@ public class ResultsFragment extends Fragment {
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mTextScore = (TextView)getView().findViewById(R.id.textScore);
+        mBtnMenu = (Button)getView().findViewById(R.id.btnMenu);
+        mBtnRestart = (Button)getView().findViewById(R.id.btnRestart);
+        mBtnStatistics = (Button)getView().findViewById(R.id.btnStatistics);
+        setButtonListeners();
+        mListener.onResultsFragmentInitialized();
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private void setButtonListeners() {
+        mBtnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onShowMenu();
+            }
+        });
+        mBtnRestart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onRestartGame();
+            }
+        });
+        mBtnStatistics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onShowStatistics();
+            }
+        });
     }
 
     /**
@@ -54,6 +103,9 @@ public class ResultsFragment extends Fragment {
      * activity.
      */
     public interface ResultsFragmentListener {
-
+        void onResultsFragmentInitialized();
+        void onRestartGame();
+        void onShowStatistics();
+        void onShowMenu();
     }
 }

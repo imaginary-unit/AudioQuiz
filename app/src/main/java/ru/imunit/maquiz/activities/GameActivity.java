@@ -1,5 +1,6 @@
 package ru.imunit.maquiz.activities;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,14 +8,17 @@ import android.view.Menu;
 
 import ru.imunit.maquiz.R;
 import ru.imunit.maquiz.fragments.GameFragment;
+import ru.imunit.maquiz.fragments.ResultsFragment;
 import ru.imunit.maquiz.models.GameModel;
 import ru.imunit.maquizdb.DataSourceFactory;
 import ru.imunit.maquizdb.entities.DBTrack;
 
 public class GameActivity extends AppCompatActivity
-        implements GameFragment.GameFragmentListener {
+        implements GameFragment.GameFragmentListener,
+        ResultsFragment.ResultsFragmentListener {
 
-    private GameFragment mFragment;
+    private GameFragment mGameFragment;
+    private ResultsFragment mResultsFragment;
     private GameModel mModel;
 
     @Override
@@ -25,15 +29,15 @@ public class GameActivity extends AppCompatActivity
         ft.replace(R.id.fragment_placeholder, new GameFragment(), "GAMEFRAGMENT");
         ft.commit();
         getSupportFragmentManager().executePendingTransactions();
-        mFragment = (GameFragment)getSupportFragmentManager().findFragmentByTag("GAMEFRAGMENT");
+        mGameFragment = (GameFragment)getSupportFragmentManager().findFragmentByTag("GAMEFRAGMENT");
     }
 
     private void initModel() {
         mModel = new GameModel(DataSourceFactory.getDataSource(this));
-        mFragment.setModel(mModel);
-        mModel.subscribe(mFragment);
+        mGameFragment.setModel(mModel);
+        mModel.subscribe(mGameFragment);
         // TODO: refactor options and rounds: should be in activity parameters
-        mModel.initGame(5, 10);
+        mModel.initGame(5, 3);
     }
 
     @Override
@@ -42,10 +46,10 @@ public class GameActivity extends AppCompatActivity
         return super.onCreateOptionsMenu(menu);
     }
 
-    // Fragment listener
+    // GameFragment listener
 
     @Override
-    public void onFragmentInitialized() {
+    public void onGameFragmentInitialized() {
         initModel();
     }
 
@@ -67,5 +71,44 @@ public class GameActivity extends AppCompatActivity
     @Override
     public void onMakeGuess(DBTrack track) {
         mModel.makeGuess(track);
+    }
+
+    @Override
+    public void onGameFinished() {
+        if (mResultsFragment == null)
+            mResultsFragment = new ResultsFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_placeholder, mResultsFragment, "RESULTSFRAGMENT");
+        ft.commit();
+        getSupportFragmentManager().executePendingTransactions();
+    }
+
+    // ResultsFragment listener
+
+    @Override
+    public void onResultsFragmentInitialized() {
+        mResultsFragment.setModel(mModel);
+        mResultsFragment.updateResults();
+    }
+
+    @Override
+    public void onRestartGame() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_placeholder, mGameFragment, "GAMEFRAGMENT");
+        ft.commit();
+        getSupportFragmentManager().executePendingTransactions();
+        mModel.initGame(5, 3);
+    }
+
+    @Override
+    public void onShowStatistics() {
+
+    }
+
+    @Override
+    public void onShowMenu() {
+        Intent menuIntent = new Intent(this,
+                ActivityFactory.getActivity(ActivityFactory.START_ACTIVITY));
+        startActivity(menuIntent);
     }
 }

@@ -37,7 +37,7 @@ public class GameModel implements IGameModel {
     public GameModel(IDataSource dataSrc) {
         mDataSource = dataSrc;
         mListeners = new ArrayList<>();
-        mTracks = new ArrayList<>();
+        // mTracks = new ArrayList<>();
         mGuess = new HashMap<>();
         mCorrectGuess = new HashMap<>();
         mGuessTime = new ArrayList<>();
@@ -67,7 +67,7 @@ public class GameModel implements IGameModel {
     };
 
     public void initGame(int options, int rounds) {
-        mTracks.clear();
+        // mTracks.clear();
         mGuess.clear();
         mCorrectGuess.clear();
         mGuessTime.clear();
@@ -83,7 +83,10 @@ public class GameModel implements IGameModel {
     public void nextRound() {
         mCurrentRound++;
         if (mCurrentRound > mRoundsCount) {
-            // End game and show results
+            for (ModelUpdateListener listener : mListeners) {
+                listener.onGameFinished();
+            }
+            return;
         }
         // obtain random tracks from data source
         // TODO: handle possible exception
@@ -170,5 +173,6 @@ public class GameModel implements IGameModel {
         void onTimerUpdated(long time);
         void onGuessVerified(boolean result);
         void onPlaybackStarted(float position);
+        void onGameFinished();
     }
 }
