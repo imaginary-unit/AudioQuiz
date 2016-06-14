@@ -1,9 +1,11 @@
 package ru.imunit.maquiz.activities;
 
 import android.content.Intent;
+import android.os.PersistableBundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 
 import ru.imunit.maquiz.R;
@@ -25,14 +27,24 @@ public class GameActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_placeholder, new GameFragment(), "GAMEFRAGMENT");
-        ft.commit();
-        getSupportFragmentManager().executePendingTransactions();
+
         mGameFragment = (GameFragment)getSupportFragmentManager().findFragmentByTag("GAMEFRAGMENT");
+
+        if (mGameFragment == null) {
+            mGameFragment = new GameFragment();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_placeholder, mGameFragment, "GAMEFRAGMENT");
+            ft.commit();
+            getSupportFragmentManager().executePendingTransactions();
+        }
     }
 
     private void initModel() {
+        if (mGameFragment.getModel() != null) {
+            Log.i("Model init", "Game is already in progress!");
+            return;
+        }
+        Log.i("Model init", "Create new and init game");
         mModel = new GameModel(DataSourceFactory.getDataSource(this));
         mGameFragment.setModel(mModel);
         mModel.subscribe(mGameFragment);

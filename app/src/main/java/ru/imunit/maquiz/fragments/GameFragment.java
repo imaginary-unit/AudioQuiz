@@ -51,9 +51,19 @@ public class GameFragment extends Fragment
         mModel = model;
     }
 
+    public IGameModel getModel() {
+        return mModel;
+    }
+
     /**
      * Fragment lifecycle handlers
      */
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
