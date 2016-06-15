@@ -90,6 +90,9 @@ public class GameFragment extends Fragment
         mTextTime = (TextView)getView().findViewById(R.id.textTime);
         mTracksLayout = (LinearLayout)getView().findViewById(R.id.layoutTracks);
         mListener.onGameFragmentInitialized();
+        if (mModel.isGameRunning()) {
+            onRoundUpdated();
+        }
     }
 
     @Override
@@ -98,7 +101,6 @@ public class GameFragment extends Fragment
         if (mMediaPlayer != null) {
             mMediaPlayer.release();
         }
-        // TODO: save the state
     }
 
     @Override
@@ -107,13 +109,14 @@ public class GameFragment extends Fragment
         if (mMediaPlayer != null) {
             mMediaPlayer.release();
         }
-        // TODO: save the state
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        // TODO: restore saved state
+        if (mModel.isGameRunning() && mModel.getPlaybackTime() > 0) {
+            onPlaybackStarted();
+        }
     }
 
     @Override
@@ -133,7 +136,7 @@ public class GameFragment extends Fragment
         mTextRound.setText(String.format(Locale.ENGLISH, "%d / %d",
                 mModel.getCurrentRound(), mModel.getRoundsCount()));
         mTextTime.setText(String.format(Locale.ENGLISH, "%.2f",
-                ((float)mModel.getTimerData() / 1E3f)));
+                ((float)mModel.getPlaybackTime() / 1E3f)));
         mTextScore.setText(String.valueOf(mModel.getGameScore()));
 
         mTracksLayout.removeAllViews();
@@ -156,7 +159,7 @@ public class GameFragment extends Fragment
         }
 
         // TODO: play metronome before playback
-        mListener.onStartPlayback();
+        // mListener.onStartPlayback();
     }
 
     @Override
@@ -168,14 +171,15 @@ public class GameFragment extends Fragment
     }
 
     @Override
-    public void onTimerUpdated(long time) {
+    public void onTimerUpdated(int time) {
         mTextTime.setText(String.format(Locale.ENGLISH, "%.2f", (float)time / 1E3f));
     }
 
     @Override
     public void onGuessVerified(boolean result) {
         if (result) {
-            mMediaPlayer.stop();
+            if (mMediaPlayer.isPlaying())
+                mMediaPlayer.stop();
             mMediaPlayer.release();
             // display correct guess notification, congrats and so on (may be animated..
             // ..so consider extraction to another method
@@ -186,7 +190,7 @@ public class GameFragment extends Fragment
     }
 
     @Override
-    public void onPlaybackStarted(final float position) {
+    public void onPlaybackStarted() {
         Uri trackUri = Uri.fromFile(new File(mModel.getCorrectTrack().getUri()));
         mMediaPlayer = new MediaPlayer();
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -199,10 +203,15 @@ public class GameFragment extends Fragment
             @Override
             public void onPrepared(MediaPlayer mp) {
                 int len = mMediaPlayer.getDuration();
-                int start = (int)(len * position);
+                int start = (int)(len * mModel.getPlaybackStartPos()) + mModel.getPlaybackTime();
+                if (start > len) start = start - len;
+
                 mMediaPlayer.seekTo(start);
                 Log.i("Playing media from:", String.format("%d / %d", start, len));
                 mMediaPlayer.start();
+                /* TODO: this call on each playback start is basically a time bomb..
+                        consider refactoring
+                 */
                 mListener.onMediaReady();
             }
         });

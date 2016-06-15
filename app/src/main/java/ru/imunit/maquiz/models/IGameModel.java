@@ -9,9 +9,12 @@ import ru.imunit.maquizdb.entities.DBTrack;
  */
 
 public interface IGameModel {
+    boolean isGameRunning();
+    boolean isGameFinished();
     int getCurrentRound();
     int getRoundsCount();
-    long getTimerData();
+    int getPlaybackTime();
+    float getPlaybackStartPos();
     long getGameScore();
     long getRoundScore();
     List<DBTrack> getTracks();

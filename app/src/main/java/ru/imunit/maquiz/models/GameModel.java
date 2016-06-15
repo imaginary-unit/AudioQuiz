@@ -29,15 +29,16 @@ public class GameModel implements IGameModel {
     private DBTrack mCorrectTrack;
     private int mCurrentRound;
     private int mRoundsCount;
-    private long mTimerData;
+    private int mPlaybackTime;
+    private float mPlaybackStartPos;
     private long mRoundScore;
     private long mGameScore;
     private int mOptionsCount;
 
+
     public GameModel(IDataSource dataSrc) {
         mDataSource = dataSrc;
         mListeners = new ArrayList<>();
-        // mTracks = new ArrayList<>();
         mGuess = new HashMap<>();
         mCorrectGuess = new HashMap<>();
         mGuessTime = new ArrayList<>();
@@ -54,30 +55,31 @@ public class GameModel implements IGameModel {
     // Game logic
 
     private Handler timerHandler = new Handler();
-    private long mStartTime;
+    private long mLastTime;
     private Runnable timerUpdate = new Runnable() {
         @Override
         public void run() {
-            mTimerData = System.currentTimeMillis() - mStartTime;
+            mPlaybackTime += (int)(System.currentTimeMillis() - mLastTime);
+            mLastTime = System.currentTimeMillis();
             for (ModelUpdateListener listener : mListeners) {
-                listener.onTimerUpdated(mTimerData);
+                listener.onTimerUpdated(mPlaybackTime);
             }
             timerHandler.postDelayed(this, 10);
         }
     };
 
     public void initGame(int options, int rounds) {
-        // mTracks.clear();
+        mTracks = new ArrayList<>();
         mGuess.clear();
         mCorrectGuess.clear();
         mGuessTime.clear();
         mOptionsCount = options;
         mRoundsCount = rounds;
         mCurrentRound = 0;
-        mTimerData = 0;
+        mPlaybackTime = 0;
+        mPlaybackStartPos = 0f;
         mRoundScore = 0;
         mGameScore = 0;
-        nextRound();
     }
 
     public void nextRound() {
@@ -96,23 +98,25 @@ public class GameModel implements IGameModel {
         // in case we don't have enough tracks in the playlist - take as many as possible
         int n = Math.min(mTracks.size(), mOptionsCount);
         mCorrectTrack = mTracks.get(new Random().nextInt(n));
-        mTimerData = 0;
+        mPlaybackTime = 0;
+        mPlaybackStartPos = 0f;
         mRoundScore = 10; // just for testing purposes
         // notify all listeners
         for (ModelUpdateListener listener : mListeners) {
             listener.onRoundUpdated();
         }
+        startPlayback();
     }
 
     public void startPlayback() {
-        float pos = (new Random().nextFloat()) * PLAYBACK_START_THRESHOLD;
+        mPlaybackStartPos = (new Random().nextFloat()) * PLAYBACK_START_THRESHOLD;
         for (ModelUpdateListener listener : mListeners) {
-            listener.onPlaybackStarted(pos);
+            listener.onPlaybackStarted();
         }
     }
 
     public void startTimer() {
-        mStartTime = System.currentTimeMillis();
+        mLastTime = System.currentTimeMillis();
         timerHandler.postDelayed(timerUpdate, 0);
     }
 
@@ -133,6 +137,17 @@ public class GameModel implements IGameModel {
     // Public interface
 
     @Override
+    public boolean isGameRunning() {
+        return mCurrentRound > 0 && mCurrentRound <= mRoundsCount;
+    }
+
+    @Override
+    public boolean isGameFinished() {
+        return mCurrentRound > mRoundsCount;
+    }
+
+
+    @Override
     public int getCurrentRound() {
         return mCurrentRound;
     }
@@ -143,8 +158,13 @@ public class GameModel implements IGameModel {
     }
 
     @Override
-    public long getTimerData() {
-        return mTimerData;
+    public int getPlaybackTime() {
+        return mPlaybackTime;
+    }
+
+    @Override
+    public float getPlaybackStartPos() {
+        return mPlaybackStartPos;
     }
 
     @Override
@@ -170,9 +190,9 @@ public class GameModel implements IGameModel {
     public interface ModelUpdateListener {
         void onRoundUpdated();
         void onScoreUpdated(long diff);
-        void onTimerUpdated(long time);
+        void onTimerUpdated(int time);
         void onGuessVerified(boolean result);
-        void onPlaybackStarted(float position);
+        void onPlaybackStarted();
         void onGameFinished();
     }
 }
