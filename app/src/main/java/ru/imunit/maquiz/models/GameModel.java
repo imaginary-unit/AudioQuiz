@@ -1,14 +1,20 @@
 package ru.imunit.maquiz.models;
 
+import android.os.AsyncTask;
 import android.os.Handler;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import ru.imunit.maquizdb.IDataSource;
+import ru.imunit.maquizdb.entities.DBGame;
 import ru.imunit.maquizdb.entities.DBTrack;
 
 /**
@@ -25,7 +31,7 @@ public class GameModel implements IGameModel {
     private List<DBTrack> mTracks;
     private HashMap<DBTrack, Integer> mGuess;
     private HashMap<DBTrack, Integer> mCorrectGuess;
-    private List<Long> mGuessTime;
+    private List<Integer> mGuessTime;
     private DBTrack mCorrectTrack;
     private int mCurrentRound;
     private int mRoundsCount;
@@ -52,8 +58,6 @@ public class GameModel implements IGameModel {
         mListeners.remove(listener);
     }
 
-    // Game logic
-
     private Handler timerHandler = new Handler();
     private long mLastTime;
     private Runnable timerUpdate = new Runnable() {
@@ -67,6 +71,77 @@ public class GameModel implements IGameModel {
             timerHandler.postDelayed(this, 10);
         }
     };
+
+    private class ResultsWriter extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            return writeStats();
+        }
+    }
+
+    // Game logic
+
+    private void finishGame() {
+        new ResultsWriter().execute();
+        for (ModelUpdateListener listener : mListeners) {
+            listener.onGameFinished();
+        }
+    }
+
+    private void addGuess(DBTrack track, boolean correct) {
+        HashMap<DBTrack, Integer> hmap;
+        if (correct)
+            hmap = mCorrectGuess;
+        else
+            hmap = mGuess;
+        int old = 0;
+        if (hmap.containsKey(track))
+            old = hmap.get(track);
+        hmap.put(track, old + 1);
+    }
+
+    private boolean writeStats() {
+        DBGame game = new DBGame();
+        game.setScore(mGameScore);
+        Integer s = 0;
+        for (Integer val : mGuess.values())
+            s += val;
+        game.setGuess(s);
+        s = 0;
+        for (Integer val : mCorrectGuess.values())
+            s += val;
+        game.setCorrectGuess(s);
+        long gtAvg = 0;
+        for (Integer val : mGuessTime)
+            gtAvg += val;
+        gtAvg /= mGuessTime.size();
+        game.setAvgGuessTime(gtAvg);
+        game.setBestGuessTime(Collections.min(mGuessTime));
+
+        if (!mDataSource.openWritable())
+            return false;
+
+        mDataSource.addGame(game);
+
+        List<DBTrack> tracks = new ArrayList<>();
+        List<Integer> addGuess = new ArrayList<>();
+        List<Integer> addCorrectGuess = new ArrayList<>();
+
+        for (DBTrack track : mGuess.keySet()) {
+            tracks.add(track);
+            addGuess.add(mGuess.get(track));
+            if (mCorrectGuess.containsKey(track))
+                addCorrectGuess.add(mCorrectGuess.get(track));
+            else
+                addCorrectGuess.add(0);
+        }
+
+        mDataSource.updateTracksGuesses(tracks.toArray(new DBTrack[0]),
+                addGuess.toArray(new Integer[0]), addCorrectGuess.toArray(new Integer[0]));
+        mDataSource.close();
+
+        return true;
+    }
 
     public void initGame(int options, int rounds) {
         mTracks = new ArrayList<>();
@@ -85,9 +160,7 @@ public class GameModel implements IGameModel {
     public void nextRound() {
         mCurrentRound++;
         if (mCurrentRound > mRoundsCount) {
-            for (ModelUpdateListener listener : mListeners) {
-                listener.onGameFinished();
-            }
+            finishGame();
             return;
         }
         // obtain random tracks from data source
@@ -121,9 +194,12 @@ public class GameModel implements IGameModel {
     }
 
     public void makeGuess(DBTrack track) {
+        addGuess(track, false);
         boolean result = track.equals(mCorrectTrack);
         if (result) {
             timerHandler.removeCallbacks(timerUpdate);
+            mGuessTime.add(mPlaybackTime);
+            addGuess(track, true);
             mGameScore += mRoundScore;
             for (ModelUpdateListener listener : mListeners) {
                 listener.onScoreUpdated(mRoundScore);

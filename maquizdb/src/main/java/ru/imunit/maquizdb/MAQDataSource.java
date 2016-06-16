@@ -40,6 +40,7 @@ public class MAQDataSource implements IDataSource {
         database = dbHelper.getReadableDatabase();
     }
 
+    @Override
     public boolean openReadable() {
         try {
             database = dbHelper.getReadableDatabase();
@@ -50,6 +51,7 @@ public class MAQDataSource implements IDataSource {
         return true;
     }
 
+    @Override
     public boolean openWritable() {
         try {
             database = dbHelper.getWritableDatabase();
@@ -66,7 +68,7 @@ public class MAQDataSource implements IDataSource {
 
 
     // Database operations
-
+    @Override
     public void addTracks(DBTrack[] tracks) {
         database.beginTransaction();
         for (DBTrack track : tracks) {
@@ -111,6 +113,7 @@ public class MAQDataSource implements IDataSource {
         return addOrFindTrack(name, artist, "");
     }
 
+    @Override
     public DBTrack[] getAllTracks() {
         Cursor cur = database.query(TracksTable.TABLE_NAME, trackCols,
                 null, null, null, null, null);
@@ -155,7 +158,7 @@ public class MAQDataSource implements IDataSource {
         }
     }
 
-    public DBTrack getTrack(String name, String artist) {
+    public DBTrack getTrack(String artist, String name) {
         String[] selArgs = { name, artist };
         Cursor cur = database.query(TracksTable.TABLE_NAME, trackCols,
                 TracksTable.COLUMN_NAME + "=? AND " + TracksTable.COLUMN_ARTIST + "=?",
@@ -209,7 +212,7 @@ public class MAQDataSource implements IDataSource {
     }
 
     @Override
-    public void updateTracksGuesses(DBTrack[] tracks, int[] addGuesses, int[] addCorrectGuesses) {
+    public void updateTracksGuesses(DBTrack[] tracks, Integer[] addGuesses, Integer[] addCorrectGuesses) {
         int n = tracks.length;
 
         List<DBTrack> tracksFull = new ArrayList<>();

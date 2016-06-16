@@ -13,7 +13,8 @@ public interface IDataSource {
     void addTracks(DBTrack[] tracks);
     void deleteTracks(DBTrack[] tracks);
     void addGame(DBGame game);
-    void updateTracksGuesses(DBTrack[] tracks, int[] addGuesses, int[] addCorrectGuesses);
+    void updateTracksGuesses(DBTrack[] tracks, Integer[] addGuesses, Integer[] addCorrectGuesses);
     DBTrack[] getAllTracks();
     DBTrack[] getRandomTracks(int count);
+    DBTrack getTrack(String artist, String name);
 }
