@@ -1,5 +1,6 @@
 package ru.imunit.maquiz.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ public class PlaylistViewerFragment extends Fragment {
     private RecyclerView.Adapter mRecyclerAdapter;
     private RecyclerView.LayoutManager mRecyclerLayout;
     private List<DBTrack> mTrackList;
+    private ProgressDialog mProgressDialog = null;
 
     public PlaylistViewerFragment() {
         // Required empty public constructor
@@ -52,7 +54,7 @@ public class PlaylistViewerFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         updateMusic();
-        initRecycler();
+        // initRecycler();
         FloatingActionButton fab = (FloatingActionButton)getView().findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,8 +83,18 @@ public class PlaylistViewerFragment extends Fragment {
     }
 
     private void updateMusic() {
+        mProgressDialog = ProgressDialog.show(getContext(), "Please, wait",
+                "Syncronizing the music database...", true, false);
         MusicUpdater updater = new MusicUpdater(getActivity());
-        updater.updateSync();
+        updater.setListener(new MusicUpdater.MusicUpdateListener() {
+            @Override
+            public void onUpdateCompleted() {
+                if (PlaylistViewerFragment.this.mProgressDialog != null)
+                    PlaylistViewerFragment.this.mProgressDialog.dismiss();
+                initRecycler();
+            }
+        });
+        updater.startUpdate();
     }
 
     private void initRecycler() {

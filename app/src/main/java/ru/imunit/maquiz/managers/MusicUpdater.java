@@ -3,6 +3,7 @@ package ru.imunit.maquiz.managers;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.util.Log;
 
@@ -19,25 +20,38 @@ import ru.imunit.maquizdb.entities.DBTrack;
 public class MusicUpdater {
 
     private Context mContext;
+    private MusicUpdateListener mListener;
 
     public static final int RESULT_OK = 0;
     public static final int RESULT_ERROR = 1;
 
-//    class UpdateTask extends AsyncTask<Void, Integer, Boolean> {
-//
-//        @Override
-//        protected Boolean doInBackground(Void... params) {
-//            return doUpdate();
-//        }
-//    }
+    private class UpdateTask extends AsyncTask<Void, Void, Integer> {
+
+        @Override
+        protected Integer doInBackground(Void... params) {
+            return doUpdate();
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            mListener.onUpdateCompleted();
+        }
+    }
 
     public MusicUpdater(Context context) {
         mContext = context;
+        if (mContext instanceof MusicUpdateListener)
+            mListener = (MusicUpdateListener)mContext;
     }
 
-//    public void startUpdate() {
-//
-//    }
+    public void startUpdate() {
+        new UpdateTask().execute();
+    }
+
+    public void setListener(MusicUpdateListener listener) {
+        mListener = listener;
+    }
 
     public int updateSync() {
         return doUpdate();
@@ -95,6 +109,10 @@ public class MusicUpdater {
             cur.close();
         }
         return songs;
+    }
+
+    public interface MusicUpdateListener {
+        void onUpdateCompleted();
     }
 
 }
