@@ -7,8 +7,12 @@ import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
 import ru.imunit.maquizdb.DataSourceFactory;
 import ru.imunit.maquizdb.IDataSource;
@@ -21,6 +25,7 @@ public class MusicUpdater {
 
     private Context mContext;
     private MusicUpdateListener mListener;
+    private List<String> mBlacklistedDirs;
 
     public static final int RESULT_OK = 0;
     public static final int RESULT_ERROR = 1;
@@ -43,6 +48,7 @@ public class MusicUpdater {
         mContext = context;
         if (mContext instanceof MusicUpdateListener)
             mListener = (MusicUpdateListener)mContext;
+        mBlacklistedDirs = new ArrayList<>();
     }
 
     public void startUpdate() {
@@ -70,6 +76,9 @@ public class MusicUpdater {
         Collections.addAll(appSet, appTracks);
         Log.i("Tracks:", String.format("%d found on app DB", appSet.size()));
 
+        // fill blacklisted directories
+        mBlacklistedDirs = Arrays.asList(dataSource.getBlackDirs());
+
         // obtain MediaStore tracks
         HashSet<DBTrack> sysSet = getSystemMusic();
         Log.i("Tracks:", String.format("%d found on MediaStore", sysSet.size()));
@@ -90,10 +99,13 @@ public class MusicUpdater {
     }
 
     private HashSet<DBTrack> getSystemMusic() {
-        String[] STAR = { "*" };
+        //String[] STAR = { "*" };
+        String[] projection = { MediaStore.Audio.Media.TITLE,
+                MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.DATA };
         Uri allSongsUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0";
-        Cursor cur = mContext.getContentResolver().query(allSongsUri, STAR, selection, null, null);
+
+        Cursor cur = mContext.getContentResolver().query(allSongsUri, projection, selection, null, null);
         HashSet<DBTrack> songs = new HashSet<>();
         if (cur != null) {
             if (cur.moveToFirst()) {
@@ -103,12 +115,19 @@ public class MusicUpdater {
                             cur.getString(cur.getColumnIndex(MediaStore.Audio.Media.ARTIST)),
                             cur.getString(cur.getColumnIndex(MediaStore.Audio.Media.DATA))
                     );
-                    songs.add(t);
+                    if (checkTrackDir(t.getUri()))
+                        songs.add(t);
                 } while (cur.moveToNext());
             }
             cur.close();
         }
         return songs;
+    }
+
+    private boolean checkTrackDir(String path) {
+        File f = new File(path);
+        String dir = f.getParent();
+        return dir == null || !(mBlacklistedDirs.contains(dir));
     }
 
     public interface MusicUpdateListener {

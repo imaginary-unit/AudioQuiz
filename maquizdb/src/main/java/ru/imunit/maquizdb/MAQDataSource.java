@@ -175,6 +175,7 @@ public class MAQDataSource implements IDataSource {
         }
     }
 
+    @Override
     public String[] getBlackDirs() {
         Cursor cur = database.query(BlackDirsTable.TABLE_NAME,
                 null, null, null, null, null, null);

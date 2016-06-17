@@ -17,4 +17,5 @@ public interface IDataSource {
     DBTrack[] getAllTracks();
     DBTrack[] getRandomTracks(int count);
     DBTrack getTrack(String artist, String name);
+    String[] getBlackDirs();
 }
