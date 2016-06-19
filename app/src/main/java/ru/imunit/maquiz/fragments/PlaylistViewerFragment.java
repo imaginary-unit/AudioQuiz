@@ -2,17 +2,17 @@ package ru.imunit.maquiz.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,15 +33,33 @@ import ru.imunit.maquizdb.entities.DBTrack;
  */
 public class PlaylistViewerFragment extends Fragment {
 
+    private final int ALL_TRACKS = 0;
+    private final int BLACK_LIST = 1;
+    private final int MUSIC_DIRECTORIES = 2;
+
+    private int mCurrentMode = ALL_TRACKS;
     private OnFragmentInteractionListener mListener;
     private RecyclerView mRecycler;
     private RecyclerView.Adapter mRecyclerAdapter;
     private RecyclerView.LayoutManager mRecyclerLayout;
     private List<DBTrack> mTrackList;
     private ProgressDialog mProgressDialog = null;
+    private AppCompatSpinner mViewModeSpinner;
 
     public PlaylistViewerFragment() {
         // Required empty public constructor
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement GameFragmentListener");
+        }
     }
 
     @Override
@@ -53,27 +71,9 @@ public class PlaylistViewerFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        initSpinner();
+        mRecycler = (RecyclerView)getView().findViewById(R.id.recycler);
         updateMusic();
-        // initRecycler();
-        FloatingActionButton fab = (FloatingActionButton)getView().findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "bla-bla", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement GameFragmentListener");
-        }
     }
 
     @Override
@@ -91,26 +91,63 @@ public class PlaylistViewerFragment extends Fragment {
             public void onUpdateCompleted() {
                 if (PlaylistViewerFragment.this.mProgressDialog != null)
                     PlaylistViewerFragment.this.mProgressDialog.dismiss();
-                initRecycler();
+                IDataSource dataSource = DataSourceFactory.getDataSource(getActivity());
+                // TODO: handle exception
+                dataSource.openReadable();
+                mTrackList = new ArrayList<>(Arrays.asList(dataSource.getAllTracks()));
+
+                if (mCurrentMode == ALL_TRACKS) {
+                    onViewSwitchAllTracks();
+                } else if (mCurrentMode == BLACK_LIST) {
+                    onViewSwitchBlackList();
+                } else {
+                    onViewSwitchMusicDirectories();
+                }
             }
         });
         updater.startUpdate();
     }
 
-    private void initRecycler() {
-        IDataSource dataSource = DataSourceFactory.getDataSource(getActivity());
-        // TODO: handle exception
-        dataSource.openReadable();
-        mTrackList = new ArrayList<>(Arrays.asList(dataSource.getAllTracks()));
+    private void initSpinner() {
+        mViewModeSpinner = (AppCompatSpinner)getView().findViewById(R.id.view_mode);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.playlist_view_options, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(
+                android.support.v7.appcompat.R.layout.support_simple_spinner_dropdown_item);
+        mViewModeSpinner.setAdapter(adapter);
+        mViewModeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == ALL_TRACKS) {
+                    onViewSwitchAllTracks();
+                } else if (position == BLACK_LIST) {
+                    onViewSwitchBlackList();
+                } else {
+                    onViewSwitchMusicDirectories();
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
-        mRecycler = (RecyclerView)getView().findViewById(R.id.recycler);
+            }
+        });
+    }
+
+    private void onViewSwitchMusicDirectories() {
+
+    }
+
+    private void onViewSwitchBlackList() {
+
+    }
+
+    private void onViewSwitchAllTracks() {
         mRecycler.setHasFixedSize(true);
         mRecyclerLayout = new LinearLayoutManager(getActivity());
         mRecycler.setLayoutManager(mRecyclerLayout);
         mRecyclerAdapter = new PlaylistRecyclerAdapter(mTrackList);
         mRecycler.setAdapter(mRecyclerAdapter);
     }
-
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name

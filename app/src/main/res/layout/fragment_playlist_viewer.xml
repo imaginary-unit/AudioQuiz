@@ -1,24 +1,30 @@
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ru.imunit.maquiz.fragments.PlaylistViewerFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ru.imunit.maquiz.fragments.PlaylistViewerFragment">
+    android:orientation="vertical">
+
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/view_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_gravity="bottom|end"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="16dp"
-        android:src="@drawable/plus" />
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/fab"-->
+        <!--android:layout_width="56dp"-->
+        <!--android:layout_height="56dp"-->
+        <!--android:layout_gravity="bottom|end"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_margin="16dp"-->
+        <!--android:src="@drawable/plus" />-->
 
-</RelativeLayout>
+</LinearLayout>

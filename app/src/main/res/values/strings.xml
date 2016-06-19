@@ -17,7 +17,12 @@
 
     <string name="ok">OK</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="game_results_score">Score:</string>
-
+    
+    <string-array name="playlist_view_options">
+        <item>All tracks</item>
+        <item>Black list</item>
+        <item>Music directories</item>
+    </string-array>
+    
 </resources>
