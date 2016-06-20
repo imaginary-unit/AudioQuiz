@@ -71,6 +71,7 @@ public class PlaylistViewerFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mTrackList = new ArrayList<>();
         initSpinner();
         mRecycler = (RecyclerView)getView().findViewById(R.id.recycler);
         updateMusic();
