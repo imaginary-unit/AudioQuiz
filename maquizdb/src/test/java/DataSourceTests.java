@@ -93,8 +93,8 @@ public class DataSourceTests {
 
         int n = 4;
         DBTrack[] guessedTracks = Arrays.copyOfRange(allTracks, 0, n);
-        int[] addGuesses = new int[] {0, 1, 2, 3};
-        int[] addCorrectGuesses = new int[] {0, 0, 1, 2};
+        Integer[] addGuesses = new Integer[] {0, 1, 2, 3};
+        Integer[] addCorrectGuesses = new Integer[] {0, 0, 1, 2};
         // expected:
         // g : 0, 2, 4, 6
         // cg: 0, 0, 2, 4

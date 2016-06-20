@@ -12,27 +12,27 @@
         android:padding="10dp"
         android:layout_margin="10dp"
         app:cardBackgroundColor="@color/colorPrimary">
-        <GridLayout
+        <android.support.v7.widget.GridLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:rowCount="2"
-            android:columnCount="6">
+            app:rowCount="2"
+            app:columnCount="6">
             <ImageView
                 android:id="@+id/iconTracks"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_row="0"
-                android:layout_column="0"
-                android:layout_columnWeight="0.5"
+                app:layout_row="0"
+                app:layout_column="0"
+                app:layout_columnWeight="0.5"
                 android:src="@drawable/library_music"/>
             <TextView
                 android:id="@+id/textTracks"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_row="0"
-                android:layout_column="1"
-                android:layout_columnWeight="1"
-                android:layout_gravity="center_vertical"
+                app:layout_row="0"
+                app:layout_column="1"
+                app:layout_columnWeight="1"
+                app:layout_gravity="center_vertical"
                 android:textColor="@color/colorForeground"
                 android:text="1 / 10"/>
 
@@ -40,18 +40,18 @@
                 android:id="@+id/iconTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_row="0"
-                android:layout_column="2"
-                android:layout_columnWeight="0.5"
+                app:layout_row="0"
+                app:layout_column="2"
+                app:layout_columnWeight="0.5"
                 android:src="@drawable/timer"/>
             <TextView
                 android:id="@+id/textTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_row="0"
-                android:layout_column="3"
-                android:layout_columnWeight="1"
-                android:layout_gravity="center_vertical"
+                app:layout_row="0"
+                app:layout_column="3"
+                app:layout_columnWeight="1"
+                app:layout_gravity="center_vertical"
                 android:textColor="@color/colorForeground"
                 android:text="0 s"/>
 
@@ -59,18 +59,18 @@
                 android:id="@+id/iconScore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_row="0"
-                android:layout_column="4"
-                android:layout_columnWeight="0.5"
+                app:layout_row="0"
+                app:layout_column="4"
+                app:layout_columnWeight="0.5"
                 android:src="@drawable/star"/>
             <TextView
                 android:id="@+id/textScore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_row="0"
-                android:layout_column="5"
-                android:layout_columnWeight="1"
-                android:layout_gravity="center_vertical"
+                app:layout_row="0"
+                app:layout_column="5"
+                app:layout_columnWeight="1"
+                app:layout_gravity="center_vertical"
                 android:textColor="@color/colorForeground"
                 android:text="0"/>
 
@@ -78,10 +78,10 @@
                 android:id="@+id/musicVisualizer"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_row="1"
-                android:layout_column="0"
-                android:layout_columnSpan="6"/>
-        </GridLayout>
+                app:layout_row="1"
+                app:layout_column="0"
+                app:layout_columnSpan="6"/>
+        </android.support.v7.widget.GridLayout>
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
