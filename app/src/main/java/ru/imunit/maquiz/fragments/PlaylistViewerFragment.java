@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import ru.imunit.maquiz.R;
 import ru.imunit.maquiz.managers.MusicUpdater;
+import ru.imunit.maquiz.views.adapters.CheckRecyclerAdapter;
 import ru.imunit.maquiz.views.adapters.PlaylistRecyclerAdapter;
 import ru.imunit.maquizdb.DataSourceFactory;
 import ru.imunit.maquizdb.IDataSource;
@@ -31,7 +35,8 @@ import ru.imunit.maquizdb.entities.DBTrack;
  * {@link PlaylistViewerFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class PlaylistViewerFragment extends Fragment {
+public class PlaylistViewerFragment extends Fragment implements
+        CheckRecyclerAdapter.ItemClickListener {
 
     private final int ALL_TRACKS = 0;
     private final int BLACK_LIST = 1;
@@ -43,13 +48,14 @@ public class PlaylistViewerFragment extends Fragment {
     private RecyclerView.Adapter mRecyclerAdapter;
     private RecyclerView.LayoutManager mRecyclerLayout;
     private List<DBTrack> mTrackList;
+    private HashMap<String, Boolean> mDirectories;
     private ProgressDialog mProgressDialog = null;
     private Spinner mViewModeSpinner;
+    private boolean mUpdateRequired = false;
 
     public PlaylistViewerFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -72,8 +78,11 @@ public class PlaylistViewerFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mTrackList = new ArrayList<>();
+        mDirectories = new HashMap<>();
         initSpinner();
         mRecycler = (RecyclerView)getView().findViewById(R.id.recycler);
+        mRecyclerLayout = new LinearLayoutManager(getActivity());
+        mRecycler.setLayoutManager(mRecyclerLayout);
         updateMusic();
     }
 
@@ -96,12 +105,15 @@ public class PlaylistViewerFragment extends Fragment {
                 // TODO: handle exception
                 dataSource.openReadable();
                 mTrackList = new ArrayList<>(Arrays.asList(dataSource.getAllTracks()));
-
+                dataSource.close();
                 if (mCurrentMode == ALL_TRACKS) {
+                    Log.i("Update completed", "1");
                     onViewSwitchAllTracks();
                 } else if (mCurrentMode == BLACK_LIST) {
+                    Log.i("Update completed", "2");
                     onViewSwitchBlackList();
                 } else {
+                    Log.i("Update completed", "3");
                     onViewSwitchMusicDirectories();
                 }
             }
@@ -109,6 +121,7 @@ public class PlaylistViewerFragment extends Fragment {
         updater.startUpdate();
     }
 
+    private boolean mSpinnerCalledOnce = false;
     private void initSpinner() {
         mViewModeSpinner = (Spinner)getView().findViewById(R.id.view_mode);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
@@ -119,12 +132,26 @@ public class PlaylistViewerFragment extends Fragment {
         mViewModeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == ALL_TRACKS) {
-                    onViewSwitchAllTracks();
-                } else if (position == BLACK_LIST) {
-                    onViewSwitchBlackList();
+                // a dirty hack to workaround an unwanted onItemSelected call on initialization
+                if (mSpinnerCalledOnce) {
+                    if (mUpdateRequired) {
+                        mUpdateRequired = false;
+                        updateMusic();
+                    } else {
+                        if (position == ALL_TRACKS) {
+                            Log.i("Spinner click", "1");
+                            onViewSwitchAllTracks();
+                        } else if (position == BLACK_LIST) {
+                            Log.i("Spinner click", "2");
+                            onViewSwitchBlackList();
+                        } else {
+                            Log.i("Spinner click", "3");
+                            onViewSwitchMusicDirectories();
+                        }
+                    }
                 } else {
-                    onViewSwitchMusicDirectories();
+                    Log.i("Dummy call!", "0");
+                    mSpinnerCalledOnce = true;
                 }
             }
             @Override
@@ -135,19 +162,61 @@ public class PlaylistViewerFragment extends Fragment {
     }
 
     private void onViewSwitchMusicDirectories() {
+        IDataSource dataSource = DataSourceFactory.getDataSource(getActivity());
+        // TODO: handle exception
+        dataSource.openReadable();
+        List<String> bDirs = Arrays.asList(dataSource.getBlackDirs());
+        dataSource.close();
 
+        mDirectories = new HashMap<>();
+        for (String s : bDirs)
+            mDirectories.put(s, false);
+
+        for (DBTrack track : mTrackList) {
+            String dir = new File(track.getUri()).getParent();
+            if (!mDirectories.containsKey(dir)) {
+                mDirectories.put(dir, true);
+            }
+        }
+
+        mRecyclerAdapter = new CheckRecyclerAdapter(mDirectories);
+        ((CheckRecyclerAdapter)mRecyclerAdapter).setOnClickListener(this);
+        mRecycler.setAdapter(mRecyclerAdapter);
     }
 
     private void onViewSwitchBlackList() {
-
+        List<DBTrack> tracksBlackList = new ArrayList<>();
+        for (DBTrack track : mTrackList) {
+            if (track.getIsBlacklisted() == 1) {
+                tracksBlackList.add(track);
+            }
+        }
+        mRecyclerAdapter = new PlaylistRecyclerAdapter(tracksBlackList);
+        mRecycler.setAdapter(mRecyclerAdapter);
     }
 
     private void onViewSwitchAllTracks() {
-        mRecycler.setHasFixedSize(true);
-        mRecyclerLayout = new LinearLayoutManager(getActivity());
-        mRecycler.setLayoutManager(mRecyclerLayout);
+        // mRecycler.setHasFixedSize(true);
         mRecyclerAdapter = new PlaylistRecyclerAdapter(mTrackList);
         mRecycler.setAdapter(mRecyclerAdapter);
+    }
+
+    @Override // Directory click handler
+    public void onClick(String dir, boolean state) {
+        boolean newState = !state;
+
+        IDataSource dataSource = DataSourceFactory.getDataSource(getActivity());
+        // TODO: handle exception
+        dataSource.openWritable();
+        if (newState)
+            dataSource.removeDirFromBlackList(dir);
+        else
+            dataSource.addDirToBlackList(dir);
+        dataSource.close();
+
+        mDirectories.put(dir, newState);
+        mRecyclerAdapter.notifyDataSetChanged();
+        mUpdateRequired = true;
     }
 
     public interface OnFragmentInteractionListener {

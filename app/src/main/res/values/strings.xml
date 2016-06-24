@@ -24,5 +24,7 @@
         <item>Black list</item>
         <item>Music directories</item>
     </string-array>
-    
+
+    <string name="tag_item_pos">item pos</string>
+
 </resources>

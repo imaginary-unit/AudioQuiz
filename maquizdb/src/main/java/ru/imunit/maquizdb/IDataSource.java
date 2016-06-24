@@ -14,6 +14,8 @@ public interface IDataSource {
     void deleteTracks(DBTrack[] tracks);
     void addGame(DBGame game);
     void updateTracksGuesses(DBTrack[] tracks, Integer[] addGuesses, Integer[] addCorrectGuesses);
+    void addDirToBlackList(String dir);
+    void removeDirFromBlackList(String dir);
     DBTrack[] getAllTracks();
     DBTrack[] getRandomTracks(int count);
     DBTrack getTrack(String artist, String name);

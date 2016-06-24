@@ -18,20 +18,10 @@ import ru.imunit.maquizdb.entities.DBTrack;
 public class PlaylistRecyclerAdapter extends
         RecyclerView.Adapter<PlaylistRecyclerAdapter.PlaylistViewHolder> {
 
-    List<DBTrack> mDataset;
+    private List<DBTrack> mDataset;
 
     public PlaylistRecyclerAdapter(List<DBTrack> dataset) {
         this.mDataset = dataset;
-    }
-
-    public class PlaylistViewHolder extends RecyclerView.ViewHolder {
-        public TextView artist;
-        public TextView title;
-        public PlaylistViewHolder(View itemView) {
-            super(itemView);
-            this.artist = (TextView)itemView.findViewById(R.id.firstLine);
-            this.title = (TextView)itemView.findViewById(R.id.secondLine);
-        }
     }
 
     @Override
@@ -55,4 +45,13 @@ public class PlaylistRecyclerAdapter extends
         return mDataset.size();
     }
 
+    public class PlaylistViewHolder extends RecyclerView.ViewHolder {
+        public TextView artist;
+        public TextView title;
+        public PlaylistViewHolder(View itemView) {
+            super(itemView);
+            this.artist = (TextView)itemView.findViewById(R.id.firstLine);
+            this.title = (TextView)itemView.findViewById(R.id.secondLine);
+        }
+    }
 }

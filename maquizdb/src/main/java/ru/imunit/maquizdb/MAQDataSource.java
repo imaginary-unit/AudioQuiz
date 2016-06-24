@@ -114,6 +114,19 @@ public class MAQDataSource implements IDataSource {
     }
 
     @Override
+    public void addDirToBlackList(String dir) {
+        ContentValues cvals = new ContentValues();
+        cvals.put(BlackDirsTable.COLUMN_PATH, dir);
+        database.insert(BlackDirsTable.TABLE_NAME, null, cvals);
+    }
+
+    @Override
+    public void removeDirFromBlackList(String dir) {
+        database.delete(BlackDirsTable.TABLE_NAME, BlackDirsTable.COLUMN_PATH + "=?",
+                new String[] {dir});
+    }
+
+    @Override
     public DBTrack[] getAllTracks() {
         Cursor cur = database.query(TracksTable.TABLE_NAME, trackCols,
                 null, null, null, null, null);
