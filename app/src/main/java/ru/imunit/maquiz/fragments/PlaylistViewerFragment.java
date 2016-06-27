@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -50,7 +51,7 @@ public class PlaylistViewerFragment extends Fragment implements
     private List<DBTrack> mTrackList;
     private HashMap<String, Boolean> mDirectories;
     private ProgressDialog mProgressDialog = null;
-    private Spinner mViewModeSpinner;
+    private AppCompatSpinner mViewModeSpinner;
     private boolean mUpdateRequired = false;
 
     public PlaylistViewerFragment() {
@@ -123,7 +124,7 @@ public class PlaylistViewerFragment extends Fragment implements
 
     private boolean mSpinnerCalledOnce = false;
     private void initSpinner() {
-        mViewModeSpinner = (Spinner)getView().findViewById(R.id.view_mode);
+        mViewModeSpinner = (AppCompatSpinner)getView().findViewById(R.id.view_mode);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.playlist_view_options, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(

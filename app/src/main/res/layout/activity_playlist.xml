@@ -6,6 +6,8 @@
     android:background="@color/colorBack1"
     android:orientation="vertical">
 
+    <include layout="@layout/toolbar_base" />
+
     <fragment
         class="ru.imunit.maquiz.fragments.PlaylistViewerFragment"
         android:id="@+id/fragment_playlist_viewer"

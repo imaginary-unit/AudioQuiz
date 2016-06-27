@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">My Audio Quiz</string>
 
-    <string name="playlists_title">Playlists</string>
+    <string name="playlist_title">Playlist</string>
 
     <string name="action_playlists">Edit playlists</string>
     <string name="settings_title">Settings</string>
