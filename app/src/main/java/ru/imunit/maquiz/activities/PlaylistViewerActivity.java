@@ -1,7 +1,8 @@
 package ru.imunit.maquiz.activities;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.Toolbar;
@@ -11,16 +12,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 
 import ru.imunit.maquiz.R;
-import ru.imunit.maquiz.fragments.PlaylistViewerFragment;
+import ru.imunit.maquiz.fragments.PlaylistDirsFragment;
+import ru.imunit.maquiz.fragments.PlaylistTracksFragment;
 import ru.imunit.maquiz.models.PlaylistModel;
 import ru.imunit.maquizdb.DataSourceFactory;
 
 public class PlaylistViewerActivity extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener,
-        PlaylistViewerFragment.OnFragmentInteractionListener {
+        PlaylistTracksFragment.OnFragmentInteractionListener {
 
     private final int ALL_TRACKS = 0;
     private final int BLACK_LIST = 1;
@@ -31,6 +32,8 @@ public class PlaylistViewerActivity extends AppCompatActivity
     private AppCompatSpinner mViewModeSpinner;
     private PlaylistModel mModel;
 
+    private PlaylistDirsFragment mDirsFragment;
+    private PlaylistTracksFragment mTracksFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,22 @@ public class PlaylistViewerActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         // set corresponding fragment
+        Fragment currentFragment;
+        String currentTag;
+        if (mCurrentMode == MUSIC_DIRECTORIES) {
+            mDirsFragment = new PlaylistDirsFragment();
+            currentFragment = mDirsFragment;
+            currentTag = "DirsFragment";
+        }
+        else {
+            mTracksFragment = new PlaylistTracksFragment();
+            currentFragment = mTracksFragment;
+            currentTag = "TracksFragment";
+        }
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_placeholder, currentFragment, currentTag);
+        ft.commit();
+        getSupportFragmentManager().executePendingTransactions();
     }
 
     @Override

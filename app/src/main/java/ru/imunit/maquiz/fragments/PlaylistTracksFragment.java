@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,29 +32,25 @@ import ru.imunit.maquizdb.entities.DBTrack;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link PlaylistViewerFragment.OnFragmentInteractionListener} interface
+ * {@link PlaylistTracksFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class PlaylistViewerFragment extends Fragment implements
+public class PlaylistTracksFragment extends Fragment implements
         CheckRecyclerAdapter.ItemClickListener {
 
-    private final int ALL_TRACKS = 0;
-    private final int BLACK_LIST = 1;
-    private final int MUSIC_DIRECTORIES = 2;
-
-    private int mCurrentMode = ALL_TRACKS;
     private OnFragmentInteractionListener mListener;
     private RecyclerView mRecycler;
     private RecyclerView.Adapter mRecyclerAdapter;
     private RecyclerView.LayoutManager mRecyclerLayout;
-    private List<DBTrack> mTrackList;
-    private HashMap<String, Boolean> mDirectories;
     private ProgressDialog mProgressDialog = null;
-    private AppCompatSpinner mViewModeSpinner;
-    private boolean mUpdateRequired = false;
+    private boolean mShowBlackList;
 
-    public PlaylistViewerFragment() {
-        // Required empty public constructor
+    public PlaylistTracksFragment() {
+        mShowBlackList = false;
+    }
+
+    public void setShowBlackList(boolean state) {
+        mShowBlackList = state;
     }
 
     @Override
@@ -78,13 +73,9 @@ public class PlaylistViewerFragment extends Fragment implements
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mTrackList = new ArrayList<>();
-        mDirectories = new HashMap<>();
-        initSpinner();
         mRecycler = (RecyclerView)getView().findViewById(R.id.recycler);
         mRecyclerLayout = new LinearLayoutManager(getActivity());
         mRecycler.setLayoutManager(mRecyclerLayout);
-        updateMusic();
     }
 
     @Override
@@ -100,8 +91,8 @@ public class PlaylistViewerFragment extends Fragment implements
         updater.setListener(new MusicUpdater.MusicUpdateListener() {
             @Override
             public void onUpdateCompleted() {
-                if (PlaylistViewerFragment.this.mProgressDialog != null)
-                    PlaylistViewerFragment.this.mProgressDialog.dismiss();
+                if (PlaylistTracksFragment.this.mProgressDialog != null)
+                    PlaylistTracksFragment.this.mProgressDialog.dismiss();
                 IDataSource dataSource = DataSourceFactory.getDataSource(getActivity());
                 // TODO: handle exception
                 dataSource.openReadable();
@@ -120,46 +111,6 @@ public class PlaylistViewerFragment extends Fragment implements
             }
         });
         updater.startUpdate();
-    }
-
-    private boolean mSpinnerCalledOnce = false;
-    private void initSpinner() {
-        mViewModeSpinner = (AppCompatSpinner)getView().findViewById(R.id.view_mode);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.playlist_view_options, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(
-                android.support.v7.appcompat.R.layout.support_simple_spinner_dropdown_item);
-        mViewModeSpinner.setAdapter(adapter);
-        mViewModeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // a dirty hack to workaround an unwanted onItemSelected call on initialization
-                if (mSpinnerCalledOnce) {
-                    if (mUpdateRequired) {
-                        mUpdateRequired = false;
-                        updateMusic();
-                    } else {
-                        if (position == ALL_TRACKS) {
-                            Log.i("Spinner click", "1");
-                            onViewSwitchAllTracks();
-                        } else if (position == BLACK_LIST) {
-                            Log.i("Spinner click", "2");
-                            onViewSwitchBlackList();
-                        } else {
-                            Log.i("Spinner click", "3");
-                            onViewSwitchMusicDirectories();
-                        }
-                    }
-                } else {
-                    Log.i("Dummy call!", "0");
-                    mSpinnerCalledOnce = true;
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
     }
 
     private void onViewSwitchMusicDirectories() {

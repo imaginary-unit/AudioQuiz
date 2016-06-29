@@ -8,12 +8,17 @@
 
     <include layout="@layout/toolbar_base" />
 
-    <fragment
-        class="ru.imunit.maquiz.fragments.PlaylistViewerFragment"
-        android:id="@+id/fragment_playlist_viewer"
+    <FrameLayout
+        android:id="@+id/fragment_placeholder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout="@layout/fragment_playlist_viewer">
-    </fragment>
+        android:layout_height="match_parent"/>
+
+    <!--<fragment-->
+        <!--class="ru.imunit.maquiz.fragments.PlaylistTracksFragment"-->
+        <!--android:id="@+id/fragment_playlist_viewer"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--tools:layout="@layout/fragment_playlist_viewer">-->
+    <!--</fragment>-->
 
 </LinearLayout>
