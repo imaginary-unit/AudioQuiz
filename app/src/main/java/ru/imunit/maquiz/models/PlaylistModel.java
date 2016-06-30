@@ -115,6 +115,7 @@ public class PlaylistModel implements IPlaylistModel {
                     listener.onDataUpdated();
             }
         });
+        updater.startUpdate();
     }
 
     private IDataSource mDataSource;

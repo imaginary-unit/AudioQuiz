@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import ru.imunit.maquiz.R;
+import ru.imunit.maquiz.models.IPlaylistModel;
+import ru.imunit.maquiz.models.PlaylistModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,14 +19,19 @@ import ru.imunit.maquiz.R;
  * {@link PlaylistDirsFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class PlaylistDirsFragment extends Fragment {
+public class PlaylistDirsFragment extends Fragment implements
+        PlaylistModel.ModelUpdateListener {
 
     private OnFragmentInteractionListener mListener;
+    private IPlaylistModel mModel;
 
     public PlaylistDirsFragment() {
         // Required empty public constructor
     }
 
+    public void setModel(IPlaylistModel model) {
+        mModel = model;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,13 +39,6 @@ public class PlaylistDirsFragment extends Fragment {
         TextView textView = new TextView(getActivity());
         textView.setText(R.string.hello_blank_fragment);
         return textView;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override
@@ -58,6 +58,11 @@ public class PlaylistDirsFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onDataUpdated() {
+
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -69,7 +74,6 @@ public class PlaylistDirsFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+
     }
 }

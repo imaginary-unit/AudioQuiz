@@ -21,7 +21,8 @@ import ru.imunit.maquizdb.DataSourceFactory;
 
 public class PlaylistViewerActivity extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener,
-        PlaylistTracksFragment.OnFragmentInteractionListener {
+        PlaylistTracksFragment.OnFragmentInteractionListener,
+        PlaylistDirsFragment.OnFragmentInteractionListener {
 
     private final int ALL_TRACKS = 0;
     private final int BLACK_LIST = 1;
@@ -66,22 +67,8 @@ public class PlaylistViewerActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         // set corresponding fragment
-        Fragment currentFragment;
-        String currentTag;
-        if (mCurrentMode == MUSIC_DIRECTORIES) {
-            mDirsFragment = new PlaylistDirsFragment();
-            currentFragment = mDirsFragment;
-            currentTag = "DirsFragment";
-        }
-        else {
-            mTracksFragment = new PlaylistTracksFragment();
-            currentFragment = mTracksFragment;
-            currentTag = "TracksFragment";
-        }
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_placeholder, currentFragment, currentTag);
-        ft.commit();
-        getSupportFragmentManager().executePendingTransactions();
+        switchFragment();
+        mModel.initUpdate(this);
     }
 
     @Override
@@ -104,7 +91,7 @@ public class PlaylistViewerActivity extends AppCompatActivity
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         if (mCurrentMode != i) {
             mCurrentMode = i;
-            // show corresponding fragment
+            switchFragment();
             mModel.initUpdate(this);
         }
     }
@@ -112,6 +99,36 @@ public class PlaylistViewerActivity extends AppCompatActivity
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    private void switchFragment() {
+        Fragment currentFragment;
+        String currentTag;
+        if (mCurrentMode == MUSIC_DIRECTORIES) {
+            if (mTracksFragment != null)
+                mModel.unsubscribe(mTracksFragment);
+            if (mDirsFragment == null) {
+                mDirsFragment = new PlaylistDirsFragment();
+                mDirsFragment.setModel(mModel);
+            }
+            currentFragment = mDirsFragment;
+            currentTag = "DirsFragment";
+        }
+        else {
+            if (mDirsFragment != null)
+                mModel.unsubscribe(mDirsFragment);
+            if (mTracksFragment == null) {
+                mTracksFragment = new PlaylistTracksFragment();
+                mTracksFragment.setModel(mModel);
+            }
+            currentFragment = mTracksFragment;
+            currentTag = "TracksFragment";
+        }
+        mModel.subscribe((PlaylistModel.ModelUpdateListener)currentFragment);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_placeholder, currentFragment, currentTag);
+        ft.commit();
+        getSupportFragmentManager().executePendingTransactions();
     }
 
     //
