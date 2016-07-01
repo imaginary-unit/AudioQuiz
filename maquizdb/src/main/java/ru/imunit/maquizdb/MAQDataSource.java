@@ -126,6 +126,15 @@ public class MAQDataSource implements IDataSource {
                 new String[] {dir});
     }
 
+    public void setTrackBlackListed(DBTrack track, boolean newState) {
+        ContentValues cv = new ContentValues();
+        cv.put(TracksTable.COLUMN_IS_BLACKLISTED, newState);
+        String selection = String.format("`%s` =? and `%s`=?",
+                TracksTable.COLUMN_ARTIST, TracksTable.COLUMN_NAME);
+        database.update(TracksTable.TABLE_NAME, cv, selection,
+                new String[] {track.getArtist(), track.getName()});
+    }
+
     @Override
     public DBTrack[] getAllTracks() {
         Cursor cur = database.query(TracksTable.TABLE_NAME, trackCols,

@@ -18,6 +18,7 @@ import ru.imunit.maquiz.fragments.PlaylistDirsFragment;
 import ru.imunit.maquiz.fragments.PlaylistTracksFragment;
 import ru.imunit.maquiz.models.PlaylistModel;
 import ru.imunit.maquizdb.DataSourceFactory;
+import ru.imunit.maquizdb.entities.DBTrack;
 
 public class PlaylistViewerActivity extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener,
@@ -90,6 +91,7 @@ public class PlaylistViewerActivity extends AppCompatActivity
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         if (mCurrentMode != i) {
+
             mCurrentMode = i;
             switchFragment();
             mModel.initUpdate(this);
@@ -123,12 +125,27 @@ public class PlaylistViewerActivity extends AppCompatActivity
             }
             currentFragment = mTracksFragment;
             currentTag = "TracksFragment";
+            mTracksFragment.setShowBlackList(mCurrentMode == BLACK_LIST);
         }
         mModel.subscribe((PlaylistModel.ModelUpdateListener)currentFragment);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_placeholder, currentFragment, currentTag);
         ft.commit();
         getSupportFragmentManager().executePendingTransactions();
+    }
+
+    // Fragment interaction listeners
+
+    @Override
+    public void onDirectoryClick(String dir, boolean state) {
+        mModel.setDirectoryState(dir, !state);
+    }
+
+    @Override
+    public void onBlacklistTrack(DBTrack track) {
+        // if we currently in black list view mode, remove the track from it, otherwise add
+        boolean newState = mCurrentMode != BLACK_LIST;
+        mModel.setTrackBlackListed(track, newState);
     }
 
     //

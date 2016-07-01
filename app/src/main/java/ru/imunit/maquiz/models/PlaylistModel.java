@@ -29,7 +29,8 @@ public class PlaylistModel implements IPlaylistModel {
     }
 
     public void subscribe(ModelUpdateListener listener) {
-        mListeners.add(listener);
+        if (!mListeners.contains(listener))
+            mListeners.add(listener);
     }
 
     public void unsubscribe(ModelUpdateListener listener) {
@@ -59,6 +60,16 @@ public class PlaylistModel implements IPlaylistModel {
         mUpdateRequired = true;
         // .. but set new state value manually to avoid pulling it from the DB on each request
         mDirectories.put(dir, newState);
+        for (ModelUpdateListener listener : mListeners)
+            listener.onDataUpdated();
+    }
+
+    public void setTrackBlackListed(DBTrack track, boolean newState) {
+        mDataSource.openWritable();
+        mDataSource.setTrackBlackListed(track, newState);
+        mDataSource.close();
+        mUpdateRequired = true;
+        track.setIsBlacklisted(newState ? (short)1 : (short)0);
         for (ModelUpdateListener listener : mListeners)
             listener.onDataUpdated();
     }

@@ -36,6 +36,11 @@ public class CheckRecyclerAdapter extends RecyclerView.Adapter<CheckRecyclerAdap
         mListener = listener;
     }
 
+    public void setDataset(HashMap<String, Boolean> dataset) {
+        this.mDataset = dataset;
+        mKeys = dataset.keySet().toArray(new String[dataset.size()]);
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate
@@ -63,10 +68,12 @@ public class CheckRecyclerAdapter extends RecyclerView.Adapter<CheckRecyclerAdap
 
     @Override
     public void onClick(View view) {
-        int pos = (int)view.getTag(R.string.tag_item_pos);
-        String key = mKeys[pos];
-        Boolean val = mDataset.get(mKeys[pos]);
-        mListener.onClick(key, val);
+        if (mListener != null) {
+            int pos = (int) view.getTag(R.string.tag_item_pos);
+            String key = mKeys[pos];
+            Boolean val = mDataset.get(mKeys[pos]);
+            mListener.onClick(key, val);
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

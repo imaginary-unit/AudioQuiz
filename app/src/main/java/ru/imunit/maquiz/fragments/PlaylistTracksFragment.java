@@ -40,11 +40,12 @@ import ru.imunit.maquizdb.entities.DBTrack;
  * to handle interaction events.
  */
 public class PlaylistTracksFragment extends Fragment implements
-        PlaylistModel.ModelUpdateListener {
+        PlaylistModel.ModelUpdateListener,
+        PlaylistRecyclerAdapter.ItemClickListener {
 
     private OnFragmentInteractionListener mListener;
     private RecyclerView mRecycler;
-    private RecyclerView.Adapter mRecyclerAdapter;
+    private PlaylistRecyclerAdapter mRecyclerAdapter;
     private RecyclerView.LayoutManager mRecyclerLayout;
     private boolean mShowBlackList;
     private IPlaylistModel mModel;
@@ -92,24 +93,6 @@ public class PlaylistTracksFragment extends Fragment implements
         mListener = null;
     }
 
-//    @Override // Directory click handler
-//    public void onClick(String dir, boolean state) {
-//        boolean newState = !state;
-//
-//        IDataSource dataSource = DataSourceFactory.getDataSource(getActivity());
-//        // TODO: handle exception
-//        dataSource.openWritable();
-//        if (newState)
-//            dataSource.removeDirFromBlackList(dir);
-//        else
-//            dataSource.addDirToBlackList(dir);
-//        dataSource.close();
-//
-//        mDirectories.put(dir, newState);
-//        mRecyclerAdapter.notifyDataSetChanged();
-//        mUpdateRequired = true;
-//    }
-
     @Override
     public void onDataUpdated() {
         List<DBTrack> tracks;
@@ -118,10 +101,16 @@ public class PlaylistTracksFragment extends Fragment implements
         else
             tracks = mModel.getAllTracks();
         mRecyclerAdapter = new PlaylistRecyclerAdapter(tracks);
+        mRecyclerAdapter.setOnClickListener(this);
         mRecycler.setAdapter(mRecyclerAdapter);
     }
 
+    @Override
+    public void onBlacklistTrack(DBTrack track) {
+        mListener.onBlacklistTrack(track);
+    }
+
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+        void onBlacklistTrack(DBTrack track);
     }
 }
