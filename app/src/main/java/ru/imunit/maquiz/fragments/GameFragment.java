@@ -176,16 +176,23 @@ public class GameFragment extends Fragment
     }
 
     @Override
-    public void onGuessVerified(boolean result) {
-        if (result) {
+    public void onGuessVerified(int result) {
+        if (result == GameModel.GUESS_RESULT_CORRECT) {
             if (mMediaPlayer.isPlaying())
                 mMediaPlayer.stop();
             mMediaPlayer.release();
             // display correct guess notification, congrats and so on (may be animated..
             // ..so consider extraction to another method
             mListener.onNextRound();
-        } else {
+        } else if (result == GameModel.GUESS_RESULT_WRONG_CONTINUE) {
             // display wrong guess notification, animation, whatever..
+        }
+        else {
+            if (mMediaPlayer.isPlaying())
+                mMediaPlayer.stop();
+            mMediaPlayer.release();
+            // display failed notification and move to the next round
+            mListener.onNextRound();
         }
     }
 

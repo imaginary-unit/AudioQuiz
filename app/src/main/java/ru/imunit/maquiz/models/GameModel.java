@@ -7,11 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 import ru.imunit.maquizdb.IDataSource;
 import ru.imunit.maquizdb.entities.DBGame;
@@ -25,21 +22,48 @@ public class GameModel implements IGameModel {
 
     // playback won't start from a position later than this
     private static final float PLAYBACK_START_THRESHOLD = 0.75f;
+    // base score for a correct guess
+    private static final int SCORE_BASE = 10;
+    // bonuses for guessing withing 1st, 2nd and 3rd time thresholds
+    private static final int SCORE_BONUS_TIME_1 = 5;
+    private static final int SCORE_BONUS_TIME_2 = 10;
+    private static final int SCORE_BONUS_TIME_3 = 20;
+    private static final int BONUS_TIME_THRESHOLD_1 = 10000;
+    private static final int BONUS_TIME_THRESHOLD_2 = 5000;
+    private static final int BONUS_TIME_THRESHOLD_3 = 3000;
+    // number of 3rd-threshold guesses in a row required to start multiplying score by a factor
+    private static final int ROW_BONUS_START = 3;
+    private static final float ROW_BONUS_FACTOR = 2.0f;
+    // factor to multiply the overall game score by in the case of no wrong guesses
+    private static final float FLAWLESS_BONUS_FACTOR = 1.5f;
+    // the number to divide the round score by for each wrong guess
+    private static final int WRONG_GUESS_PENALTY = 2;
 
+    public static final int GUESS_RESULT_CORRECT = 1;
+    // the guess was incorrect, but there are other options left
+    public static final int GUESS_RESULT_WRONG_CONTINUE = 0;
+    // the guess was incorrect and there is the only option left
+    public static final int GUESS_RESULT_WRONG_END = -1;
+
+
+    // service model fields
     private IDataSource mDataSource;
     private List<ModelUpdateListener> mListeners;
-    private List<DBTrack> mTracks;
+    // game scope fields
     private HashMap<DBTrack, Integer> mGuess;
     private HashMap<DBTrack, Integer> mCorrectGuess;
+    private int mRoundsCount;
+    private long mGameScore;
+    private int mOptionsCount;
+    // round scope fields
+    private int mCurrentRound;
+    private List<DBTrack> mTracks;
     private List<Integer> mGuessTime;
     private DBTrack mCorrectTrack;
-    private int mCurrentRound;
-    private int mRoundsCount;
     private int mPlaybackTime;
     private float mPlaybackStartPos;
     private long mRoundScore;
-    private long mGameScore;
-    private int mOptionsCount;
+    private int mRoundPenalty;
 
 
     public GameModel(IDataSource dataSrc) {
@@ -143,6 +167,29 @@ public class GameModel implements IGameModel {
         return true;
     }
 
+    private void calcRoundScoreBonuses() {
+        mRoundScore += SCORE_BASE;
+        int n = mGuessTime.size();
+        int t0 = mGuessTime.get(n-1); // current round time
+        // adding time bonuses
+        if (t0 <= BONUS_TIME_THRESHOLD_3) {
+            mRoundScore += SCORE_BONUS_TIME_3;
+            // checking for row bonus
+            if (n >= 3) {
+                int t1 = mGuessTime.get(n-2);
+                int t2 = mGuessTime.get(n-3);
+                if ((t1 <= BONUS_TIME_THRESHOLD_3) && (t2 <= BONUS_TIME_THRESHOLD_3))
+                    mRoundScore = (int)(mRoundScore * ROW_BONUS_FACTOR);
+            }
+        }
+        else if (t0 <= BONUS_TIME_THRESHOLD_2)
+            mRoundScore += SCORE_BONUS_TIME_2;
+        else if (t0 <= BONUS_TIME_THRESHOLD_1)
+            mRoundScore += SCORE_BONUS_TIME_1;
+
+        mRoundScore /= mRoundPenalty;
+    }
+
     public void initGame(int options, int rounds) {
         mTracks = new ArrayList<>();
         mGuess.clear();
@@ -173,7 +220,8 @@ public class GameModel implements IGameModel {
         mCorrectTrack = mTracks.get(new Random().nextInt(n));
         mPlaybackTime = 0;
         mPlaybackStartPos = 0f;
-        mRoundScore = 10; // just for testing purposes
+        mRoundScore = 0;
+        mRoundPenalty = 1;
         // notify all listeners
         for (ModelUpdateListener listener : mListeners) {
             listener.onRoundUpdated();
@@ -195,14 +243,26 @@ public class GameModel implements IGameModel {
 
     public void makeGuess(DBTrack track) {
         addGuess(track, false);
-        boolean result = track.equals(mCorrectTrack);
-        if (result) {
+        int result = track.equals(mCorrectTrack) ?
+                GUESS_RESULT_CORRECT : GUESS_RESULT_WRONG_CONTINUE;
+        if (result == GUESS_RESULT_CORRECT) {
             timerHandler.removeCallbacks(timerUpdate);
             mGuessTime.add(mPlaybackTime);
             addGuess(track, true);
+            calcRoundScoreBonuses();
             mGameScore += mRoundScore;
             for (ModelUpdateListener listener : mListeners) {
                 listener.onScoreUpdated(mRoundScore);
+            }
+        } else {
+            // check if there already was N-2 mistakes
+            // this won't work for options count less that 3, but it's practically OK
+            if (mRoundPenalty >= Math.pow(WRONG_GUESS_PENALTY, mOptionsCount-2)) {
+                timerHandler.removeCallbacks(timerUpdate);
+                mRoundScore = 0;
+                result = GUESS_RESULT_WRONG_END;
+            } else {
+                mRoundPenalty *= WRONG_GUESS_PENALTY;
             }
         }
         for (ModelUpdateListener listener : mListeners) {
@@ -267,7 +327,7 @@ public class GameModel implements IGameModel {
         void onRoundUpdated();
         void onScoreUpdated(long diff);
         void onTimerUpdated(int time);
-        void onGuessVerified(boolean result);
+        void onGuessVerified(int result);
         void onPlaybackStarted();
         void onGameFinished();
     }
