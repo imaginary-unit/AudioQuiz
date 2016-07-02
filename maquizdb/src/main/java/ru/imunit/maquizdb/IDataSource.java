@@ -18,6 +18,7 @@ public interface IDataSource {
     void removeDirFromBlackList(String dir);
     void setTrackBlackListed(DBTrack track, boolean newState);
     DBTrack[] getAllTracks();
+    DBTrack[] getPlaybackTracks();  // returns all tracks that aren't in the black list
     DBTrack[] getRandomTracks(int count);
     DBTrack getTrack(String artist, String name);
     String[] getBlackDirs();

@@ -158,9 +158,32 @@ public class MAQDataSource implements IDataSource {
     }
 
     @Override
+    public DBTrack[] getPlaybackTracks() {
+        String selection = "`" + TracksTable.COLUMN_IS_BLACKLISTED + "` = 0";
+        Cursor cur = database.query(TracksTable.TABLE_NAME, trackCols,
+                selection, null, null, null, null);
+        if (cur != null) {
+            int n = cur.getCount();
+            DBTrack[] result = new DBTrack[n];
+            if (n != 0) {
+                cur.moveToFirst();
+                int i = 0;
+                do {
+                    result[i] = cursorToTrack(cur);
+                    i++;
+                } while (cur.moveToNext());
+            }
+            cur.close();
+            return result;
+        } else {
+            return new DBTrack[0];
+        }
+    }
+
+    @Override
     public DBTrack[] getRandomTracks(int count) {
-        String sql = String.format(Locale.ENGLISH, "select * from `%s` order by random() limit %d",
-                TracksTable.TABLE_NAME, count);
+        String sql = String.format(Locale.ENGLISH, "select * from `%s` where `%s` = 0 order by random() limit %d",
+                TracksTable.TABLE_NAME, TracksTable.COLUMN_IS_BLACKLISTED, count);
         Cursor cur = database.rawQuery(sql, null);
         if (cur != null) {
             int n = cur.getCount();
