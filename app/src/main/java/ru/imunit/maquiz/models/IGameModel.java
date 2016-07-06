@@ -10,6 +10,7 @@ import ru.imunit.maquizdb.entities.DBTrack;
 
 public interface IGameModel {
     boolean isMetronomeEnabled();
+    boolean isPlaybackStarted();
     boolean isGameRunning();
     boolean isGameFinished();
     int getCurrentRound();

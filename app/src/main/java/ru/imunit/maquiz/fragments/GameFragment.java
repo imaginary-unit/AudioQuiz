@@ -35,6 +35,8 @@ import ru.imunit.maquizdb.entities.DBTrack;
 public class GameFragment extends Fragment
             implements GameModel.ModelUpdateListener {
 
+    private boolean mMetronomePlaying;
+    private boolean mUiLock = false;
     private IGameModel mModel;
     private GameFragmentListener mListener;
     private TextView mTextRound;
@@ -68,6 +70,8 @@ public class GameFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.i("DEBUG", "onCreateView()");
+        mMetronomePlaying = false;
         return inflater.inflate(R.layout.fragment_game, container, false);
     }
 
@@ -114,11 +118,13 @@ public class GameFragment extends Fragment
     @Override
     public void onResume() {
         super.onResume();
-        if (mModel.isGameRunning() && mModel.getPlaybackTime() > 0) {
+        if (mModel.isPlaybackStarted()) {
             onPlaybackStarted();
-        } else {
+        }
+        else {
             onRoundUpdated();
         }
+        Log.i("DEBUG", "onResume()");
     }
 
     @Override
@@ -136,21 +142,27 @@ public class GameFragment extends Fragment
 
     public void onRoundUpdated() {
         updateRoundUi();
-
+        Log.i("DEBUG", "onRoundUpdated()");
         if (mModel.isMetronomeEnabled()) {
-//            MediaPlayer mp = MediaPlayer.create(getContext(), R.raw.metronome_cut);
-//            mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-//            mp.start();
-            mMediaPlayer = MediaPlayer.create(getContext(), R.raw.metronome_cut);
-            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mediaPlayer) {
-                    mMediaPlayer.release();
-                    mListener.onStartPlayback();
-                }
-            });
-            mMediaPlayer.start();
+            /* the inner condition guarantees that we don't start the metronome twise
+               because of onResume being called on fragment start
+             */
+             if (!mMetronomePlaying) {
+                mMetronomePlaying = true;
+                mUiLock = true;
+                mMediaPlayer = MediaPlayer.create(getContext(), R.raw.metronome_cut);
+                mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        mMediaPlayer.release();
+                        mMetronomePlaying = false;
+                        mUiLock = false;
+                        mListener.onStartPlayback();
+                    }
+                });
+                mMediaPlayer.start();
+             }
         } else {
             mListener.onStartPlayback();
         }
@@ -242,9 +254,11 @@ public class GameFragment extends Fragment
             tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (v instanceof TrackView) {
-                        TrackView t = (TrackView)v;
-                        mListener.onMakeGuess(t.getTrack());
+                    if (!mUiLock) {
+                        if (v instanceof TrackView) {
+                            TrackView t = (TrackView) v;
+                            mListener.onMakeGuess(t.getTrack());
+                        }
                     }
                 }
             });

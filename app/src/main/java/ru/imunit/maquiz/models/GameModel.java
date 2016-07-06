@@ -285,6 +285,11 @@ public class GameModel implements IGameModel {
     }
 
     @Override
+    public boolean isPlaybackStarted() {
+        return isGameRunning() && (mPlaybackTime > 0);
+    }
+
+    @Override
     public boolean isGameRunning() {
         return mCurrentRound > 0 && mCurrentRound <= mRoundsCount;
     }
