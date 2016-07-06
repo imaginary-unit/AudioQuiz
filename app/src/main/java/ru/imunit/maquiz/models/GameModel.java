@@ -49,6 +49,8 @@ public class GameModel implements IGameModel {
     // service model fields
     private IDataSource mDataSource;
     private List<ModelUpdateListener> mListeners;
+    // game properties
+    private boolean mMetronomeEnabled;
     // game scope fields
     private HashMap<DBTrack, Integer> mGuess;
     private HashMap<DBTrack, Integer> mCorrectGuess;
@@ -72,6 +74,7 @@ public class GameModel implements IGameModel {
         mGuess = new HashMap<>();
         mCorrectGuess = new HashMap<>();
         mGuessTime = new ArrayList<>();
+        mMetronomeEnabled = true;
     }
 
     public void subscribe(ModelUpdateListener listener) {
@@ -226,7 +229,7 @@ public class GameModel implements IGameModel {
         for (ModelUpdateListener listener : mListeners) {
             listener.onRoundUpdated();
         }
-        startPlayback();
+        // startPlayback();
     }
 
     public void startPlayback() {
@@ -270,7 +273,16 @@ public class GameModel implements IGameModel {
         }
     }
 
+    public void setMetronomeEnabled(boolean state) {
+        mMetronomeEnabled = state;
+    }
+
     // Public interface
+
+    @Override
+    public boolean isMetronomeEnabled() {
+        return mMetronomeEnabled;
+    }
 
     @Override
     public boolean isGameRunning() {

@@ -91,7 +91,7 @@ public class GameFragment extends Fragment
         mTracksLayout = (LinearLayout)getView().findViewById(R.id.layoutTracks);
         mListener.onGameFragmentInitialized();
         if (mModel.isGameRunning()) {
-            onRoundUpdated();
+            updateRoundUi();
         }
     }
 
@@ -116,6 +116,8 @@ public class GameFragment extends Fragment
         super.onResume();
         if (mModel.isGameRunning() && mModel.getPlaybackTime() > 0) {
             onPlaybackStarted();
+        } else {
+            onRoundUpdated();
         }
     }
 
@@ -133,33 +135,25 @@ public class GameFragment extends Fragment
      */
 
     public void onRoundUpdated() {
-        mTextRound.setText(String.format(Locale.ENGLISH, "%d / %d",
-                mModel.getCurrentRound(), mModel.getRoundsCount()));
-        mTextTime.setText(String.format(Locale.ENGLISH, "%.2f",
-                ((float)mModel.getPlaybackTime() / 1E3f)));
-        mTextScore.setText(String.valueOf(mModel.getGameScore()));
+        updateRoundUi();
 
-        mTracksLayout.removeAllViews();
-        List<DBTrack> tracks = mModel.getTracks();
-        for (DBTrack track : tracks) {
-            TrackView tv = new TrackView(getActivity());
-            tv.setLayoutParams(new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, 0, 1.0f));
-            tv.setTrack(track);
-            tv.setOnClickListener(new View.OnClickListener() {
+        if (mModel.isMetronomeEnabled()) {
+//            MediaPlayer mp = MediaPlayer.create(getContext(), R.raw.metronome_cut);
+//            mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
+//            mp.start();
+            mMediaPlayer = MediaPlayer.create(getContext(), R.raw.metronome_cut);
+            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
-                public void onClick(View v) {
-                    if (v instanceof TrackView) {
-                        TrackView t = (TrackView)v;
-                        mListener.onMakeGuess(t.getTrack());
-                    }
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    mMediaPlayer.release();
+                    mListener.onStartPlayback();
                 }
             });
-            mTracksLayout.addView(tv);
+            mMediaPlayer.start();
+        } else {
+            mListener.onStartPlayback();
         }
-
-        // TODO: play metronome before playback
-        // mListener.onStartPlayback();
     }
 
     @Override
@@ -230,6 +224,33 @@ public class GameFragment extends Fragment
         mListener.onGameFinished();
     }
 
+
+    private void updateRoundUi() {
+        mTextRound.setText(String.format(Locale.ENGLISH, "%d / %d",
+                mModel.getCurrentRound(), mModel.getRoundsCount()));
+        mTextTime.setText(String.format(Locale.ENGLISH, "%.2f",
+                ((float)mModel.getPlaybackTime() / 1E3f)));
+        mTextScore.setText(String.valueOf(mModel.getGameScore()));
+
+        mTracksLayout.removeAllViews();
+        List<DBTrack> tracks = mModel.getTracks();
+        for (DBTrack track : tracks) {
+            TrackView tv = new TrackView(getActivity());
+            tv.setLayoutParams(new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, 0, 1.0f));
+            tv.setTrack(track);
+            tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (v instanceof TrackView) {
+                        TrackView t = (TrackView)v;
+                        mListener.onMakeGuess(t.getTrack());
+                    }
+                }
+            });
+            mTracksLayout.addView(tv);
+        }
+    }
 
     /**
      * This interface must be implemented by activities that contain this
