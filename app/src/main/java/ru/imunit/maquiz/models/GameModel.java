@@ -2,6 +2,7 @@ package ru.imunit.maquiz.models;
 
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -130,20 +131,43 @@ public class GameModel implements IGameModel {
     private boolean writeStats() {
         DBGame game = new DBGame();
         game.setScore(mGameScore);
+        Log.i("Game.score =", String.valueOf(game.getScore()));
+        // number of guesses
         Integer s = 0;
         for (Integer val : mGuess.values())
             s += val;
         game.setGuess(s);
+        Log.i("Game.guess =", String.valueOf(game.getGuess()));
+        // number of correct guesses
         s = 0;
         for (Integer val : mCorrectGuess.values())
             s += val;
         game.setCorrectGuess(s);
+        Log.i("Game.correct_guess =", String.valueOf(game.getCorrectGuess()));
         long gtAvg = 0;
+        // calculating average and best guess time
         for (Integer val : mGuessTime)
             gtAvg += val;
         gtAvg /= mGuessTime.size();
         game.setAvgGuessTime(gtAvg);
+        Log.i("Game.avg_guess_time =", String.valueOf(game.getAvgGuessTime()));
         game.setBestGuessTime(Collections.min(mGuessTime));
+        Log.i("Game.best_guess_time =", String.valueOf(game.getBestGuessTime()));
+        // finding the longest fast row
+        int max = 0;
+        int cur = 0;
+        boolean fast = false;
+        for (Integer val: mGuessTime) {
+            fast = val <= BONUS_TIME_THRESHOLD_3;
+            if (fast)
+                cur++;
+            else {
+                if (cur > max) max = cur;
+                cur = 0;
+            }
+        }
+        game.setLongestFastRow(max);
+        Log.i("Game.longest_fast_row =", String.valueOf(game.getLongestFastRow()));
 
         if (!mDataSource.openWritable())
             return false;

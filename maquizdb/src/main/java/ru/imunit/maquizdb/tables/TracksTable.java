@@ -34,10 +34,10 @@ public class TracksTable {
     }
 
     public static void onUpgrade(int oldVersion, int newVersion, SQLiteDatabase db) {
-        Log.w(TracksTable.class.getName(), String.format
-                ("Upgrading table %1 from v.%2 to v.%3",
-                        TABLE_NAME, oldVersion, newVersion));
-        db.execSQL("drop table if exists " + TABLE_NAME);
-        onCreate(db);
+//        Log.w(TracksTable.class.getName(), String.format
+//                ("Upgrading table %s from v.%d to v.%d",
+//                        TABLE_NAME, oldVersion, newVersion));
+//        db.execSQL("drop table if exists " + TABLE_NAME);
+//        onCreate(db);
     }
 }

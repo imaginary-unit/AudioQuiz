@@ -20,6 +20,8 @@
 
     <string name="game_results_score">Score:</string>
 
+    <string name="empty_tag_placeholder">&lt;unknown&gt;</string>
+
     <string-array name="playlist_view_options">
         <item>All tracks</item>
         <item>Black list</item>

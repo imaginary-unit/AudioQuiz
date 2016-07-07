@@ -1,5 +1,7 @@
 package ru.imunit.maquizdb.entities;
 
+import android.util.Log;
+
 /**
  * Created by smirnov on 29.09.2015.
  */

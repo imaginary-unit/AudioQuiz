@@ -14,7 +14,7 @@ import ru.imunit.maquizdb.tables.TracksTable;
  */
 public class MAQDbHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "maquiz.db";
 
     public MAQDbHelper(Context context) {
@@ -30,7 +30,7 @@ public class MAQDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.w(MAQDbHelper.class.getName(), String.format("Upgrading database %1 from v.%2 to v.%3",
+        Log.w(MAQDbHelper.class.getName(), String.format("Upgrading database %s from v.%d to v.%d",
                 DATABASE_NAME, oldVersion, newVersion));
         GamesTable.onUpgrade(oldVersion, newVersion, db);
         TracksTable.onUpgrade(oldVersion, newVersion, db);

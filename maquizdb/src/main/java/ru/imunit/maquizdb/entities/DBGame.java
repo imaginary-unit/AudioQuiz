@@ -5,12 +5,13 @@ package ru.imunit.maquizdb.entities;
  */
 public class DBGame {
 
-    private long id;
-    private long score;
-    private long avgGuessTime;
-    private long bestGuessTime;
-    private long guess;
-    private long correct_guess;
+    public long getLongestFastRow() {
+        return this.longest_fast_row;
+    }
+
+    public void setLongestFastRow(long longest_fast_row) {
+        this.longest_fast_row = longest_fast_row;
+    }
 
     public long getId() {
         return id;
@@ -60,4 +61,11 @@ public class DBGame {
         this.correct_guess = correct_guess;
     }
 
+    private long id;
+    private long score;
+    private long avgGuessTime;
+    private long bestGuessTime;
+    private long guess;
+    private long correct_guess;
+    private long longest_fast_row;
 }

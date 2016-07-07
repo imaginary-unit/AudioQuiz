@@ -1,10 +1,12 @@
 package ru.imunit.maquiz.managers;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
+import android.support.annotation.StringRes;
 import android.util.Log;
 
 import java.io.File;
@@ -14,6 +16,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import ru.imunit.maquiz.R;
 import ru.imunit.maquizdb.DataSourceFactory;
 import ru.imunit.maquizdb.IDataSource;
 import ru.imunit.maquizdb.entities.DBTrack;
@@ -110,11 +113,14 @@ public class MusicUpdater {
         if (cur != null) {
             if (cur.moveToFirst()) {
                 do {
-                    DBTrack t = new DBTrack(
-                            cur.getString(cur.getColumnIndex(MediaStore.Audio.Media.TITLE)),
-                            cur.getString(cur.getColumnIndex(MediaStore.Audio.Media.ARTIST)),
-                            cur.getString(cur.getColumnIndex(MediaStore.Audio.Media.DATA))
-                    );
+                    String title = cur.getString(cur.getColumnIndex(MediaStore.Audio.Media.TITLE));
+                    String artist = cur.getString(cur.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+                    String path = cur.getString(cur.getColumnIndex(MediaStore.Audio.Media.DATA));
+                    if (title == null)
+                        title = mContext.getResources().getString(R.string.empty_tag_placeholder);
+                    if (artist == null)
+                        artist = mContext.getResources().getString(R.string.empty_tag_placeholder);
+                    DBTrack t = new DBTrack(title, artist, path);
                     if (checkTrackDir(t.getUri()))
                         songs.add(t);
                 } while (cur.moveToNext());
@@ -124,6 +130,7 @@ public class MusicUpdater {
         return songs;
     }
 
+    // function to check if a track at the given path is in an allowed directory
     private boolean checkTrackDir(String path) {
         File f = new File(path);
         String dir = f.getParent();

@@ -15,6 +15,7 @@ public class GamesTable {
     public static final String COLUMN_BEST_GUESS_TIME = "best_guess_time";
     public static final String COLUMN_GUESS = "guess";
     public static final String COLUMN_CORRECT_GUESS = "correct_guess";
+    public static final String COLUMN_LONGEST_FAST_ROW = "longest_fast_row";
 
     public static final String TABLE_CREATE =
             "create table if not exists `" + TABLE_NAME + "` ( `"
@@ -23,7 +24,8 @@ public class GamesTable {
             + COLUMN_AVG_GUESS_TIME + "` integer not null, `"
             + COLUMN_BEST_GUESS_TIME + "` integer not null, `"
             + COLUMN_GUESS + "` integer not null, `"
-            + COLUMN_CORRECT_GUESS + "` integer not null"
+            + COLUMN_CORRECT_GUESS + "` integer not null, `"
+            + COLUMN_LONGEST_FAST_ROW + "` integer not null default 0"
             + ");";
 
     public static void onCreate(SQLiteDatabase db) {
@@ -32,10 +34,9 @@ public class GamesTable {
 
     public static void onUpgrade(int oldVersion, int newVersion, SQLiteDatabase db) {
         Log.w(GamesTable.class.getName(), String.format
-                ("Upgrading table %1 from v.%2 to v.%3",
+                ("Upgrading table %s from v.%d to v.%d",
                         TABLE_NAME, oldVersion, newVersion));
-        db.execSQL("drop table if exists " + TABLE_NAME);
-        onCreate(db);
+        db.execSQL("alter table `games` add column `longest_fast_row` integer not null default 0;");
     }
 
 }
