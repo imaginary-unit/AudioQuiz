@@ -19,7 +19,15 @@ public interface IDataSource {
     void setTrackBlackListed(DBTrack track, boolean newState);
     DBTrack[] getAllTracks();
     DBTrack[] getPlaybackTracks();  // returns all tracks that aren't in the black list
+    DBTrack[] getGuessedTracks();   // returns all non-blacklisted tracks, that have been guessed at least once
     DBTrack[] getRandomTracks(int count);
     DBTrack getTrack(String artist, String name);
     String[] getBlackDirs();
+    // statistics data
+    int[] getTopScores(int count);
+    int getGamesCount();
+    int getCleanGamesCount();
+    float getCorrectGuessRatio();
+    int getAverageScore();
+    int getLongestFastGuessRow();
 }

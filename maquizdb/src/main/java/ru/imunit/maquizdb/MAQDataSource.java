@@ -181,8 +181,33 @@ public class MAQDataSource implements IDataSource {
     }
 
     @Override
+    public DBTrack[] getGuessedTracks() {
+        String selection = String.format(Locale.ENGLISH, "`%s` = 0 AND `%s` > 0",
+                TracksTable.COLUMN_IS_BLACKLISTED, TracksTable.COLUMN_GUESS);
+        Cursor cur = database.query(TracksTable.TABLE_NAME, trackCols,
+                selection, null, null, null, null);
+        if (cur != null) {
+            int n = cur.getCount();
+            DBTrack[] result = new DBTrack[n];
+            if (n != 0) {
+                cur.moveToFirst();
+                int i = 0;
+                do {
+                    result[i] = cursorToTrack(cur);
+                    i++;
+                } while (cur.moveToNext());
+            }
+            cur.close();
+            return result;
+        } else {
+            return new DBTrack[0];
+        }
+    }
+
+    @Override
     public DBTrack[] getRandomTracks(int count) {
-        String sql = String.format(Locale.ENGLISH, "select * from `%s` where `%s` = 0 order by random() limit %d",
+        String sql = String.format(Locale.ENGLISH,
+                "select * from `%s` where `%s` = 0 order by random() limit %d",
                 TracksTable.TABLE_NAME, TracksTable.COLUMN_IS_BLACKLISTED, count);
         Cursor cur = database.rawQuery(sql, null);
         if (cur != null) {
@@ -233,6 +258,81 @@ public class MAQDataSource implements IDataSource {
         }
         cur.close();
         return res;
+    }
+
+    /*
+      Statistics Data
+     */
+
+    @Override
+    public int[] getTopScores(int count) {
+        String sql = String.format(Locale.ENGLISH,
+                "select `%s` from `%s` order by `%s` desc limit %d", GamesTable.COLUMN_SCORE,
+                GamesTable.TABLE_NAME, GamesTable.COLUMN_SCORE, count);
+        Cursor cur = database.rawQuery(sql, null);
+        if (cur != null) {
+            int n = cur.getCount();
+            int[] scores = new int[n];
+            if (n != 0) {
+                cur.moveToFirst();
+                int i = 0;
+                do {
+                    scores[i] = cur.getInt(0);
+                    i++;
+                } while (cur.moveToNext());
+            }
+            cur.close();
+            return scores;
+        } else {
+            return new int[0];
+        }
+    }
+
+    @Override
+    public int getGamesCount() {
+        String sql = "select count(*) from `" + GamesTable.TABLE_NAME + "`";
+        Cursor cur = database.rawQuery(sql, null);
+        if (cur != null) {
+            cur.moveToFirst();
+            int n = cur.getInt(0);
+            cur.close();
+            return n;
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public int getCleanGamesCount() {
+        String sql = String.format(Locale.ENGLISH, "select count(*) from `%s` where `%s`=`%s`",
+                GamesTable.TABLE_NAME, GamesTable.COLUMN_GUESS, GamesTable.COLUMN_CORRECT_GUESS);
+        Cursor cur = database.rawQuery(sql, null);
+        if (cur != null) {
+            cur.moveToFirst();
+            int n = cur.getInt(0);
+            cur.close();
+            return n;
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public float getCorrectGuessRatio() {
+        // select sum(`correct_guess`), sum(`guess`) from `games`
+        return 0;
+    }
+
+    @Override
+    public int getAverageScore() {
+        // select avg(`score`) from `games`
+        return 0;
+    }
+
+    @Override
+    public int getLongestFastGuessRow() {
+        // select max(`longest_...`) from `games`
+        return 0;
     }
 
     public void deleteTracks(DBTrack[] tracks) {
