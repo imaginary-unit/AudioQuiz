@@ -24,10 +24,11 @@ public interface IDataSource {
     DBTrack getTrack(String artist, String name);
     String[] getBlackDirs();
     // statistics data
-    int[] getTopScores(int count);
+    Integer[] getTopScores(int count);
     int getGamesCount();
     int getCleanGamesCount();
     float getCorrectGuessRatio();
     int getAverageScore();
     int getLongestFastGuessRow();
+    void clearStats();
 }

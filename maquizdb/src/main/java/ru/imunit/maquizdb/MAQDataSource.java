@@ -265,14 +265,14 @@ public class MAQDataSource implements IDataSource {
      */
 
     @Override
-    public int[] getTopScores(int count) {
+    public Integer[] getTopScores(int count) {
         String sql = String.format(Locale.ENGLISH,
                 "select `%s` from `%s` order by `%s` desc limit %d", GamesTable.COLUMN_SCORE,
                 GamesTable.TABLE_NAME, GamesTable.COLUMN_SCORE, count);
         Cursor cur = database.rawQuery(sql, null);
         if (cur != null) {
             int n = cur.getCount();
-            int[] scores = new int[n];
+            Integer[] scores = new Integer[n];
             if (n != 0) {
                 cur.moveToFirst();
                 int i = 0;
@@ -284,7 +284,7 @@ public class MAQDataSource implements IDataSource {
             cur.close();
             return scores;
         } else {
-            return new int[0];
+            return new Integer[0];
         }
     }
 
@@ -320,19 +320,62 @@ public class MAQDataSource implements IDataSource {
     @Override
     public float getCorrectGuessRatio() {
         // select sum(`correct_guess`), sum(`guess`) from `games`
-        return 0;
+        String sql = String.format(Locale.ENGLISH, "select sum(`%s`), sum(`%s`) from `%s`",
+                GamesTable.COLUMN_CORRECT_GUESS, GamesTable.COLUMN_GUESS, GamesTable.TABLE_NAME);
+        Cursor cur = database.rawQuery(sql, null);
+        if (cur != null) {
+            cur.moveToFirst();
+            int cn = cur.getInt(0);
+            int n = cur.getInt(1);
+            cur.close();
+            return (float)cn / (float)n;
+        } else {
+            return 0;
+        }
     }
 
     @Override
     public int getAverageScore() {
         // select avg(`score`) from `games`
-        return 0;
+        String sql = String.format(Locale.ENGLISH, "select avg(`%s`) from `%s`",
+                GamesTable.COLUMN_SCORE, GamesTable.TABLE_NAME);
+        Cursor cur = database.rawQuery(sql, null);
+        if (cur != null) {
+            cur.moveToFirst();
+            int score = Math.round(cur.getFloat(0));
+            cur.close();
+            return score;
+        } else {
+            return 0;
+        }
     }
 
     @Override
     public int getLongestFastGuessRow() {
         // select max(`longest_...`) from `games`
-        return 0;
+        String sql = String.format(Locale.ENGLISH, "select max(`%s`) from `%s`",
+                GamesTable.COLUMN_LONGEST_FAST_ROW, GamesTable.TABLE_NAME);
+        Cursor cur = database.rawQuery(sql, null);
+        if (cur != null) {
+            cur.moveToFirst();
+            int max = cur.getInt(0);
+            cur.close();
+            return max;
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public void clearStats() {
+        ContentValues cvals = new ContentValues();
+        cvals.put(TracksTable.COLUMN_GUESS, 0);
+        cvals.put(TracksTable.COLUMN_CORRECT_GUESS, 0);
+        database.beginTransaction();
+        database.delete(GamesTable.TABLE_NAME, null, null);
+        database.update(TracksTable.TABLE_NAME, cvals, null, null);
+        database.setTransactionSuccessful();
+        database.endTransaction();
     }
 
     public void deleteTracks(DBTrack[] tracks) {

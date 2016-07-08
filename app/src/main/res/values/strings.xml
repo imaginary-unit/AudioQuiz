@@ -29,4 +29,14 @@
     </string-array>
 
     <string name="tag_item_pos">item pos</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="stats_games_played">Games played</string>
+    <string name="stats_clean_games">Clean games</string>
+    <string name="stats_correct_guess_ratio">Correct guess ratio</string>
+    <string name="stats_average_game_score">Average game score</string>
+    <string name="stats_longest_fast_row">Longest fast guess sequence</string>
+    <string name="stats_number_placeholder">000</string>
+    <string name="stats_top_scores">Top scores</string>
 </resources>
