@@ -48,6 +48,13 @@ public class StartActivity extends AppCompatActivity
     }
 
     @Override
+    public void onStatsOpen() {
+        Intent statsIntent = new Intent(this,
+                ActivityFactory.getActivity(ActivityFactory.STATS_ACTIVTY));
+        startActivity(statsIntent);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);

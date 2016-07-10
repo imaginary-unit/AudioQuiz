@@ -49,7 +49,7 @@ public class PlaylistViewerActivity extends AppCompatActivity
         setContentView(R.layout.activity_playlist);
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.playlist_title);
+        toolbar.setTitle(R.string.playlist_toolbar_title);
 
         mModel = new PlaylistModel(DataSourceFactory.getDataSource(this));
 

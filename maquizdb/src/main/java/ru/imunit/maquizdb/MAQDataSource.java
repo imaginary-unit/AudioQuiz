@@ -7,8 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import ru.imunit.maquizdb.entities.DBGame;
@@ -182,10 +184,16 @@ public class MAQDataSource implements IDataSource {
 
     @Override
     public DBTrack[] getGuessedTracks() {
-        String selection = String.format(Locale.ENGLISH, "`%s` = 0 AND `%s` > 0",
-                TracksTable.COLUMN_IS_BLACKLISTED, TracksTable.COLUMN_GUESS);
-        Cursor cur = database.query(TracksTable.TABLE_NAME, trackCols,
-                selection, null, null, null, null);
+        // select `artist`,`name`,`guess`,`correct_guess`,(`correct_guess`*1.0/`guess`) as r from `tracks` where `is_blacklisted` = 0 and `guess` > 0 order by r desc, `guess` desc;
+        String sql = String.format(Locale.ENGLISH,
+                "select *,(`%s`*1.0/`%s`) as r from `%s` where `%s` = 0 and `%s` > 0 order by r desc, `%s` desc",
+                TracksTable.COLUMN_CORRECT_GUESS, TracksTable.COLUMN_GUESS, TracksTable.TABLE_NAME,
+                TracksTable.COLUMN_IS_BLACKLISTED, TracksTable.COLUMN_GUESS, TracksTable.COLUMN_GUESS);
+//        String selection = String.format(Locale.ENGLISH, "`%s` = 0 AND `%s` > 0",
+//                TracksTable.COLUMN_IS_BLACKLISTED, TracksTable.COLUMN_GUESS);
+//        Cursor cur = database.query(TracksTable.TABLE_NAME, trackCols,
+//                selection, null, null, null, null);
+        Cursor cur = database.rawQuery(sql, null);
         if (cur != null) {
             int n = cur.getCount();
             DBTrack[] result = new DBTrack[n];
@@ -193,7 +201,9 @@ public class MAQDataSource implements IDataSource {
                 cur.moveToFirst();
                 int i = 0;
                 do {
-                    result[i] = cursorToTrack(cur);
+                    DBTrack t = cursorToTrack(cur);
+                    // float r = cur.getFloat(7);
+                    result[i] = t;
                     i++;
                 } while (cur.moveToNext());
             }

@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">My Audio Quiz</string>
 
-    <string name="playlist_title">Playlist</string>
+    <string name="playlist_toolbar_title">Playlist</string>
+    <string name="game_toolbar_title">My Audio Quiz</string>
+    <string name="statistics_toolbar_title">Statistics</string>
 
     <string name="action_playlists">Edit playlists</string>
     <string name="settings_title">Settings</string>
@@ -30,8 +32,6 @@
 
     <string name="tag_item_pos">item pos</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="stats_games_played">Games played</string>
     <string name="stats_clean_games">Clean games</string>
     <string name="stats_correct_guess_ratio">Correct guess ratio</string>
@@ -39,4 +39,9 @@
     <string name="stats_longest_fast_row">Longest fast guess sequence</string>
     <string name="stats_number_placeholder">000</string>
     <string name="stats_top_scores">Top scores</string>
+    <string name="stats_games_tab">Games stats</string>
+    <string name="stats_tracks_tab">Tracks stats</string>
+    <string name="stats_toolbar_title">Statistics</string>
+    <string name="stats_track_guessed">Guessed</string>
+    <string name="stats_track_correct">Correct</string>
 </resources>

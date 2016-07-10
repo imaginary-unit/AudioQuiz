@@ -60,6 +60,16 @@ public class StartFragment extends Fragment {
                 }
             }
         });
+
+        Button bStats = (Button)getView().findViewById(R.id.stats);
+        bStats.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener != null) {
+                    mListener.onStatsOpen();
+                }
+            }
+        });
     }
 
     private void playlistsClick() {
@@ -88,5 +98,6 @@ public class StartFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         void onPlaylistOpen();
         void onPlay();
+        void onStatsOpen();
     }
 }

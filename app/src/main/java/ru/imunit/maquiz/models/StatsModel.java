@@ -4,7 +4,9 @@ import android.os.AsyncTask;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import ru.imunit.maquizdb.IDataSource;
 import ru.imunit.maquizdb.entities.DBTrack;
@@ -32,6 +34,7 @@ public class StatsModel implements IStatsModel {
 
     public StatsModel(IDataSource dataSource) {
         mDataSource = dataSource;
+        mListeners = new ArrayList<>();
         init();
     }
 

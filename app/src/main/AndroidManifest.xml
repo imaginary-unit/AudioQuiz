@@ -20,8 +20,9 @@
         </activity>
         <activity
             android:name=".activities.PlaylistViewerActivity"
-            android:label="@string/title_activity_playlist"></activity>
-        <activity android:name=".activities.GameActivity"></activity>
+            android:label="@string/title_activity_playlist" />
+        <activity android:name=".activities.GameActivity" />
+        <activity android:name=".activities.StatsActivity"></activity>
     </application>
 
 </manifest>

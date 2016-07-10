@@ -27,4 +27,12 @@
         android:background="@color/colorPrimary"
         android:layout_margin="20dp"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Show statistics"
+        android:id="@+id/stats"
+        android:background="@color/colorPrimary"
+        android:layout_margin="20dp"/>
+
 </LinearLayout>
