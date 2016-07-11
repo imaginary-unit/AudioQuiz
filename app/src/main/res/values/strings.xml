@@ -44,4 +44,5 @@
     <string name="stats_toolbar_title">Statistics</string>
     <string name="stats_track_guessed">Guessed</string>
     <string name="stats_track_correct">Correct</string>
+    <string name="clear_statistics">Clear statistics</string>
 </resources>

@@ -93,7 +93,7 @@ public class GameStatsFragment extends Fragment implements
         GridLayout gl = (GridLayout)getView().findViewById(R.id.topScoresLayout);
         // remove all views from top scores layout (except the title textview)
         int n = gl.getChildCount();
-        for (int i=0; i < n; i++) {
+        for (int i=n-1; i >= 0; i--) {
             View v = gl.getChildAt(i);
             if (v.getId() != R.id.topScoresTitle) {
                 gl.removeView(v);
