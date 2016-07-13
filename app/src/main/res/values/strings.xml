@@ -45,4 +45,6 @@
     <string name="stats_track_guessed">Guessed</string>
     <string name="stats_track_correct">Correct</string>
     <string name="clear_statistics">Clear statistics</string>
+
+    <string name="err_database_error">An error occurred while opening the device database</string>
 </resources>

@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import ru.imunit.maquiz.exceptions.DatabaseException;
 import ru.imunit.maquizdb.IDataSource;
 import ru.imunit.maquizdb.entities.DBGame;
 import ru.imunit.maquizdb.entities.DBTrack;
@@ -50,6 +51,7 @@ public class GameModel implements IGameModel {
     // service model fields
     private IDataSource mDataSource;
     private List<ModelUpdateListener> mListeners;
+    private AsyncExceptionListener mAEListener;
     // game properties
     private boolean mMetronomeEnabled;
     // game scope fields
@@ -86,6 +88,10 @@ public class GameModel implements IGameModel {
         mListeners.remove(listener);
     }
 
+    public void setAsyncExceptionListener(AsyncExceptionListener aeListener) {
+        mAEListener = aeListener;
+    }
+
     private Handler timerHandler = new Handler();
     private long mLastTime;
     private Runnable timerUpdate = new Runnable() {
@@ -101,9 +107,18 @@ public class GameModel implements IGameModel {
     };
 
     private class ResultsWriter extends AsyncTask<Void, Void, Boolean> {
+
         @Override
         protected Boolean doInBackground(Void... params) {
             return writeStats();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (!aBoolean && mAEListener != null) {
+                mAEListener.onDatabaseException();
+            }
         }
     }
 
@@ -231,15 +246,17 @@ public class GameModel implements IGameModel {
         mGameScore = 0;
     }
 
-    public void nextRound() {
+    public void nextRound() throws DatabaseException {
+        if (!mDataSource.openReadable())
+            throw new DatabaseException();
+
         mCurrentRound++;
         if (mCurrentRound > mRoundsCount) {
+            mDataSource.close();
             finishGame();
             return;
         }
         // obtain random tracks from data source
-        // TODO: handle possible exception
-        mDataSource.openReadable();
         mTracks = Arrays.asList(mDataSource.getRandomTracks(mOptionsCount));
         mDataSource.close();
         // in case we don't have enough tracks in the playlist - take as many as possible
@@ -371,5 +388,9 @@ public class GameModel implements IGameModel {
         void onGuessVerified(int result);
         void onPlaybackStarted();
         void onGameFinished();
+    }
+
+    public interface AsyncExceptionListener {
+        void onDatabaseException();
     }
 }

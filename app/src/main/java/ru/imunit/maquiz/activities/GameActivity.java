@@ -11,9 +11,11 @@ import android.util.Log;
 import android.view.Menu;
 
 import ru.imunit.maquiz.R;
+import ru.imunit.maquiz.exceptions.DatabaseException;
 import ru.imunit.maquiz.fragments.GameFragment;
 import ru.imunit.maquiz.fragments.ModelRetainFragment;
 import ru.imunit.maquiz.fragments.ResultsFragment;
+import ru.imunit.maquiz.managers.ExceptionNotifier;
 import ru.imunit.maquiz.models.GameModel;
 import ru.imunit.maquizdb.DataSourceFactory;
 import ru.imunit.maquizdb.entities.DBTrack;
@@ -46,6 +48,13 @@ public class GameActivity extends AppCompatActivity
                     .add(mModelRetainFragment, "ModelRetain").commit();
         }
         mModel = mModelRetainFragment.getModel();
+        mModel.setAsyncExceptionListener(new GameModel.AsyncExceptionListener() {
+            @Override
+            public void onDatabaseException() {
+                ExceptionNotifier.make(findViewById(R.id.activity_game),
+                        getResources().getString(R.string.err_database_error)).show();
+            }
+        });
 
         if (mModel.isGameFinished()) {
             showResultsFragment();
@@ -89,6 +98,15 @@ public class GameActivity extends AppCompatActivity
         getSupportFragmentManager().executePendingTransactions();
     }
 
+    private void nextRound() {
+        try {
+            mModel.nextRound();
+        } catch (DatabaseException e) {
+            ExceptionNotifier.make(findViewById(R.id.activity_game),
+                    getResources().getString(R.string.err_database_error)).show();
+        }
+    }
+
     // GameFragment listener
 
     @Override
@@ -98,13 +116,13 @@ public class GameActivity extends AppCompatActivity
             mModel.subscribe(mGameFragment);
         }
         if (!mModel.isGameRunning()) {
-            mModel.nextRound();
+            nextRound();
         }
     }
 
     @Override
     public void onNextRound() {
-        mModel.nextRound();
+        nextRound();
     }
 
     @Override

@@ -121,7 +121,7 @@ public class GameFragment extends Fragment
         if (mModel.isPlaybackStarted()) {
             onPlaybackStarted();
         }
-        else {
+        else if (mModel.isGameRunning()) {
             onRoundUpdated();
         }
         Log.i("DEBUG", "onResume()");
@@ -235,7 +235,6 @@ public class GameFragment extends Fragment
     public void onGameFinished() {
         mListener.onGameFinished();
     }
-
 
     private void updateRoundUi() {
         mTextRound.setText(String.format(Locale.ENGLISH, "%d / %d",
