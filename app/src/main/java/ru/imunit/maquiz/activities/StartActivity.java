@@ -1,12 +1,16 @@
 package ru.imunit.maquiz.activities;
 
 import android.Manifest;
+import android.app.Application;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -85,18 +89,31 @@ public class StartActivity extends AppCompatActivity
         }
     }
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-//                                           @NonNull int[] grantResults) {
-//        if (requestCode == PERMISSION_REQUEST_READ_STORAGE) {
-//            if (grantResults.length == 0
-//                || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-//
-//            }
-//        }
-//        else {
-//            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        }
-//    }
+    private void noPermissionsExit() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.err_permissions_title).setMessage(R.string.err_permissions_text);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                StartActivity.this.finishAffinity();
+            }
+        });
+        AlertDialog d = builder.create();
+        d.show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_READ_STORAGE) {
+            if (grantResults.length == 0
+                || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                noPermissionsExit();
+            }
+        }
+        else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
 
 }

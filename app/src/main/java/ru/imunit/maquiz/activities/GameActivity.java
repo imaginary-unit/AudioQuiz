@@ -12,6 +12,7 @@ import android.view.Menu;
 
 import ru.imunit.maquiz.R;
 import ru.imunit.maquiz.exceptions.DatabaseException;
+import ru.imunit.maquiz.exceptions.NoMusicException;
 import ru.imunit.maquiz.fragments.GameFragment;
 import ru.imunit.maquiz.fragments.ModelRetainFragment;
 import ru.imunit.maquiz.fragments.ResultsFragment;
@@ -104,7 +105,22 @@ public class GameActivity extends AppCompatActivity
         } catch (DatabaseException e) {
             ExceptionNotifier.make(findViewById(R.id.activity_game),
                     getResources().getString(R.string.err_database_error)).show();
+        } catch (NoMusicException e) {
+            ExceptionNotifier.make(findViewById(R.id.activity_game),
+                    getResources().getString(R.string.err_no_music)).
+                    setActionListener(new ExceptionNotifier.ActionListener() {
+                @Override
+                public void onClick() {
+                    exitToMenu();
+                }
+            }).show();
         }
+    }
+
+    private void exitToMenu() {
+        Intent startIntent = new Intent(this,
+                ActivityFactory.getActivity(ActivityFactory.START_ACTIVITY));
+        startActivity(startIntent);
     }
 
     // GameFragment listener

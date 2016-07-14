@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Random;
 
 import ru.imunit.maquiz.exceptions.DatabaseException;
+import ru.imunit.maquiz.exceptions.NoMusicException;
 import ru.imunit.maquizdb.IDataSource;
 import ru.imunit.maquizdb.entities.DBGame;
 import ru.imunit.maquizdb.entities.DBTrack;
@@ -246,7 +247,7 @@ public class GameModel implements IGameModel {
         mGameScore = 0;
     }
 
-    public void nextRound() throws DatabaseException {
+    public void nextRound() throws DatabaseException, NoMusicException {
         if (!mDataSource.openReadable())
             throw new DatabaseException();
 
@@ -261,6 +262,10 @@ public class GameModel implements IGameModel {
         mDataSource.close();
         // in case we don't have enough tracks in the playlist - take as many as possible
         int n = Math.min(mTracks.size(), mOptionsCount);
+        // is there is no tracks at all - fire an exception
+        if (n == 0) {
+            throw new NoMusicException();
+        }
         mCorrectTrack = mTracks.get(new Random().nextInt(n));
         mPlaybackTime = 0;
         mPlaybackStartPos = 0f;
