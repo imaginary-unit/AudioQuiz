@@ -22,6 +22,10 @@ public class StatsModel implements IStatsModel {
         void onUpdateCompleted();
     }
 
+    public interface AsyncExceptionListener {
+        void onDatabaseException();
+    }
+
     public void subscribe(ModelUpdateListener listener) {
         if (!mListeners.contains(listener))
             mListeners.add(listener);
@@ -29,6 +33,10 @@ public class StatsModel implements IStatsModel {
 
     public void unsubscribe(ModelUpdateListener listener) {
         mListeners.remove(listener);
+    }
+
+    public void setAEListener(AsyncExceptionListener aeListener) {
+        mAEListener = aeListener;
     }
 
 
@@ -120,14 +128,19 @@ public class StatsModel implements IStatsModel {
 
     private boolean doClear() {
         if (!mDataSource.openWritable()) {
+            if (mAEListener != null)
+                mAEListener.onDatabaseException();
             return false;
         }
         mDataSource.clearStats();
+        mDataSource.close();
         return true;
     }
 
     private boolean doUpdate() {
         if (!mDataSource.openReadable()) {
+            if (mAEListener != null)
+                mAEListener.onDatabaseException();
             return false;
         }
         mTrackList = Arrays.asList(mDataSource.getGuessedTracks());
@@ -137,6 +150,7 @@ public class StatsModel implements IStatsModel {
         mCorrectGuessRatio = mDataSource.getCorrectGuessRatio();
         mAverageScore = mDataSource.getAverageScore();
         mLongestFastGuessRow = mDataSource.getLongestFastGuessRow();
+        mDataSource.close();
         return true;
     }
 
@@ -147,6 +161,7 @@ public class StatsModel implements IStatsModel {
     // service model fields
     private IDataSource mDataSource;
     private List<ModelUpdateListener> mListeners;
+    private AsyncExceptionListener mAEListener;
     // stats data
     private List<DBTrack> mTrackList;
     private List<Integer> mTopScores;

@@ -22,6 +22,10 @@ public class PlaylistModel implements IPlaylistModel {
         void onDataUpdated();
     }
 
+    public interface AsyncExceptionListener {
+        void onDatabaseException();
+    }
+
     public PlaylistModel(IDataSource dataSource) {
         mDataSource = dataSource;
         mUpdateRequired = true;
@@ -37,6 +41,10 @@ public class PlaylistModel implements IPlaylistModel {
         mListeners.remove(listener);
     }
 
+    public void setAEListener(AsyncExceptionListener aeListener) {
+        mAEListener = aeListener;
+    }
+
     // Model manipulation methods
 
     public void initUpdate(Context context) {
@@ -50,7 +58,11 @@ public class PlaylistModel implements IPlaylistModel {
     }
 
     public void setDirectoryState(String dir, boolean newState) {
-        mDataSource.openWritable();
+        if (!mDataSource.openWritable()) {
+            if (mAEListener != null)
+                mAEListener.onDatabaseException();
+            return;
+        }
         if (newState)
             mDataSource.removeDirFromBlackList(dir);
         else
@@ -65,7 +77,11 @@ public class PlaylistModel implements IPlaylistModel {
     }
 
     public void setTrackBlackListed(DBTrack track, boolean newState) {
-        mDataSource.openWritable();
+        if (!mDataSource.openWritable()) {
+            if (mAEListener != null)
+                mAEListener.onDatabaseException();
+            return;
+        }
         mDataSource.setTrackBlackListed(track, newState);
         mDataSource.close();
         mUpdateRequired = true;
@@ -106,9 +122,17 @@ public class PlaylistModel implements IPlaylistModel {
         MusicUpdater updater = new MusicUpdater(context);
         updater.setListener(new MusicUpdater.MusicUpdateListener() {
             @Override
-            public void onUpdateCompleted() {
-                // TODO: handle exception
-                mDataSource.openReadable();
+            public void onUpdateCompleted(int res) {
+                if (res == MusicUpdater.RESULT_ERROR) {
+                    if (mAEListener != null)
+                        mAEListener.onDatabaseException();
+                    return;
+                }
+                if (!mDataSource.openReadable()) {
+                    if (mAEListener != null)
+                        mAEListener.onDatabaseException();
+                    return;
+                }
                 mAllTracks = new ArrayList<>(Arrays.asList(mDataSource.getAllTracks()));
                 List<String> bDirs = Arrays.asList(mDataSource.getBlackDirs());
                 mDirectories = new HashMap<>();
@@ -131,6 +155,7 @@ public class PlaylistModel implements IPlaylistModel {
 
     private IDataSource mDataSource;
     private List<ModelUpdateListener> mListeners;
+    private AsyncExceptionListener mAEListener;
     private List<DBTrack> mAllTracks;
     private HashMap<String, Boolean> mDirectories;
     private boolean mUpdateRequired;

@@ -41,9 +41,9 @@ public class MusicUpdater {
         }
 
         @Override
-        protected void onPostExecute(Integer integer) {
-            super.onPostExecute(integer);
-            mListener.onUpdateCompleted();
+        protected void onPostExecute(Integer res) {
+            super.onPostExecute(res);
+            mListener.onUpdateCompleted(res);
         }
     }
 
@@ -120,9 +120,12 @@ public class MusicUpdater {
                         title = mContext.getResources().getString(R.string.empty_tag_placeholder);
                     if (artist == null)
                         artist = mContext.getResources().getString(R.string.empty_tag_placeholder);
-                    DBTrack t = new DBTrack(title, artist, path);
-                    if (checkTrackDir(t.getUri()))
-                        songs.add(t);
+                    File f = new File(path);
+                    if (f.exists()) {
+                        DBTrack t = new DBTrack(title, artist, path);
+                        if (checkTrackDir(t.getUri()))
+                            songs.add(t);
+                    }
                 } while (cur.moveToNext());
             }
             cur.close();
@@ -138,7 +141,7 @@ public class MusicUpdater {
     }
 
     public interface MusicUpdateListener {
-        void onUpdateCompleted();
+        void onUpdateCompleted(int result);
     }
 
 }

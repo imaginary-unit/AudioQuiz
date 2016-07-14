@@ -161,6 +161,18 @@ public class GameActivity extends AppCompatActivity
         showResultsFragment();
     }
 
+    @Override
+    public void onMusicReadError() {
+        ExceptionNotifier.make(findViewById(R.id.activity_game),
+                getResources().getString(R.string.err_music_io)).
+                setActionListener(new ExceptionNotifier.ActionListener() {
+                    @Override
+                    public void onClick() {
+                        exitToMenu();
+                    }
+                }).show();
+    }
+
     // ResultsFragment listener
 
     @Override

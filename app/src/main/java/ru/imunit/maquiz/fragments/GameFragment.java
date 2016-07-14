@@ -210,7 +210,8 @@ public class GameFragment extends Fragment
         try {
             mMediaPlayer.setDataSource(getContext(), trackUri);
         } catch (IOException e) {
-            // TODO: handle exception
+            mListener.onMusicReadError();
+            return;
         }
         mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -278,5 +279,6 @@ public class GameFragment extends Fragment
         void onMediaReady();
         void onMakeGuess(DBTrack track);
         void onGameFinished();
+        void onMusicReadError();
     }
 }

@@ -18,6 +18,8 @@
     <string name="permission_storage_rationale">Read storage permission should
         be granted to scan and play your music files!</string>
 
+    <string name="updating_music_dialog">Updating your music library, please wait a sec..</string>
+
     <string name="ok">OK</string>
 
     <string name="game_results_score">Score:</string>
@@ -58,7 +60,11 @@
     <string name="err_permissions_title">Vital permissions denied</string>
     <string name="err_permissions_text">
         Read external storage permission, that is needed to scan your local music database,
-        was not granted, so the application can't continue operating correctly and will be
+        was not granted, so the application can\'t continue operating correctly and will be
         closed now.
+    </string>
+    <string name="err_music_io">
+        Oops, seems like some of music files on your device can\'t be read for some reason.
+        Please check if your files are available and not corrupted.
     </string>
 </resources>

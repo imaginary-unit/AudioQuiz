@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import ru.imunit.maquiz.R;
 import ru.imunit.maquiz.fragments.PlaylistDirsFragment;
 import ru.imunit.maquiz.fragments.PlaylistTracksFragment;
+import ru.imunit.maquiz.managers.ExceptionNotifier;
 import ru.imunit.maquiz.models.PlaylistModel;
 import ru.imunit.maquizdb.DataSourceFactory;
 import ru.imunit.maquizdb.entities.DBTrack;
@@ -52,6 +53,13 @@ public class PlaylistViewerActivity extends AppCompatActivity
         toolbar.setTitle(R.string.playlist_toolbar_title);
 
         mModel = new PlaylistModel(DataSourceFactory.getDataSource(this));
+        mModel.setAEListener(new PlaylistModel.AsyncExceptionListener() {
+            @Override
+            public void onDatabaseException() {
+                ExceptionNotifier.make(findViewById(R.id.activity_playlist),
+                        getResources().getString(R.string.err_database_error)).show();
+            }
+        });
 
         mViewModeSpinner = new AppCompatSpinner(this);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -91,7 +99,6 @@ public class PlaylistViewerActivity extends AppCompatActivity
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         if (mCurrentMode != i) {
-
             mCurrentMode = i;
             switchFragment();
             mModel.initUpdate(this);

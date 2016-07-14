@@ -16,6 +16,7 @@ import java.util.Map;
 import ru.imunit.maquiz.R;
 import ru.imunit.maquiz.fragments.GameStatsFragment;
 import ru.imunit.maquiz.fragments.TrackStatsFragment;
+import ru.imunit.maquiz.managers.ExceptionNotifier;
 import ru.imunit.maquiz.models.StatsModel;
 import ru.imunit.maquiz.views.adapters.StatsPagerAdapter;
 import ru.imunit.maquizdb.DataSourceFactory;
@@ -110,6 +111,13 @@ public class StatsActivity extends AppCompatActivity implements
 
     private void initModel() {
         mModel = new StatsModel(DataSourceFactory.getDataSource(this));
+        mModel.setAEListener(new StatsModel.AsyncExceptionListener() {
+            @Override
+            public void onDatabaseException() {
+                ExceptionNotifier.make(findViewById(R.id.activity_stats),
+                        getResources().getString(R.string.err_database_error)).show();
+            }
+        });
         mGameStatsFragment.setModel(mModel);
         mTrackStatsFragment.setModel(mModel);
         mModel.subscribe(mGameStatsFragment);
