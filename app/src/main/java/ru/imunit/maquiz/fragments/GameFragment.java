@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apmem.tools.layouts.FlowLayout;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -92,7 +94,7 @@ public class GameFragment extends Fragment
         mTextRound = (TextView)getView().findViewById(R.id.textTracks);
         mTextScore = (TextView)getView().findViewById(R.id.textScore);
         mTextTime = (TextView)getView().findViewById(R.id.textTime);
-        mTracksLayout = (LinearLayout)getView().findViewById(R.id.layoutTracks);
+        mTracksLayout = (LinearLayout) getView().findViewById(R.id.layoutTracks);
         mListener.onGameFragmentInitialized();
         if (mModel.isGameRunning()) {
             updateRoundUi();
