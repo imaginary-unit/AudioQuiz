@@ -3,6 +3,7 @@ package ru.imunit.maquiz.managers;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import ru.imunit.maquiz.R;
 
@@ -33,6 +34,11 @@ public class ExceptionNotifier {
 
     public void show() {
         Snackbar snackbar = Snackbar.make(mHost, mMessage, Snackbar.LENGTH_INDEFINITE);
+
+        TextView tv = (TextView)snackbar.getView().
+                findViewById(android.support.design.R.id.snackbar_text);
+        tv.setMaxLines(4);
+
         if (mActionListener != null)
             snackbar.setAction(R.string.ok, new View.OnClickListener() {
                 @Override

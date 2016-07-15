@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:clipToPadding="false"
     android:background="@color/colorBack1"
-    android:id="@+id/start_layout">
+    android:id="@+id/activity_start">
 
     <include layout="@layout/toolbar_base" />
 

@@ -54,7 +54,7 @@
         able to play.
     </string>
     <string name="err_few_music">
-        It seems like you have only %d music files on your device. It\'s OK to play, but for better
+        It seems like you have less than 10 music files on your device. It\'s OK to play, but for better
         and more challenging experience we recommend to get more music :)
     </string>
     <string name="err_permissions_title">Vital permissions denied</string>

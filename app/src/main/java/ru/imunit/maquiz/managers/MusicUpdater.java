@@ -26,12 +26,14 @@ import ru.imunit.maquizdb.entities.DBTrack;
  */
 public class MusicUpdater {
 
+    public static final int RESULT_OK = 0;
+    public static final int RESULT_ERROR = 1;
+    public static final int RESULT_FEW_MUSIC = 2;
+    public static final int FEW_MUSIC_THRESHOLD = 10;
+
     private Context mContext;
     private MusicUpdateListener mListener;
     private List<String> mBlacklistedDirs;
-
-    public static final int RESULT_OK = 0;
-    public static final int RESULT_ERROR = 1;
 
     private class UpdateTask extends AsyncTask<Void, Void, Integer> {
 
@@ -98,7 +100,12 @@ public class MusicUpdater {
         Log.i("Tracks:", String.format("Inserting %d tracks into app DB", addSet.size()));
         dataSource.close();
 
-        return RESULT_OK;
+        int count = sysSet.size();
+        if (count >= FEW_MUSIC_THRESHOLD) {
+            return RESULT_OK;
+        } else {
+            return RESULT_FEW_MUSIC;
+        }
     }
 
     private HashSet<DBTrack> getSystemMusic() {

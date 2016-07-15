@@ -44,26 +44,26 @@ public class MAQDataSource implements IDataSource {
 
     @Override
     public boolean openReadable() {
-//        try {
-//            database = dbHelper.getReadableDatabase();
-//        }
-//        catch (SQLiteException e) {
-//            return false;
-//        }
-//        return true;
-        return false;
+        try {
+            database = dbHelper.getReadableDatabase();
+        }
+        catch (SQLiteException e) {
+            return false;
+        }
+        return true;
+//        return false;
     }
 
     @Override
     public boolean openWritable() {
-//        try {
-//            database = dbHelper.getWritableDatabase();
-//        }
-//        catch (SQLiteException e) {
-//            return false;
-//        }
-//        return true;
-        return false;
+        try {
+            database = dbHelper.getWritableDatabase();
+        }
+        catch (SQLiteException e) {
+            return false;
+        }
+        return true;
+//        return false;
     }
 
     public void close() {

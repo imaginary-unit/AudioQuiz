@@ -38,8 +38,9 @@ public class StartActivity extends AppCompatActivity
         setContentView(R.layout.activity_start);
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mRootLayout = findViewById(R.id.start_layout);
+        mRootLayout = findViewById(R.id.activity_start);
         if (checkStoragePermission()) {
+            // TODO: maybe do music update only on first activity show
             startMusicUpdate();
         }
     }
@@ -117,8 +118,18 @@ public class StartActivity extends AppCompatActivity
                     StartActivity.this.mProgress.dismiss();
                 }
                 if (res == MusicUpdater.RESULT_ERROR) {
-                    ExceptionNotifier.make(findViewById(R.id.activity_game),
+                    ExceptionNotifier.make(mRootLayout,
                             getResources().getString(R.string.err_database_error)).show();
+                } else if (res == MusicUpdater.RESULT_FEW_MUSIC) {
+                    // TODO: This should be shown only once! Define some parameter to store...
+                    ExceptionNotifier.make(mRootLayout,
+                            getResources().getString(R.string.err_few_music)).
+                            setActionListener(new ExceptionNotifier.ActionListener() {
+                                @Override
+                                public void onClick() {
+                                    // added handler just to have dismiss button in snackbar
+                                }
+                            }).show();
                 }
             }
         });
