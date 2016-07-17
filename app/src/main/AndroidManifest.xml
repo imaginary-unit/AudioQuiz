@@ -22,7 +22,14 @@
             android:name=".activities.PlaylistViewerActivity"
             android:label="@string/title_activity_playlist" />
         <activity android:name=".activities.GameActivity" />
-        <activity android:name=".activities.StatsActivity"></activity>
+        <activity android:name=".activities.StatsActivity" />
+        <activity android:name=".TestActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

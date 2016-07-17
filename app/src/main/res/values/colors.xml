@@ -5,6 +5,7 @@
     <color name="colorPrimary">#283593</color>
     <color name="colorPrimaryDark">#1A237E</color>
     <color name="colorAccent">#C6FF00</color>
+    <color name="colorAccentHalf">#77C6FF00</color>
     <color name="colorForeground">#FFFFFF</color>
     <color name="colorForegroundHalf">#77FFFFFF</color>
 </resources>
