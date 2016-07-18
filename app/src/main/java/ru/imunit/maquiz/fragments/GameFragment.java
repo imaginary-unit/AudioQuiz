@@ -1,6 +1,7 @@
 package ru.imunit.maquiz.fragments;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -9,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -32,8 +34,9 @@ import ru.imunit.maquizdb.entities.DBTrack;
  * {@link GameFragmentListener} interface
  * to handle interaction events.
  */
-public class GameFragment extends Fragment
-            implements GameModel.ModelUpdateListener {
+public class GameFragment extends Fragment implements
+        GameModel.ModelUpdateListener,
+        View.OnTouchListener {
 
     private boolean mMetronomePlaying;
     private boolean mUiLock = false;
@@ -251,26 +254,57 @@ public class GameFragment extends Fragment
             tv.setLayoutParams(new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, 0, 1.0f));
             tv.setTrack(track);
-            tv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!mUiLock) {
-                        if (v instanceof TrackView) {
-                            TrackView t = (TrackView) v;
-                            mListener.onMakeGuess(t.getTrack());
-                        }
-                    }
-                }
-            });
+//            tv.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (!mUiLock) {
+//                        if (v instanceof TrackView) {
+//                            TrackView t = (TrackView) v;
+//                            mListener.onMakeGuess(t.getTrack());
+//                        }
+//                    }
+//                }
+//            });
+            tv.setOnTouchListener(this);
             mTracksLayout.addView(tv);
         }
     }
 
+    // track view touch handler
+    Rect tvRect;
+    boolean tvMovOut;
+    @Override
+    public boolean onTouch(View v, MotionEvent evt) {
+        TrackView tv = (TrackView)v;
+        if (tv == null)
+            return false;
+
+        if (evt.getAction() == MotionEvent.ACTION_DOWN) {
+            tvRect = new Rect(v.getLeft(), v.getTop(), v.getRight(), v.getBottom());
+            tvMovOut = false;
+            tv.animateTouchDown();
+        }
+        else if (evt.getAction() == MotionEvent.ACTION_UP) {
+            if (!tvMovOut) {
+                tv.animateTouchUp(false);
+            }
+        }
+//        else if (evt.getAction() == MotionEvent.ACTION_MOVE) {
+//            if (!tvMovOut && !tvRect.contains(v.getLeft() + (int)evt.getX(), v.getTop() + (int)evt.getY())) {
+//                tvMovOut = true;
+//                tv.animateTouchAway();
+//            }
+//        }
+        else if (!tvMovOut && !tvRect.contains(v.getLeft() + (int)evt.getX(), v.getTop() + (int)evt.getY())) {
+            tvMovOut = true;
+            tv.animateTouchAway();
+            Log.i("Touch event", "touch out");
+        }
+        return true;
+    }
+
     /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
+     * This interface must be implemented by activities that contain this fragment
      */
     public interface GameFragmentListener {
         void onGameFragmentInitialized();

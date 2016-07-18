@@ -48,6 +48,10 @@ public class TrackView extends FrameLayout {
         return mTrack;
     }
 
+    public void setAnimationListener(Animation.AnimationListener listener) {
+        mAnimationListener = listener;
+    }
+
     public void animateTouchDown() {
         mHighlight.getLayoutParams().width = 1;
         mHighlight.setBackground(mDrawable);
@@ -70,12 +74,9 @@ public class TrackView extends FrameLayout {
         int color = correct ? 0x7700ff00 : 0x77ff0000;
         BlinkAnim anim = new BlinkAnim(mHighlight, color);
         anim.setDuration(BLINK_TIME);
+        if (correct)
+            anim.setAnimationListener(mAnimationListener);
         mHighlight.startAnimation(anim);
-    }
-
-    public void testResize() {
-        mHighlight.getLayoutParams().width += 10;
-        mHighlight.requestLayout();
     }
 
     private void init() {
@@ -85,8 +86,6 @@ public class TrackView extends FrameLayout {
         mTitle = (TextView)findViewById(R.id.secondLine);
         mHighlight = (ImageView)findViewById(R.id.highlightBitmap);
         mDrawable = createGradient(getResources().getColor(R.color.colorForegroundHalf));
-        // mHlDrawable = getResources().getDrawable(R.drawable.opt_highlight);
-        // mIcon.setVisibility(View.GONE);
     }
 
     private DBTrack mTrack;
@@ -96,9 +95,10 @@ public class TrackView extends FrameLayout {
 
     private ImageView mHighlight;
     private PaintDrawable mDrawable;
+    private Animation.AnimationListener mAnimationListener;
 
-    private int ANIM_TIME = 100;
-    private int BLINK_TIME = 300;
+    private final int ANIM_TIME = 100;
+    private final int BLINK_TIME = 300;
 
     private class HighlightAnim extends Animation {
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
 
 import ru.imunit.maquiz.views.widgets.TrackView;
 
@@ -19,6 +20,20 @@ public class TestActivity extends AppCompatActivity implements View.OnTouchListe
         setContentView(R.layout.activity_test);
         tv = (TrackView)findViewById(R.id.testTrackView);
         tv.setOnTouchListener(this);
+        tv.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Log.i("Anim listener", "Animation completed");
+            }
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
 
     Rect rect;
@@ -34,7 +49,7 @@ public class TestActivity extends AppCompatActivity implements View.OnTouchListe
         if (evt.getAction() == MotionEvent.ACTION_UP) {
             if (!mout) {
                 Log.d("TouchTest", "Touch up");
-                tv.animateTouchUp(true);
+                tv.animateTouchUp(false);
             }
         }
         if (evt.getAction() == MotionEvent.ACTION_MOVE) {
