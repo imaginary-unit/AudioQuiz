@@ -38,7 +38,7 @@ public class GameModel implements IGameModel {
     private static final int ROW_BONUS_START = 3;
     private static final float ROW_BONUS_FACTOR = 2.0f;
     // factor to multiply the overall game score by in the case of no wrong guesses
-    private static final float FLAWLESS_BONUS_FACTOR = 1.5f;
+    private static final float CLEAN_BONUS_FACTOR = 1.5f;
     // the number to divide the round score by for each wrong guess
     private static final int WRONG_GUESS_PENALTY = 2;
 
@@ -126,6 +126,9 @@ public class GameModel implements IGameModel {
     // Game logic
 
     private void finishGame() {
+        // if the game was clean, multiply the score by a corresponding factor
+        if (mGuess.size() == mCorrectGuess.size())
+            mGameScore *= CLEAN_BONUS_FACTOR;
         new ResultsWriter().execute();
         for (ModelUpdateListener listener : mListeners) {
             listener.onGameFinished();

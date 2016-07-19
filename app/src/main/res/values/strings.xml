@@ -23,6 +23,7 @@
     <string name="ok">OK</string>
 
     <string name="game_results_score">Score:</string>
+    <string name="game_results_highscore">Highscore:</string>
 
     <string name="empty_tag_placeholder">&lt;unknown&gt;</string>
 

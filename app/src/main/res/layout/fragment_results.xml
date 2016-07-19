@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,9 +9,10 @@
     <android.support.v4.widget.Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="0.2"/>
 
     <TextView
+        android:id="@+id/text1_congrats"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -25,7 +27,41 @@
         android:layout_height="0dp"
         android:layout_weight="0.2"/>
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/text2_clean"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0"
+        android:text="Clean game! (Score x 1.5)"
+        android:textSize="26sp"
+        android:textColor="#ff00ff00"
+        android:visibility="gone"
+        />
+
+    <android.support.v4.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.05"/>
+
+    <TextView
+        android:id="@+id/text3_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0"
+        android:text="New highscore!"
+        android:textSize="26sp"
+        android:textColor="#ff00ff00"
+        android:visibility="gone"
+        />
+
+    <android.support.v4.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"/>
+
+    <android.support.v7.widget.GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -33,23 +69,61 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_row="0"
+            app:layout_column="0"
+            android:layout_margin="3dp"
             android:text="@string/game_results_score"
             android:textSize="22sp"
-            android:textColor="@color/colorForeground"
-            android:id="@+id/textView" />
+            android:textColor="@color/colorForeground" />
         <TextView
             android:id="@+id/textScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_row="0"
+            app:layout_column="1"
+            android:layout_margin="3dp"
             android:text="100500"
             android:textSize="22sp"
             android:textColor="@color/colorForeground" />
-    </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_row="1"
+            app:layout_column="0"
+            android:layout_margin="3dp"
+            android:text="@string/game_results_highscore"
+            android:textSize="22sp"
+            android:textColor="@color/colorForeground" />
+        <TextView
+            android:id="@+id/textHighScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_row="1"
+            app:layout_column="1"
+            android:layout_margin="3dp"
+            android:text="100600"
+            android:textSize="22sp"
+            android:textColor="@color/colorForeground" />
+    </android.support.v7.widget.GridLayout>
 
     <android.support.v4.widget.Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="0.5"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:textSize="18sp"
+        android:textColor="@color/colorForegroundHalf"
+        android:text="Tip: make sequences of more than 2 fast answers (faster than 3 sec.) to multiply next round score by 2."/>
+
+    <android.support.v4.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
