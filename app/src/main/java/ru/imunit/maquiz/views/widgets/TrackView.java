@@ -44,6 +44,12 @@ public class TrackView extends FrameLayout {
         mTitle.setText(track.getName());
     }
 
+    public void disable() {
+        mArtist.setTextColor(0x33ffffff);
+        mTitle.setTextColor(0x33ffffff);
+        mIcon.setImageResource(R.drawable.music_note_off);
+    }
+
     public DBTrack getTrack() {
         return mTrack;
     }
@@ -74,8 +80,7 @@ public class TrackView extends FrameLayout {
         int color = correct ? 0x7700ff00 : 0x77ff0000;
         BlinkAnim anim = new BlinkAnim(mHighlight, color);
         anim.setDuration(BLINK_TIME);
-        if (correct)
-            anim.setAnimationListener(mAnimationListener);
+        anim.setAnimationListener(mAnimationListener);
         mHighlight.startAnimation(anim);
     }
 

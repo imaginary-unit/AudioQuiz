@@ -37,7 +37,7 @@ public class ExceptionNotifier {
 
         TextView tv = (TextView)snackbar.getView().
                 findViewById(android.support.design.R.id.snackbar_text);
-        tv.setMaxLines(4);
+        tv.setMaxLines(6);
 
         if (mActionListener != null)
             snackbar.setAction(R.string.ok, new View.OnClickListener() {

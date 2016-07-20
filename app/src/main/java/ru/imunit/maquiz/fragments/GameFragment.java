@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -190,18 +191,58 @@ public class GameFragment extends Fragment implements
             if (mMediaPlayer.isPlaying())
                 mMediaPlayer.stop();
             mMediaPlayer.release();
-            // display correct guess notification, congrats and so on (may be animated..
-            // ..so consider extraction to another method
-            mListener.onNextRound();
+
+            // show correct guess animation and load next round after it has finished
+            tempTrackView.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) { }
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    mListener.onNextRound();
+                    // mUiLock = false;
+                }
+                @Override
+                public void onAnimationRepeat(Animation animation) { }
+            });
+            mUiLock = true;
+            tempTrackView.animateTouchUp(true);
+
         } else if (result == GameModel.GUESS_RESULT_WRONG_CONTINUE) {
-            // display wrong guess notification, animation, whatever..
+            // show wrong guess animation and disable this item
+            tempTrackView.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) { }
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    // tempTrackView.setVisibility(View.GONE);
+                    tempTrackView.disable();
+                    tempTrackView.setEnabled(false);
+                    mUiLock = false;
+                }
+                @Override
+                public void onAnimationRepeat(Animation animation) { }
+            });
+            mUiLock = true;
+            tempTrackView.animateTouchUp(false);
         }
         else {
             if (mMediaPlayer.isPlaying())
                 mMediaPlayer.stop();
             mMediaPlayer.release();
             // display failed notification and move to the next round
-            mListener.onNextRound();
+            tempTrackView.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) { }
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    mListener.onNextRound();
+                    // mUiLock = false;
+                }
+                @Override
+                public void onAnimationRepeat(Animation animation) { }
+            });
+            mUiLock = true;
+            tempTrackView.animateTouchUp(false);
         }
     }
 
@@ -270,13 +311,16 @@ public class GameFragment extends Fragment implements
         }
     }
 
+    // these are needed to handle dragging out of item bounds
+    private Rect tvRect;
+    private boolean tvMovOut;
+    // store last clicked TV to trigger the animation when model returns the guess result
+    private TrackView tempTrackView;
     // track view touch handler
-    Rect tvRect;
-    boolean tvMovOut;
     @Override
     public boolean onTouch(View v, MotionEvent evt) {
         TrackView tv = (TrackView)v;
-        if (tv == null)
+        if (mUiLock || tv == null)
             return false;
 
         if (evt.getAction() == MotionEvent.ACTION_DOWN) {
@@ -286,20 +330,22 @@ public class GameFragment extends Fragment implements
         }
         else if (evt.getAction() == MotionEvent.ACTION_UP) {
             if (!tvMovOut) {
-                tv.animateTouchUp(false);
+                tempTrackView = tv;
+                mListener.onMakeGuess(tv.getTrack());
+                // tv.animateTouchUp(false);
             }
         }
-//        else if (evt.getAction() == MotionEvent.ACTION_MOVE) {
-//            if (!tvMovOut && !tvRect.contains(v.getLeft() + (int)evt.getX(), v.getTop() + (int)evt.getY())) {
-//                tvMovOut = true;
-//                tv.animateTouchAway();
-//            }
-//        }
-        else if (!tvMovOut && !tvRect.contains(v.getLeft() + (int)evt.getX(), v.getTop() + (int)evt.getY())) {
-            tvMovOut = true;
-            tv.animateTouchAway();
-            Log.i("Touch event", "touch out");
+        else if (evt.getAction() == MotionEvent.ACTION_MOVE) {
+            if (!tvMovOut && !tvRect.contains(v.getLeft() + (int)evt.getX(), v.getTop() + (int)evt.getY())) {
+                tvMovOut = true;
+                tv.animateTouchAway();
+            }
         }
+//        else if (!tvMovOut && !tvRect.contains(v.getLeft() + (int)evt.getX(), v.getTop() + (int)evt.getY())) {
+//            tvMovOut = true;
+//            tv.animateTouchAway();
+//            Log.i("Touch event", "touch out");
+//        }
         return true;
     }
 
