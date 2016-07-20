@@ -1,15 +1,17 @@
 package ru.imunit.maquiz.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.Random;
 
 import ru.imunit.maquiz.R;
 import ru.imunit.maquiz.models.IGameModel;
@@ -22,12 +24,13 @@ import ru.imunit.maquiz.models.IGameModel;
  */
 public class ResultsFragment extends Fragment {
 
-    private ResultsFragmentListener mListener;
-    private IGameModel mModel;
-    private TextView mTextScore;
-    private Button mBtnRestart;
-    private Button mBtnStatistics;
-    private Button mBtnMenu;
+    public interface ResultsFragmentListener {
+        void onResultsFragmentInitialized();
+        void onRestartGame();
+        void onShowStatistics();
+        void onShowMenu();
+    }
+
 
     public ResultsFragment() {
         // Required empty public constructor
@@ -38,7 +41,34 @@ public class ResultsFragment extends Fragment {
     }
 
     public void updateResults() {
-        mTextScore.setText(String.valueOf(mModel.getGameScore()));
+        long curScore = mModel.getGameScore();
+        long highScore = mModel.getLastHighscore();
+        float ratio = (float)curScore / (float)highScore;
+
+        mTextScore.setText(String.valueOf(curScore));
+        mTextHighscore.setText(String.valueOf(highScore));
+
+        String congrat = "";
+        if (ratio > 1f) {
+            congrat = getResources().getString(R.string.game_results_congrats_3);
+            mTextNewRecord.setVisibility(View.VISIBLE);
+            mTextHighscore.setText(String.valueOf(curScore));
+        }
+        else if (ratio < 1f && ratio >= 0.75f)
+            congrat = getResources().getString(R.string.game_results_congrats_2);
+        else if (ratio < 0.75f && ratio >= 0.5f)
+            congrat = getResources().getString(R.string.game_results_congrats_1);
+        else if (ratio < 0.5f)
+            congrat = getResources().getString(R.string.game_results_congrats_0);
+        mTextCongrats.setText(congrat);
+
+        if (mModel.isGameClean()) {
+            mTextClean.setVisibility(View.VISIBLE);
+        }
+
+        String[] tips = getResources().getStringArray(R.array.game_results_tips);
+        int idx = new Random().nextInt(tips.length);
+        mTextTip.setText(Html.fromHtml("<b>Tip:</b> " + tips[idx]));
     }
 
     @Override
@@ -62,6 +92,11 @@ public class ResultsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mTextScore = (TextView)getView().findViewById(R.id.textScore);
+        mTextHighscore = (TextView)getView().findViewById(R.id.textHighScore);
+        mTextCongrats = (TextView)getView().findViewById(R.id.text1_congrats);
+        mTextClean = (TextView)getView().findViewById(R.id.text2_clean);
+        mTextNewRecord = (TextView)getView().findViewById(R.id.text3_new_record);
+        mTextTip = (TextView)getView().findViewById(R.id.textTip);
         mBtnMenu = (Button)getView().findViewById(R.id.btnMenu);
         mBtnRestart = (Button)getView().findViewById(R.id.btnRestart);
         mBtnStatistics = (Button)getView().findViewById(R.id.btnStatistics);
@@ -74,6 +109,7 @@ public class ResultsFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
 
     private void setButtonListeners() {
         mBtnMenu.setOnClickListener(new View.OnClickListener() {
@@ -96,16 +132,15 @@ public class ResultsFragment extends Fragment {
         });
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     */
-    public interface ResultsFragmentListener {
-        void onResultsFragmentInitialized();
-        void onRestartGame();
-        void onShowStatistics();
-        void onShowMenu();
-    }
+    private ResultsFragmentListener mListener;
+    private IGameModel mModel;
+    private TextView mTextScore;
+    private Button mBtnRestart;
+    private Button mBtnStatistics;
+    private Button mBtnMenu;
+    private TextView mTextCongrats;
+    private TextView mTextClean;
+    private TextView mTextNewRecord;
+    private TextView mTextHighscore;
+    private TextView mTextTip;
 }

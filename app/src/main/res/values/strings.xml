@@ -24,6 +24,29 @@
 
     <string name="game_results_score">Score:</string>
     <string name="game_results_highscore">Highscore:</string>
+    <string name="game_results_congrats_0">Yeeey!</string>
+    <string name="game_results_congrats_1">Not bad!</string>
+    <string name="game_results_congrats_2">Excellent!</string>
+    <string name="game_results_congrats_3">You\'re awesome!</string>
+
+    <string-array name="game_results_tips">
+        <item>
+            make sequences of more than 2 fast answers (&lt; than 3 sec.) to multiply the round
+            score by 2.
+        </item>
+        <item>
+            a clean game (one without a single wrong answer) multiplies your score by 1.5. Don\'t
+            rush, play clean!
+        </item>
+        <item>
+            make use of the time while the metronome is ticking to quickly scan through answers so
+            you can guess faster.
+        </item>
+        <item>
+            answering within first 3, 5 or 10 sec. gives you extra points, however for each wrong
+            answer you will get twice as less score in the current round.
+        </item>
+    </string-array>
 
     <string name="empty_tag_placeholder">&lt;unknown&gt;</string>
 

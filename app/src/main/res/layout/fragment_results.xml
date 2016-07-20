@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0"
-        android:text="You're awesome! :)"
+        android:text="@string/game_results_congrats_0"
         android:textSize="30sp"
         android:textColor="@color/colorAccent"
         />
@@ -45,7 +45,7 @@
         android:layout_weight="0.05"/>
 
     <TextView
-        android:id="@+id/text3_record"
+        android:id="@+id/text3_new_record"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -112,13 +112,14 @@
         android:layout_weight="0.5"/>
 
     <TextView
+        android:id="@+id/textTip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
         android:textSize="18sp"
-        android:textColor="@color/colorForegroundHalf"
-        android:text="Tip: make sequences of more than 2 fast answers (faster than 3 sec.) to multiply next round score by 2."/>
+        android:textColor="@color/colorForegroundHalf" />
 
     <android.support.v4.widget.Space
         android:layout_width="match_parent"

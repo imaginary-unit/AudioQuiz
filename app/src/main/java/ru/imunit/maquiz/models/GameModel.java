@@ -60,6 +60,7 @@ public class GameModel implements IGameModel {
     private HashMap<DBTrack, Integer> mCorrectGuess;
     private int mRoundsCount;
     private long mGameScore;
+    private long mLastHighscore;
     private int mOptionsCount;
     // round scope fields
     private int mCurrentRound;
@@ -127,8 +128,17 @@ public class GameModel implements IGameModel {
 
     private void finishGame() {
         // if the game was clean, multiply the score by a corresponding factor
-        if (mGuess.size() == mCorrectGuess.size())
+        if (isGameClean())
             mGameScore *= CLEAN_BONUS_FACTOR;
+        // obtain last highscore before writing this game
+        if (!mDataSource.openReadable())
+            throw new DatabaseException();
+        Integer[] topScores = mDataSource.getTopScores(1);
+        mDataSource.close();
+        if (topScores.length > 0) {
+            mLastHighscore = topScores[0];
+        }
+        // write game result to database
         new ResultsWriter().execute();
         for (ModelUpdateListener listener : mListeners) {
             listener.onGameFinished();
@@ -221,7 +231,7 @@ public class GameModel implements IGameModel {
         if (t0 <= BONUS_TIME_THRESHOLD_3) {
             mRoundScore += SCORE_BONUS_TIME_3;
             // checking for row bonus
-            if (n >= 3) {
+            if (n >= ROW_BONUS_START) {
                 int t1 = mGuessTime.get(n-2);
                 int t2 = mGuessTime.get(n-3);
                 if ((t1 <= BONUS_TIME_THRESHOLD_3) && (t2 <= BONUS_TIME_THRESHOLD_3))
@@ -248,6 +258,7 @@ public class GameModel implements IGameModel {
         mPlaybackStartPos = 0f;
         mRoundScore = 0;
         mGameScore = 0;
+        mLastHighscore = 0;
     }
 
     public void nextRound() throws DatabaseException, NoMusicException {
@@ -349,6 +360,17 @@ public class GameModel implements IGameModel {
         return mCurrentRound > mRoundsCount;
     }
 
+    @Override
+    public boolean isGameClean() {
+        Integer s = 0; // number of guesses
+        for (Integer val : mGuess.values())
+            s += val;
+        Integer cs = 0; // number of correct guesses
+        for (Integer val : mCorrectGuess.values())
+            cs += val;
+        return s == cs;
+    }
+
 
     @Override
     public int getCurrentRound() {
@@ -373,6 +395,11 @@ public class GameModel implements IGameModel {
     @Override
     public long getGameScore() {
         return mGameScore;
+    }
+
+    @Override
+    public long getLastHighscore() {
+        return mLastHighscore;
     }
 
     @Override

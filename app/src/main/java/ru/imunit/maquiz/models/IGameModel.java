@@ -13,11 +13,13 @@ public interface IGameModel {
     boolean isPlaybackStarted();
     boolean isGameRunning();
     boolean isGameFinished();
+    boolean isGameClean();
     int getCurrentRound();
     int getRoundsCount();
     int getPlaybackTime();
     float getPlaybackStartPos();
     long getGameScore();
+    long getLastHighscore();
     long getRoundScore();
     List<DBTrack> getTracks();
     DBTrack getCorrectTrack();
