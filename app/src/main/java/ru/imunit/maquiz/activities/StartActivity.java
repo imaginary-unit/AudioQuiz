@@ -29,6 +29,7 @@ public class StartActivity extends AppCompatActivity
         ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final int PERMISSION_REQUEST_READ_STORAGE = 1;
+    private static final int PERMISSION_REQUEST_RECORD_AUDIO = 2;
     private View mRootLayout;
     private ProgressDialog mProgress = null;
 
@@ -43,6 +44,7 @@ public class StartActivity extends AppCompatActivity
             // TODO: maybe do music update only on first activity show
             startMusicUpdate();
         }
+        checkRecordPermission();
     }
 
     @Override
@@ -107,6 +109,21 @@ public class StartActivity extends AppCompatActivity
         }
     }
 
+    private boolean checkRecordPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.RECORD_AUDIO},
+                    PERMISSION_REQUEST_RECORD_AUDIO);
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
     private void startMusicUpdate() {
         mProgress = ProgressDialog.show(this, null,
                 getResources().getString(R.string.updating_music_dialog), true, true);
@@ -159,6 +176,15 @@ public class StartActivity extends AppCompatActivity
                 noPermissionsExit();
             } else {
                 startMusicUpdate();
+            }
+        }
+        else if (requestCode == PERMISSION_REQUEST_RECORD_AUDIO) {
+            if (grantResults.length == 0
+                || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                Snackbar.make(mRootLayout, R.string.permission_record_rationale,
+                        Snackbar.LENGTH_LONG).show();
+            } else {
+                // turn the visualizer on
             }
         }
         else {

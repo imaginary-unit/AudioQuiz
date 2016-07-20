@@ -15,8 +15,12 @@
     <string name="title_activity_start">StartActivity</string>
     <string name="title_activity_sync">SyncActivity</string>
 
-    <string name="permission_storage_rationale">Read storage permission should
-        be granted to scan and play your music files!</string>
+    <string name="permission_storage_rationale">
+        Read storage permission should be granted to scan and play your music files!
+    </string>
+    <string name="permission_record_rationale">
+        You haven\'t granted the audio recording permission - audio visualizer will be disabled.
+    </string>
 
     <string name="updating_music_dialog">Updating your music library, please wait a sec..</string>
 
@@ -91,4 +95,7 @@
         Oops, seems like some of music files on your device can\'t be read for some reason.
         Please check if your files are available and not corrupted.
     </string>
+    <string name="game_results_clean_game">Clean game! (Score x 1.5)</string>
+    <string name="game_results_new_highscore">New highscore!</string>
+    <string name="menu_audio_visualizer">Audio visualizer</string>
 </resources>
