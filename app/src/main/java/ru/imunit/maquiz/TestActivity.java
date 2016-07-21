@@ -1,6 +1,10 @@
 package ru.imunit.maquiz;
 
 import android.graphics.Rect;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.audiofx.Visualizer;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,16 +12,65 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 
+import java.io.File;
+import java.io.IOException;
+
+import ru.imunit.maquiz.views.widgets.AudioVisualizer;
 import ru.imunit.maquiz.views.widgets.TrackView;
+import ru.imunit.maquizdb.DataSourceFactory;
+import ru.imunit.maquizdb.IDataSource;
+import ru.imunit.maquizdb.entities.DBTrack;
 
 public class TestActivity extends AppCompatActivity implements View.OnTouchListener {
 
     TrackView tv;
-
+    MediaPlayer mp;
+    Visualizer vis;
+    AudioVisualizer av;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
+        testTrackViewer();
+        try {
+            testVisualizer();
+        } catch (IOException e) {
+            Log.i("Visualizer test error", e.getMessage());
+        }
+    }
+
+    private void testVisualizer() throws IOException {
+
+        IDataSource dataSource = DataSourceFactory.getDataSource(this);
+        dataSource.openReadable();
+        DBTrack[] tracks = dataSource.getRandomTracks(1);
+
+        mp = new MediaPlayer();
+        mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mp.setDataSource(this, Uri.fromFile(new File(tracks[0].getUri())));
+        mp.prepare();
+
+        av = (AudioVisualizer)findViewById(R.id.testVisualizer);
+
+        vis = new Visualizer(mp.getAudioSessionId());
+        vis.setCaptureSize(Visualizer.getCaptureSizeRange()[0]);
+        vis.setDataCaptureListener(new Visualizer.OnDataCaptureListener() {
+            @Override
+            public void onWaveFormDataCapture(Visualizer visualizer, byte[] bytes, int i) {
+
+            }
+            @Override
+            public void onFftDataCapture(Visualizer visualizer, byte[] bytes, int i) {
+                av.update(bytes);
+                // Log.i("FFT data samples:", String.valueOf(bytes.length));
+            }
+        }, Visualizer.getMaxCaptureRate(), false, true);
+
+        vis.setEnabled(true);
+        mp.start();
+    }
+
+    private void testTrackViewer() {
         tv = (TrackView)findViewById(R.id.testTrackView);
         tv.setOnTouchListener(this);
         tv.setAnimationListener(new Animation.AnimationListener() {
