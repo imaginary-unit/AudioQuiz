@@ -51,6 +51,8 @@ public class TestActivity extends AppCompatActivity implements View.OnTouchListe
         mp.prepare();
 
         av = (AudioVisualizer)findViewById(R.id.testVisualizer);
+        av.setDivisions(2);
+        av.setBarHeight(0.4f);
 
         vis = new Visualizer(mp.getAudioSessionId());
         vis.setCaptureSize(Visualizer.getCaptureSizeRange()[0]);
@@ -64,7 +66,7 @@ public class TestActivity extends AppCompatActivity implements View.OnTouchListe
                 av.update(bytes);
                 // Log.i("FFT data samples:", String.valueOf(bytes.length));
             }
-        }, Visualizer.getMaxCaptureRate(), false, true);
+        }, Visualizer.getMaxCaptureRate() / 2, false, true);
 
         vis.setEnabled(true);
         mp.start();
