@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 
 import ru.imunit.maquiz.views.widgets.AudioVisualizer;
+import ru.imunit.maquiz.views.widgets.InfoBar;
 import ru.imunit.maquiz.views.widgets.TrackView;
 import ru.imunit.maquizdb.DataSourceFactory;
 import ru.imunit.maquizdb.IDataSource;
@@ -25,8 +26,10 @@ public class TestActivity extends AppCompatActivity implements View.OnTouchListe
 
     TrackView tv;
     MediaPlayer mp;
-    Visualizer vis;
-    AudioVisualizer av;
+    // Visualizer vis;
+    // AudioVisualizer av;
+    InfoBar ib;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,25 +53,26 @@ public class TestActivity extends AppCompatActivity implements View.OnTouchListe
         mp.setDataSource(this, Uri.fromFile(new File(tracks[0].getUri())));
         mp.prepare();
 
-        av = (AudioVisualizer)findViewById(R.id.testVisualizer);
-        av.setDivisions(2);
-        av.setBarHeight(0.4f);
+//        av = (AudioVisualizer)findViewById(R.id.testVisualizer);
+//        av.setDivisions(2);
+//        av.setBarHeight(0.4f);
+//        av.setAudioSessionId(mp.getAudioSessionId());
 
-        vis = new Visualizer(mp.getAudioSessionId());
-        vis.setCaptureSize(Visualizer.getCaptureSizeRange()[0]);
-        vis.setDataCaptureListener(new Visualizer.OnDataCaptureListener() {
-            @Override
-            public void onWaveFormDataCapture(Visualizer visualizer, byte[] bytes, int i) {
+//        vis = new Visualizer(mp.getAudioSessionId());
+//        vis.setCaptureSize(Visualizer.getCaptureSizeRange()[0]);
+//        vis.setDataCaptureListener(new Visualizer.OnDataCaptureListener() {
+//            @Override
+//            public void onWaveFormDataCapture(Visualizer visualizer, byte[] bytes, int i) {
+//
+//            }
+//            @Override
+//            public void onFftDataCapture(Visualizer visualizer, byte[] bytes, int i) {
+//                av.update(bytes);
+//                // Log.i("FFT data samples:", String.valueOf(bytes.length));
+//            }
+//        }, Visualizer.getMaxCaptureRate() / 2, false, true);
+//        vis.setEnabled(true);
 
-            }
-            @Override
-            public void onFftDataCapture(Visualizer visualizer, byte[] bytes, int i) {
-                av.update(bytes);
-                // Log.i("FFT data samples:", String.valueOf(bytes.length));
-            }
-        }, Visualizer.getMaxCaptureRate() / 2, false, true);
-
-        vis.setEnabled(true);
         mp.start();
     }
 

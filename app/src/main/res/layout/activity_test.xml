@@ -15,10 +15,10 @@
         android:layout_height="wrap_content">
     </ru.imunit.maquiz.views.widgets.TrackView>
 
-    <ru.imunit.maquiz.views.widgets.AudioVisualizer
-        android:id="@+id/testVisualizer"
+    <ru.imunit.maquiz.views.widgets.InfoBar
+        android:id="@+id/testInfoBar"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:background="@color/colorPrimary"/>
+        />
 
 </LinearLayout>

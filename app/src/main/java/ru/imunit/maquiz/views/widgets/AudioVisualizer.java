@@ -3,6 +3,7 @@ package ru.imunit.maquiz.views.widgets;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.media.audiofx.Visualizer;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -29,9 +30,27 @@ public class AudioVisualizer extends View {
         init();
     }
 
-    public void update(byte[] data) {
-        mData = data;
-        invalidate();
+    public void setAudioSessionId(int id) {
+        // mSessionId = id;
+        if (mVisualizer != null) {
+            mVisualizer.setEnabled(false);
+            mVisualizer.release();
+        }
+        mVisualizer = new Visualizer(id);
+        mVisualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[0]);
+        mVisualizer.setDataCaptureListener(new Visualizer.OnDataCaptureListener() {
+            @Override
+            public void onWaveFormDataCapture(Visualizer visualizer, byte[] bytes, int i) {
+
+            }
+            @Override
+            public void onFftDataCapture(Visualizer visualizer, byte[] bytes, int i) {
+                AudioVisualizer.this.update(bytes);
+                // Log.i("FFT data samples:", String.valueOf(bytes.length));
+            }
+        }, Visualizer.getMaxCaptureRate() / 2, false, true);
+
+        mVisualizer.setEnabled(true);
     }
 
     // the number to divide the data samples count by to get the desired bars count
@@ -49,6 +68,11 @@ public class AudioVisualizer extends View {
             mHeight = 1f;
         else
             mHeight = height;
+    }
+
+    private void update(byte[] data) {
+        mData = data;
+        invalidate();
     }
 
     private float max = (float)Math.sqrt(Byte.MAX_VALUE*Byte.MAX_VALUE*2);
@@ -96,6 +120,8 @@ public class AudioVisualizer extends View {
         mMargin = BASE_BAR_W * mDivisions / 2;
         mData = null;
         mPaint = new Paint();
+        // mSessionId = 0;
+        mVisualizer = null;
         mPaint.setStrokeWidth(BASE_BAR_W * mDivisions);
         mPaint.setAntiAlias(false);
         mPaint.setColor(getResources().getColor(R.color.colorAccent));
@@ -107,5 +133,7 @@ public class AudioVisualizer extends View {
     private float mMargin;
     private float mHeight;
     private Paint mPaint;
+    // private int mSessionId;
+    private Visualizer mVisualizer;
     private final float BASE_BAR_W = 8f;
 }
