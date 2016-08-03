@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -56,11 +57,14 @@ public class InfoBar extends FrameLayout {
     private void init() {
         inflate(getContext(), R.layout.info_bar, this);
         mAVisualizer = (AudioVisualizer)findViewById(R.id.visualizer);
+        mAVisualizer.setDivisions(2);
+        mAVisualizer.setBarHeight(0.4f);
         mTextInfo = (TextView)findViewById(R.id.textInfo);
         mTextInfo.setVisibility(View.GONE);
     }
 
-    private void crossfade(final View inView, final View outView, final int duration) {
+    private void crossfade(final View inView, final View outView, final int reverseDelay) {
+
         inView.setAlpha(0f);
         inView.setVisibility(View.VISIBLE);
         inView.animate()
@@ -69,20 +73,22 @@ public class InfoBar extends FrameLayout {
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        if (duration > 0) {  // run reverse animation
+                        if (reverseDelay > 0) {  // run reverse animation
                             RunnableCF r = new RunnableCF(outView, inView);
-                            mHandler.postDelayed(r, duration + FADE_DURATION);
+                            mHandler.postDelayed(r, reverseDelay + FADE_DURATION);
                         }
                     }
                 });
 
+        outView.setAlpha(1f);
         outView.animate()
                 .alpha(0f)
                 .setDuration(FADE_DURATION)
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        outView.setVisibility(View.GONE);
+                        // TODO: can't remove this listener after it has been set..
+                        // outView.setVisibility(View.GONE);
                     }
                 });
     }

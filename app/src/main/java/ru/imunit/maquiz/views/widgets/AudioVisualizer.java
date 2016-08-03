@@ -75,6 +75,11 @@ public class AudioVisualizer extends View {
         invalidate();
     }
 
+    @Override
+    public boolean isInEditMode() {
+        return true;
+    }
+
     private float max = (float)Math.sqrt(Byte.MAX_VALUE*Byte.MAX_VALUE*2);
     private float dbMax = (float)(10 * Math.log10(max));
     @Override

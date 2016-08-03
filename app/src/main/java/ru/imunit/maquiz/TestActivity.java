@@ -36,10 +36,28 @@ public class TestActivity extends AppCompatActivity implements View.OnTouchListe
         setContentView(R.layout.activity_test);
         testTrackViewer();
         try {
-            testVisualizer();
+            testInfoBar();
         } catch (IOException e) {
             Log.i("Visualizer test error", e.getMessage());
         }
+    }
+
+    private void testInfoBar() throws IOException {
+
+        IDataSource dataSource = DataSourceFactory.getDataSource(this);
+        dataSource.openReadable();
+        DBTrack[] tracks = dataSource.getRandomTracks(1);
+
+        mp = new MediaPlayer();
+        mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mp.setDataSource(this, Uri.fromFile(new File(tracks[0].getUri())));
+        mp.prepare();
+
+        ib = (InfoBar)findViewById(R.id.testInfoBar);
+        ib.setAudioSessionId(mp.getAudioSessionId());
+        ib.setInfoText("Significantly long testing text!!");
+
+        mp.start();
     }
 
     private void testVisualizer() throws IOException {
@@ -86,7 +104,7 @@ public class TestActivity extends AppCompatActivity implements View.OnTouchListe
             }
             @Override
             public void onAnimationEnd(Animation animation) {
-                Log.i("Anim listener", "Animation completed");
+                // Log.i("Anim listener", "Animation completed");
             }
             @Override
             public void onAnimationRepeat(Animation animation) {
@@ -100,21 +118,27 @@ public class TestActivity extends AppCompatActivity implements View.OnTouchListe
     @Override
     public boolean onTouch(View v, MotionEvent evt) {
         if (evt.getAction() == MotionEvent.ACTION_DOWN) {
-            Log.d("TouchTest", "Touch down");
+            //Log.d("TouchTest", "Touch down");
             rect = new Rect(v.getLeft(), v.getTop(), v.getRight(), v.getBottom());
             mout = false;
             tv.animateTouchDown();
+            if (ib != null) {
+                ib.showTextInfo(0);
+            }
         }
         if (evt.getAction() == MotionEvent.ACTION_UP) {
             if (!mout) {
-                Log.d("TouchTest", "Touch up");
+                //Log.d("TouchTest", "Touch up");
                 tv.animateTouchUp(false);
+                if (ib != null) {
+                    ib.hideTextInfo();
+                }
             }
         }
         if (evt.getAction() == MotionEvent.ACTION_MOVE) {
             if (!mout && !rect.contains(v.getLeft() + (int)evt.getX(), v.getTop() + (int)evt.getY())) {
                 mout = true;
-                Log.d("TouchTest", "Move out");
+                //Log.d("TouchTest", "Move out");
                 tv.animateTouchAway();
                 return true;
             }
