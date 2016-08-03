@@ -26,6 +26,7 @@ import java.util.Locale;
 import ru.imunit.maquiz.R;
 import ru.imunit.maquiz.models.GameModel;
 import ru.imunit.maquiz.models.IGameModel;
+import ru.imunit.maquiz.views.widgets.InfoBar;
 import ru.imunit.maquiz.views.widgets.TrackView;
 import ru.imunit.maquizdb.entities.DBTrack;
 
@@ -48,6 +49,7 @@ public class GameFragment extends Fragment implements
     private TextView mTextTime;
     private LinearLayout mTracksLayout;
     private MediaPlayer mMediaPlayer;
+    private InfoBar mInfoBar;
 
     public GameFragment() {
         // Required empty public constructor
@@ -75,7 +77,6 @@ public class GameFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.i("DEBUG", "onCreateView()");
-        mMetronomePlaying = false;
         return inflater.inflate(R.layout.fragment_game, container, false);
     }
 
@@ -96,7 +97,8 @@ public class GameFragment extends Fragment implements
         mTextRound = (TextView)getView().findViewById(R.id.textTracks);
         mTextScore = (TextView)getView().findViewById(R.id.textScore);
         mTextTime = (TextView)getView().findViewById(R.id.textTime);
-        mTracksLayout = (LinearLayout) getView().findViewById(R.id.layoutTracks);
+        mTracksLayout = (LinearLayout)getView().findViewById(R.id.layoutTracks);
+        mInfoBar = (InfoBar)getView().findViewById(R.id.infoBar);
         mListener.onGameFragmentInitialized();
         if (mModel.isGameRunning()) {
             updateRoundUi();
@@ -106,17 +108,22 @@ public class GameFragment extends Fragment implements
     @Override
     public void onPause() {
         super.onPause();
-        if (mMediaPlayer != null) {
+        mMetronomePlaying = false;
+        if (mInfoBar != null)
+            mInfoBar.releaseAudioSession();
+        if (mMediaPlayer != null)
             mMediaPlayer.release();
-        }
+        Log.i("DEBUG", "onPause()");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (mMediaPlayer != null) {
+        if (mInfoBar != null)
+            mInfoBar.releaseAudioSession();
+        if (mMediaPlayer != null)
             mMediaPlayer.release();
-        }
+        Log.i("DEBUG", "onStop()");
     }
 
     @Override
@@ -135,9 +142,10 @@ public class GameFragment extends Fragment implements
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        if (mMediaPlayer != null) {
+        if (mInfoBar != null)
+            mInfoBar.releaseAudioSession();
+        if (mMediaPlayer != null)
             mMediaPlayer.release();
-        }
     }
 
     /**
@@ -146,9 +154,8 @@ public class GameFragment extends Fragment implements
 
     public void onRoundUpdated() {
         updateRoundUi();
-        Log.i("DEBUG", "onRoundUpdated()");
         if (mModel.isMetronomeEnabled()) {
-            /* the inner condition guarantees that we don't start the metronome twise
+            /* the inner condition guarantees that we don't start the metronome twice
                because of onResume being called on fragment start
              */
              if (!mMetronomePlaying) {
@@ -160,11 +167,13 @@ public class GameFragment extends Fragment implements
                     @Override
                     public void onCompletion(MediaPlayer mediaPlayer) {
                         mMediaPlayer.release();
+                        mInfoBar.releaseAudioSession();
                         mMetronomePlaying = false;
                         mUiLock = false;
                         mListener.onStartPlayback();
                     }
                 });
+                mInfoBar.setAudioSessionId(mMediaPlayer.getAudioSessionId());
                 mMediaPlayer.start();
              }
         } else {
@@ -176,8 +185,11 @@ public class GameFragment extends Fragment implements
     public void onScoreUpdated(long diff) {
         mTextScore.setText(String.valueOf(mModel.getGameScore()));
         // TODO: show somewhere else...
-        Toast.makeText(getActivity(), String.format(Locale.ENGLISH, "+ %d",
-                mModel.getRoundScore()), Toast.LENGTH_SHORT).show();
+        mInfoBar.setInfoText(String.format(Locale.ENGLISH, "+ %d",
+                mModel.getRoundScore()));
+        mInfoBar.showTextInfo(1000);
+//        Toast.makeText(getActivity(), String.format(Locale.ENGLISH, "+ %d",
+//                mModel.getRoundScore()), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -190,6 +202,7 @@ public class GameFragment extends Fragment implements
         if (result == GameModel.GUESS_RESULT_CORRECT) {
             if (mMediaPlayer.isPlaying())
                 mMediaPlayer.stop();
+            mInfoBar.releaseAudioSession();
             mMediaPlayer.release();
 
             // show correct guess animation and load next round after it has finished
@@ -228,6 +241,7 @@ public class GameFragment extends Fragment implements
         else {
             if (mMediaPlayer.isPlaying())
                 mMediaPlayer.stop();
+            mInfoBar.releaseAudioSession();
             mMediaPlayer.release();
             // display failed notification and move to the next round
             tempTrackView.setAnimationListener(new Animation.AnimationListener() {
@@ -266,6 +280,7 @@ public class GameFragment extends Fragment implements
 
                 mMediaPlayer.seekTo(start);
                 Log.i("Playing media from:", String.format("%d / %d", start, len));
+                mInfoBar.setAudioSessionId(mMediaPlayer.getAudioSessionId());
                 mMediaPlayer.start();
                 /* TODO: this call on each playback start is basically a time bomb..
                         consider refactoring
@@ -295,18 +310,11 @@ public class GameFragment extends Fragment implements
             tv.setLayoutParams(new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, 0, 1.0f));
             tv.setTrack(track);
-//            tv.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (!mUiLock) {
-//                        if (v instanceof TrackView) {
-//                            TrackView t = (TrackView) v;
-//                            mListener.onMakeGuess(t.getTrack());
-//                        }
-//                    }
-//                }
-//            });
             tv.setOnTouchListener(this);
+            if (mModel.isTrackGuessed(track)) {
+                tv.disable();
+                tv.setEnabled(false);
+            }
             mTracksLayout.addView(tv);
         }
     }

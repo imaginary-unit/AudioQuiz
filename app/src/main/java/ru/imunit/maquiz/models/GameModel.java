@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -58,6 +59,7 @@ public class GameModel implements IGameModel {
     // game scope fields
     private HashMap<DBTrack, Integer> mGuess;
     private HashMap<DBTrack, Integer> mCorrectGuess;
+    private List<Integer> mGuessTime;
     private int mRoundsCount;
     private long mGameScore;
     private long mLastHighscore;
@@ -65,7 +67,7 @@ public class GameModel implements IGameModel {
     // round scope fields
     private int mCurrentRound;
     private List<DBTrack> mTracks;
-    private List<Integer> mGuessTime;
+    private HashSet<DBTrack> mTracksGuessed;
     private DBTrack mCorrectTrack;
     private int mPlaybackTime;
     private float mPlaybackStartPos;
@@ -248,6 +250,7 @@ public class GameModel implements IGameModel {
 
     public void initGame(int options, int rounds) {
         mTracks = new ArrayList<>();
+        mTracksGuessed = new HashSet<>();
         mGuess.clear();
         mCorrectGuess.clear();
         mGuessTime.clear();
@@ -271,6 +274,7 @@ public class GameModel implements IGameModel {
             finishGame();
             return;
         }
+        mTracksGuessed.clear();
         // obtain random tracks from data source
         mTracks = Arrays.asList(mDataSource.getRandomTracks(mOptionsCount));
         mDataSource.close();
@@ -319,9 +323,10 @@ public class GameModel implements IGameModel {
                 listener.onScoreUpdated(mRoundScore);
             }
         } else {
-            // check if there already was N-2 mistakes
-            // this won't work for options count less that 3, but it's practically OK
-            if (mRoundPenalty >= Math.pow(WRONG_GUESS_PENALTY, mOptionsCount-2)) {
+            mTracksGuessed.add(track);
+            // check if there is only one option left
+            // if (mRoundPenalty >= Math.pow(WRONG_GUESS_PENALTY, mOptionsCount-2)) {
+            if (mOptionsCount - mTracksGuessed.size() < 2) {
                 timerHandler.removeCallbacks(timerUpdate);
                 mRoundScore = 0;
                 result = GUESS_RESULT_WRONG_END;
@@ -371,6 +376,10 @@ public class GameModel implements IGameModel {
         return s == cs;
     }
 
+    @Override
+    public boolean isTrackGuessed(DBTrack track) {
+        return mTracksGuessed.contains(track);
+    }
 
     @Override
     public int getCurrentRound() {

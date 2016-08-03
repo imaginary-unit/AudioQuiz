@@ -38,6 +38,10 @@ public class InfoBar extends FrameLayout {
         mAVisualizer.setAudioSessionId(sessionId);
     }
 
+    public void releaseAudioSession() {
+        mAVisualizer.release();
+    }
+
     public void setInfoText(CharSequence text) {
         mTextInfo.setText(text);
     }

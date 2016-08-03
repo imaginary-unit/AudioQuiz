@@ -14,6 +14,7 @@ public interface IGameModel {
     boolean isGameRunning();
     boolean isGameFinished();
     boolean isGameClean();
+    boolean isTrackGuessed(DBTrack track);
     int getCurrentRound();
     int getRoundsCount();
     int getPlaybackTime();

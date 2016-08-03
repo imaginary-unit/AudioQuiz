@@ -1,16 +1,20 @@
 package ru.imunit.maquiz.fragments;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import ru.imunit.maquiz.R;
+
+import static android.content.Context.ACTIVITY_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -70,6 +74,10 @@ public class StartFragment extends Fragment {
                 }
             }
         });
+
+        ActivityManager am = (ActivityManager) getActivity().getSystemService(ACTIVITY_SERVICE);
+        int memoryClass = am.getMemoryClass();
+        Log.d("DEBUG", "memoryClass:" + Integer.toString(memoryClass));
     }
 
     private void playlistsClick() {

@@ -53,6 +53,14 @@ public class AudioVisualizer extends View {
         mVisualizer.setEnabled(true);
     }
 
+    public void release() {
+        if (mVisualizer != null) {
+            mVisualizer.setEnabled(false);
+            mVisualizer.release();
+            mVisualizer = null;
+        }
+    }
+
     // the number to divide the data samples count by to get the desired bars count
     public void setDivisions(int divisions) {
         mDivisions = divisions;
