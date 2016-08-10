@@ -17,6 +17,7 @@ import ru.imunit.maquiz.fragments.GameFragment;
 import ru.imunit.maquiz.fragments.ModelRetainFragment;
 import ru.imunit.maquiz.fragments.ResultsFragment;
 import ru.imunit.maquiz.managers.ExceptionNotifier;
+import ru.imunit.maquiz.managers.SettingsManager;
 import ru.imunit.maquiz.models.GameModel;
 import ru.imunit.maquizdb.DataSourceFactory;
 import ru.imunit.maquizdb.entities.DBTrack;
@@ -47,6 +48,8 @@ public class GameActivity extends AppCompatActivity
             mModelRetainFragment.setModel(new GameModel(DataSourceFactory.getDataSource(this)));
             getSupportFragmentManager().beginTransaction()
                     .add(mModelRetainFragment, "ModelRetain").commit();
+            mModelRetainFragment.getModel().setMetronomeEnabled(
+                    new SettingsManager(this).getMetronomeState());
         }
         mModel = mModelRetainFragment.getModel();
         mModel.setAsyncExceptionListener(new GameModel.AsyncExceptionListener() {

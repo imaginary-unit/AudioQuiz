@@ -16,13 +16,16 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import ru.imunit.maquiz.R;
 import ru.imunit.maquiz.fragments.StartFragment;
 import ru.imunit.maquiz.managers.ExceptionNotifier;
 import ru.imunit.maquiz.managers.MusicUpdater;
+import ru.imunit.maquiz.managers.SettingsManager;
 
 public class StartActivity extends AppCompatActivity
         implements StartFragment.OnFragmentInteractionListener,
@@ -32,6 +35,7 @@ public class StartActivity extends AppCompatActivity
     private static final int PERMISSION_REQUEST_RECORD_AUDIO = 2;
     private View mRootLayout;
     private ProgressDialog mProgress = null;
+    private Menu mOptionsMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +81,35 @@ public class StartActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        SettingsManager sm = new SettingsManager(this);
+        menu.findItem(R.id.action_metronome).setChecked(sm.getMetronomeState());
+        menu.findItem(R.id.action_visualizer).setChecked(sm.getVisualizerState());
+        mOptionsMenu = menu;
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_metronome) {
+            SettingsManager sm = new SettingsManager(this);
+            boolean newState = !sm.getMetronomeState();
+            sm.setMetronomeState(newState);
+            item.setChecked(newState);
+            Log.d("Metronome state", String.valueOf(sm.getMetronomeState()));
+            return true;
+        }
+        else if (item.getItemId() == R.id.action_visualizer) {
+            SettingsManager sm = new SettingsManager(this);
+            boolean newState = !sm.getVisualizerState();
+            if (checkRecordPermission()) {
+                sm.setVisualizerState(newState);
+                item.setChecked(newState);
+                Log.d("Visualizer state", String.valueOf(sm.getVisualizerState()));
+            }
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     private boolean checkStoragePermission() {
@@ -181,10 +213,19 @@ public class StartActivity extends AppCompatActivity
         else if (requestCode == PERMISSION_REQUEST_RECORD_AUDIO) {
             if (grantResults.length == 0
                 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                // if no record permissions, show the notification and disable the visualizer
                 Snackbar.make(mRootLayout, R.string.permission_record_rationale,
                         Snackbar.LENGTH_LONG).show();
-            } else {
-                // turn the visualizer on
+                new SettingsManager(this).setVisualizerState(false);
+                if (mOptionsMenu != null) {
+                    mOptionsMenu.findItem(R.id.action_visualizer).setChecked(false);
+                }
+            }
+            else {
+                new SettingsManager(this).setVisualizerState(true);
+                if (mOptionsMenu != null) {
+                    mOptionsMenu.findItem(R.id.action_visualizer).setChecked(true);
+                }
             }
         }
         else {

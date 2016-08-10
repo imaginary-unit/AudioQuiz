@@ -3,13 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activities.StartActivity">
 
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+    <item
+        android:id="@+id/action_metronome"
+        android:title="@string/menu_metronome"
+        app:showAsAction="never"
+        android:checkable="true"
+        android:checked="true"
+        />
+
     <item
         android:id="@+id/action_visualizer"
         android:title="@string/menu_audio_visualizer"
         app:showAsAction="never"
         android:checkable="true"
-        android:checked="false"
+        android:checked="true"
         />
 </menu>

@@ -212,7 +212,9 @@ public class GameFragment extends Fragment implements
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     mListener.onNextRound();
-                    // mUiLock = false;
+                    // TODO: do something with this in future updates..
+                    if (!mModel.isMetronomeEnabled())
+                        mUiLock = false;
                 }
                 @Override
                 public void onAnimationRepeat(Animation animation) { }
@@ -250,7 +252,9 @@ public class GameFragment extends Fragment implements
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     mListener.onNextRound();
-                    // mUiLock = false;
+                    // see above to-do label
+                    if (!mModel.isMetronomeEnabled())
+                        mUiLock = false;
                 }
                 @Override
                 public void onAnimationRepeat(Animation animation) { }

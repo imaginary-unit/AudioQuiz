@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import ru.imunit.maquiz.R;
+import ru.imunit.maquiz.managers.SettingsManager;
 
 /**
  * Created by theuser on 31.07.16.
@@ -34,12 +35,13 @@ public class InfoBar extends FrameLayout {
     }
 
     public void setAudioSessionId(int sessionId) {
-        //TODO: disable this if visualizer is not enabled
-        mAVisualizer.setAudioSessionId(sessionId);
+        if (mVisualizerEnabled)
+            mAVisualizer.setAudioSessionId(sessionId);
     }
 
     public void releaseAudioSession() {
-        mAVisualizer.release();
+        if (mVisualizerEnabled)
+            mAVisualizer.release();
     }
 
     public void setInfoText(CharSequence text) {
@@ -60,9 +62,12 @@ public class InfoBar extends FrameLayout {
 
     private void init() {
         inflate(getContext(), R.layout.info_bar, this);
-        mAVisualizer = (AudioVisualizer)findViewById(R.id.visualizer);
-        mAVisualizer.setDivisions(2);
-        mAVisualizer.setBarHeight(0.4f);
+        mVisualizerEnabled = new SettingsManager(getContext()).getVisualizerState();
+        mAVisualizer = (AudioVisualizer) findViewById(R.id.visualizer);
+        if (mVisualizerEnabled) {
+            mAVisualizer.setDivisions(2);
+            mAVisualizer.setBarHeight(0.4f);
+        }
         mTextInfo = (TextView)findViewById(R.id.textInfo);
         mTextInfo.setVisibility(View.GONE);
     }
@@ -114,5 +119,6 @@ public class InfoBar extends FrameLayout {
     private Handler mHandler = new Handler();
     private AudioVisualizer mAVisualizer;
     private TextView mTextInfo;
+    private boolean mVisualizerEnabled;
     private final int FADE_DURATION = 250;
 }
