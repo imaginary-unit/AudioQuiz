@@ -30,7 +30,7 @@ public class MusicUpdater {
     public static final int RESULT_ERROR = 1;
     public static final int RESULT_FEW_MUSIC = 2;
     public static final int RESULT_NO_MUSIC = 3;
-    public static final int FEW_MUSIC_THRESHOLD = 10;
+    public static final int FEW_MUSIC_THRESHOLD = 20;
 
     private Context mContext;
     private MusicUpdateListener mListener;

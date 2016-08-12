@@ -21,6 +21,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.util.Locale;
+
 import ru.imunit.maquiz.R;
 import ru.imunit.maquiz.fragments.StartFragment;
 import ru.imunit.maquiz.managers.ExceptionNotifier;
@@ -170,15 +172,20 @@ public class StartActivity extends AppCompatActivity
                     ExceptionNotifier.make(mRootLayout,
                             getResources().getString(R.string.err_database_error)).show();
                 } else if (res == MusicUpdater.RESULT_FEW_MUSIC) {
-                    // TODO: This should be shown only once! Define some parameter to store...
-                    ExceptionNotifier.make(mRootLayout,
-                            getResources().getString(R.string.err_few_music)).
-                            setActionListener(new ExceptionNotifier.ActionListener() {
-                                @Override
-                                public void onClick() {
-                                    // added handler just to have dismiss button in snackbar
-                                }
-                            }).show();
+                    SettingsManager sm = new SettingsManager(StartActivity.this);
+                    if (!sm.getFewMusicNorified()) {
+                        sm.setFewMusicNotified(true);
+                        String few_mus = String.format(Locale.ENGLISH,
+                                getResources().getString(R.string.err_few_music),
+                                MusicUpdater.FEW_MUSIC_THRESHOLD);
+                        ExceptionNotifier.make(mRootLayout, few_mus).
+                                setActionListener(new ExceptionNotifier.ActionListener() {
+                                    @Override
+                                    public void onClick() {
+                                        // added handler just to have dismiss button in snackbar
+                                    }
+                                }).show();
+                    }
                 } else if (res == MusicUpdater.RESULT_NO_MUSIC) {
                     ExceptionNotifier.make(mRootLayout,
                             getResources().getString(R.string.err_no_music)).show();
