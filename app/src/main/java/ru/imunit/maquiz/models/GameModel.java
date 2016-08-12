@@ -298,7 +298,6 @@ public class GameModel implements IGameModel {
         // startPlayback();
     }
 
-    // TODO: handling track end (restart)
     public void startPlayback() {
         mPlaybackStartPos = (new Random().nextFloat()) * PLAYBACK_START_THRESHOLD;
         for (ModelUpdateListener listener : mListeners) {

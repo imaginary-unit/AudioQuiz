@@ -184,12 +184,9 @@ public class GameFragment extends Fragment implements
     @Override
     public void onScoreUpdated(long diff) {
         mTextScore.setText(String.valueOf(mModel.getGameScore()));
-        // TODO: show somewhere else...
         mInfoBar.setInfoText(String.format(Locale.ENGLISH, "+ %d",
                 mModel.getRoundScore()));
         mInfoBar.showTextInfo(1000);
-//        Toast.makeText(getActivity(), String.format(Locale.ENGLISH, "+ %d",
-//                mModel.getRoundScore()), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -283,6 +280,7 @@ public class GameFragment extends Fragment implements
                 if (start > len) start = start - len;
 
                 mMediaPlayer.seekTo(start);
+                mMediaPlayer.setLooping(true);
                 Log.i("Playing media from:", String.format("%d / %d", start, len));
                 mInfoBar.setAudioSessionId(mMediaPlayer.getAudioSessionId());
                 mMediaPlayer.start();
