@@ -268,8 +268,7 @@ public class GameModel implements IGameModel {
         if (!mDataSource.openReadable())
             throw new DatabaseException();
 
-        mCurrentRound++;
-        if (mCurrentRound > mRoundsCount) {
+        if (mCurrentRound + 1 > mRoundsCount) {
             mDataSource.close();
             finishGame();
             return;
@@ -289,6 +288,9 @@ public class GameModel implements IGameModel {
         mPlaybackStartPos = 0f;
         mRoundScore = 0;
         mRoundPenalty = 1;
+
+        mCurrentRound++;
+
         // notify all listeners
         for (ModelUpdateListener listener : mListeners) {
             listener.onRoundUpdated();

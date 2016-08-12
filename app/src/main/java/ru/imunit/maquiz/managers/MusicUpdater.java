@@ -29,6 +29,7 @@ public class MusicUpdater {
     public static final int RESULT_OK = 0;
     public static final int RESULT_ERROR = 1;
     public static final int RESULT_FEW_MUSIC = 2;
+    public static final int RESULT_NO_MUSIC = 3;
     public static final int FEW_MUSIC_THRESHOLD = 10;
 
     private Context mContext;
@@ -103,7 +104,11 @@ public class MusicUpdater {
         int count = sysSet.size();
         if (count >= FEW_MUSIC_THRESHOLD) {
             return RESULT_OK;
-        } else {
+        }
+        else if (count == 0) {
+            return RESULT_NO_MUSIC;
+        }
+        else {
             return RESULT_FEW_MUSIC;
         }
     }

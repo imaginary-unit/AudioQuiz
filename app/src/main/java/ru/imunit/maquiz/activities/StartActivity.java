@@ -179,6 +179,9 @@ public class StartActivity extends AppCompatActivity
                                     // added handler just to have dismiss button in snackbar
                                 }
                             }).show();
+                } else if (res == MusicUpdater.RESULT_NO_MUSIC) {
+                    ExceptionNotifier.make(mRootLayout,
+                            getResources().getString(R.string.err_no_music)).show();
                 }
             }
         });
