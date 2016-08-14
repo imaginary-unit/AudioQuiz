@@ -75,9 +75,29 @@ public class StartFragment extends Fragment {
             }
         });
 
-        ActivityManager am = (ActivityManager) getActivity().getSystemService(ACTIVITY_SERVICE);
-        int memoryClass = am.getMemoryClass();
-        Log.d("DEBUG", "memoryClass:" + Integer.toString(memoryClass));
+        Button bRate = (Button)getView().findViewById(R.id.rateApp);
+        bRate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener != null) {
+                    mListener.onRateApp();
+                }
+            }
+        });
+
+        Button bShare = (Button)getView().findViewById(R.id.shareApp);
+        bShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener != null) {
+                    mListener.onShareApp();
+                }
+            }
+        });
+
+//        ActivityManager am = (ActivityManager) getActivity().getSystemService(ACTIVITY_SERVICE);
+//        int memoryClass = am.getMemoryClass();
+//        Log.d("DEBUG", "memoryClass:" + Integer.toString(memoryClass));
     }
 
     private void playlistsClick() {
@@ -107,5 +127,7 @@ public class StartFragment extends Fragment {
         void onPlaylistOpen();
         void onPlay();
         void onStatsOpen();
+        void onRateApp();
+        void onShareApp();
     }
 }

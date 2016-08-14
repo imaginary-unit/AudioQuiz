@@ -3,10 +3,12 @@ package ru.imunit.maquiz.activities;
 import android.Manifest;
 import android.app.Application;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -78,6 +80,32 @@ public class StartActivity extends AppCompatActivity
         Intent statsIntent = new Intent(this,
                 ActivityFactory.getActivity(ActivityFactory.STATS_ACTIVTY));
         startActivity(statsIntent);
+    }
+
+    @Override
+    public void onRateApp() {
+        Uri uri = Uri.parse("market://details?id=" + this.getPackageName());
+        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET |
+                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        try {
+            startActivity(goToMarket);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=" + this.getPackageName())));
+        }
+    }
+
+    @Override
+    public void onShareApp() {
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("text/plain");
+        share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        share.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
+        share.putExtra(Intent.EXTRA_TEXT,
+                "http://play.google.com/store/apps/details?id=" + this.getPackageName());
+        startActivity(Intent.createChooser(share, getString(R.string.share_dialog_title)));
     }
 
     @Override

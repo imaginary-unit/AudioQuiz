@@ -35,4 +35,20 @@
         android:background="@color/colorPrimary"
         android:layout_margin="20dp"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:text="Rate"
+        android:id="@+id/rateApp"
+        android:background="@color/colorPrimary"
+        android:layout_margin="20dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:text="Share"
+        android:id="@+id/shareApp"
+        android:background="@color/colorPrimary"
+        android:layout_margin="20dp" />
+
 </LinearLayout>

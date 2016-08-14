@@ -22,6 +22,10 @@
         You haven\'t granted the audio recording permission - audio visualizer will be disabled.
     </string>
 
+    <string name="share_subject">
+        My Audio Quiz: an Android app to check how well do you know your favourite music!
+    </string>
+
     <string name="updating_music_dialog">Updating your music library, please wait a sec..</string>
 
     <string name="ok">OK</string>
@@ -99,4 +103,5 @@
     <string name="game_results_new_highscore">New highscore!</string>
     <string name="menu_audio_visualizer">Audio visualizer</string>
     <string name="menu_metronome">Metronome</string>
+    <string name="share_dialog_title">Share this app</string>
 </resources>

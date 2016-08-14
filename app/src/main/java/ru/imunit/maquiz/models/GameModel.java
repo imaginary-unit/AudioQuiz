@@ -226,6 +226,7 @@ public class GameModel implements IGameModel {
     }
 
     private void calcRoundScoreBonuses() {
+        // TODO: remove  or reduce bonuses when there are wrong attempts
         mRoundScore += SCORE_BASE;
         int n = mGuessTime.size();
         int t0 = mGuessTime.get(n-1); // current round time
