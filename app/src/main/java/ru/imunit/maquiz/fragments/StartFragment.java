@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import ru.imunit.maquiz.R;
 
@@ -46,7 +47,7 @@ public class StartFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button bPlaylists = (Button)getView().findViewById(R.id.playlists);
+        ImageButton bPlaylists = (ImageButton)getView().findViewById(R.id.playlists);
         bPlaylists.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -55,7 +56,7 @@ public class StartFragment extends Fragment {
                 }
         );
 
-        Button bPlay = (Button)getView().findViewById(R.id.play);
+        ImageButton bPlay = (ImageButton)getView().findViewById(R.id.play);
         bPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,7 +66,7 @@ public class StartFragment extends Fragment {
             }
         });
 
-        Button bStats = (Button)getView().findViewById(R.id.stats);
+        ImageButton bStats = (ImageButton)getView().findViewById(R.id.stats);
         bStats.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,7 +76,7 @@ public class StartFragment extends Fragment {
             }
         });
 
-        Button bRate = (Button)getView().findViewById(R.id.rateApp);
+        ImageButton bRate = (ImageButton)getView().findViewById(R.id.rateApp);
         bRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,7 +86,7 @@ public class StartFragment extends Fragment {
             }
         });
 
-        Button bShare = (Button)getView().findViewById(R.id.shareApp);
+        ImageButton bShare = (ImageButton)getView().findViewById(R.id.shareApp);
         bShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

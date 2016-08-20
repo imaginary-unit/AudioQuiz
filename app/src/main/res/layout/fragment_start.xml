@@ -1,54 +1,80 @@
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="false"
     android:orientation="vertical"
+    android:background="@drawable/background"
     tools:context="ru.imunit.maquiz.fragments.StartFragment">
 
-    <android.widget.Space
-        android:layout_width="match_parent"
-        android:layout_height="60dp" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="Play"
-        android:id="@+id/play"
-        android:background="@color/colorPrimary"
-        android:layout_margin="20dp"/>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="Show playlist"
+    <ImageButton
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
         android:id="@+id/playlists"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/round_button"
+        android:src="@drawable/playlist_play"
+        android:scaleType="fitCenter"
+        android:padding="10dp"
         android:layout_margin="20dp"/>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="Show statistics"
+    <ImageButton
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
         android:id="@+id/stats"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/round_button"
+        android:src="@drawable/percent"
+        android:scaleType="fitCenter"
+        android:padding="10dp"
         android:layout_margin="20dp"/>
 
-    <Button
-        android:layout_width="wrap_content"
+    <ImageButton
+        android:layout_width="60dp"
         android:layout_height="60dp"
-        android:text="Rate"
-        android:id="@+id/rateApp"
-        android:background="@color/colorPrimary"
-        android:layout_margin="20dp"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:text="Share"
+        android:layout_margin="5dp"
+        android:layout_alignParentRight="true"
         android:id="@+id/shareApp"
-        android:background="@color/colorPrimary"
-        android:layout_margin="20dp" />
+        android:background="@android:color/transparent"
+        android:src="@drawable/share_button"
+        android:scaleType="fitCenter" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/shareApp"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:textSize="52sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorForeground"
+        style="@style/OutlinedText"
+        android:text="Audio Quiz" />
+
+    <ImageButton
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="5dp"
+        android:layout_toLeftOf="@id/shareApp"
+        android:id="@+id/rateApp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/star_button"
+        android:scaleType="fitCenter"/>
+
+    <ImageButton
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_above="@id/playlists"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/play"
+        android:background="@drawable/round_button"
+        android:src="@drawable/ic_play_arrow"
+        android:scaleType="fitCenter"
+        android:layout_margin="20dp"/>
+
+</RelativeLayout>
