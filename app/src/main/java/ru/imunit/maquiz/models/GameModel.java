@@ -364,7 +364,7 @@ public class GameModel implements IGameModel {
 
     @Override
     public boolean isGameFinished() {
-        return mCurrentRound > mRoundsCount;
+        return (mRoundsCount > 0) && (mCurrentRound + 1 > mRoundsCount);
     }
 
     @Override

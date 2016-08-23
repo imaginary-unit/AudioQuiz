@@ -36,9 +36,9 @@ public class GameActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.game_toolbar_title);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+//        toolbar.setTitle(R.string.game_toolbar_title);
+//        setSupportActionBar(toolbar);
 
         // retain or create model
         mModelRetainFragment = (ModelRetainFragment)

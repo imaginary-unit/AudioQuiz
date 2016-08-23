@@ -9,8 +9,6 @@
     android:background="@color/colorBack1"
     tools:context="ru.imunit.maquiz.activities.GameActivity">
 
-    <include layout="@layout/toolbar_base" />
-
     <FrameLayout
         android:id="@+id/fragment_placeholder"
         android:layout_width="match_parent"

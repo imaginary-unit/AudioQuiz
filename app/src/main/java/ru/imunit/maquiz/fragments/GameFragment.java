@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -16,7 +17,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +29,8 @@ import ru.imunit.maquiz.models.IGameModel;
 import ru.imunit.maquiz.views.widgets.InfoBar;
 import ru.imunit.maquiz.views.widgets.TrackView;
 import ru.imunit.maquizdb.entities.DBTrack;
+
+import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,7 +49,7 @@ public class GameFragment extends Fragment implements
     private TextView mTextRound;
     private TextView mTextScore;
     private TextView mTextTime;
-    private LinearLayout mTracksLayout;
+    private GridLayout mTracksLayout;
     private MediaPlayer mMediaPlayer;
     private InfoBar mInfoBar;
 
@@ -94,11 +96,13 @@ public class GameFragment extends Fragment implements
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mTracksLayout = (GridLayout)getView().findViewById(R.id.layoutTracks);
         mTextRound = (TextView)getView().findViewById(R.id.textTracks);
         mTextScore = (TextView)getView().findViewById(R.id.textScore);
         mTextTime = (TextView)getView().findViewById(R.id.textTime);
-        mTracksLayout = (LinearLayout)getView().findViewById(R.id.layoutTracks);
         mInfoBar = (InfoBar)getView().findViewById(R.id.infoBar);
+        mInfoBar.init();
         mListener.onGameFragmentInitialized();
         if (mModel.isGameRunning()) {
             updateRoundUi();
@@ -305,19 +309,45 @@ public class GameFragment extends Fragment implements
                 ((float)mModel.getPlaybackTime() / 1E3f)));
         mTextScore.setText(String.valueOf(mModel.getGameScore()));
 
-        mTracksLayout.removeAllViews();
-        List<DBTrack> tracks = mModel.getTracks();
-        for (DBTrack track : tracks) {
-            TrackView tv = new TrackView(getActivity());
-            tv.setLayoutParams(new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, 0, 1.0f));
-            tv.setTrack(track);
-            tv.setOnTouchListener(this);
-            if (mModel.isTrackGuessed(track)) {
-                tv.disable();
-                tv.setEnabled(false);
+        if (getResources().getConfiguration().orientation == ORIENTATION_PORTRAIT) {
+            mTracksLayout.removeAllViews();
+            List<DBTrack> tracks = mModel.getTracks();
+            int len = tracks.size();
+            for (int i=0; i < len; i++) {
+                TrackView tv = new TrackView(getActivity());
+                GridLayout.Spec rowSpec = GridLayout.spec(i);
+                GridLayout.Spec columnSpec = GridLayout.spec(0);
+                GridLayout.LayoutParams lp = new GridLayout.LayoutParams(rowSpec, columnSpec);
+                tv.setLayoutParams(lp);
+                //tv.setLayoutParams(new GridLayout.LayoutParams(
+                //        ViewGroup.LayoutParams.MATCH_PARENT, 0, 1.0f));
+                tv.setTrack(tracks.get(i));
+                tv.setOnTouchListener(this);
+                if (mModel.isTrackGuessed(tracks.get(i))) {
+                    tv.disable();
+                    tv.setEnabled(false);
+                }
+                mTracksLayout.addView(tv);
             }
-            mTracksLayout.addView(tv);
+        } else {
+            mTracksLayout.removeAllViews();
+            List<DBTrack> tracks = mModel.getTracks();
+            int len = tracks.size();
+            for (int i=0; i < len; i++) {
+                TrackView tv = new TrackView(getActivity());
+                GridLayout.Spec rowSpec = GridLayout.spec(i / 2);
+                GridLayout.Spec columnSpec = GridLayout.spec(i % 2, 1.0f);
+                GridLayout.LayoutParams lp = new GridLayout.LayoutParams(rowSpec, columnSpec);
+                lp.width = 0;
+                tv.setLayoutParams(lp);
+                tv.setTrack(tracks.get(i));
+                tv.setOnTouchListener(this);
+                if (mModel.isTrackGuessed(tracks.get(i))) {
+                    tv.disable();
+                    tv.setEnabled(false);
+                }
+                mTracksLayout.addView(tv);
+            }
         }
     }
 

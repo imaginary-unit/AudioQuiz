@@ -21,17 +21,17 @@ public class InfoBar extends FrameLayout {
 
     public InfoBar(Context context) {
         super(context);
-        init();
+        //init();
     }
 
     public InfoBar(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        //init();
     }
 
     public InfoBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        //init();
     }
 
     public void setAudioSessionId(int sessionId) {
@@ -42,6 +42,11 @@ public class InfoBar extends FrameLayout {
     public void releaseAudioSession() {
         if (mVisualizerEnabled)
             mAVisualizer.release();
+    }
+
+    @Override
+    public boolean isInEditMode() {
+        return true;
     }
 
     public void setInfoText(CharSequence text) {
@@ -60,7 +65,7 @@ public class InfoBar extends FrameLayout {
         crossfade(mAVisualizer, mTextInfo, 0);
     }
 
-    private void init() {
+    public void init() {
         inflate(getContext(), R.layout.info_bar, this);
         mVisualizerEnabled = new SettingsManager(getContext()).getVisualizerState();
         mAVisualizer = (AudioVisualizer) findViewById(R.id.visualizer);
