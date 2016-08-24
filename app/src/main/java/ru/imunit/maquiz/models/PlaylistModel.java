@@ -90,6 +90,21 @@ public class PlaylistModel implements IPlaylistModel {
             listener.onDataUpdated();
     }
 
+    public void clearBlackList() {
+        if (!mDataSource.openWritable()) {
+            if (mAEListener != null)
+                mAEListener.onDatabaseException();
+            return;
+        }
+        mDataSource.clearBlackList();
+        mDataSource.close();
+        mUpdateRequired = true;
+        for (DBTrack track : mAllTracks)
+            track.setIsBlacklisted((short)0);
+        for (ModelUpdateListener listener : mListeners)
+            listener.onDataUpdated();
+    }
+
     // ----
 
     @Override

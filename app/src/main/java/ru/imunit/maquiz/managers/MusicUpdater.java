@@ -145,7 +145,7 @@ public class MusicUpdater {
         return songs;
     }
 
-    // function to check if a track at the given path is in an allowed directory
+    // function to check if a ic_file_music at the given path is in an allowed directory
     private boolean checkTrackDir(String path) {
         File f = new File(path);
         String dir = f.getParent();

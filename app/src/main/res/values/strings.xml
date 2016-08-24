@@ -9,7 +9,9 @@
     <string name="settings_title">Settings</string>
     <string name="action_settings">Settings</string>
     <string name="select_dirs">Music directories</string>
+
     <string name="track_blacklist">Add to black list</string>
+    <string name="track_unblacklist">Remove from black list</string>
 
     <string name="title_activity_playlist">PlaylistActivity</string>
     <string name="title_activity_start">StartActivity</string>
@@ -32,8 +34,8 @@
 
     <string name="game_results_score">Score:</string>
     <string name="game_results_highscore">Highscore:</string>
-    <string name="game_results_congrats_0">Yeeey!</string>
-    <string name="game_results_congrats_1">Not bad!</string>
+    <string name="game_results_congrats_0">Not bad!</string>
+    <string name="game_results_congrats_1">Great!</string>
     <string name="game_results_congrats_2">Excellent!</string>
     <string name="game_results_congrats_3">You\'re awesome!</string>
 
@@ -104,4 +106,5 @@
     <string name="menu_audio_visualizer">Audio visualizer</string>
     <string name="menu_metronome">Metronome</string>
     <string name="share_dialog_title">Share this app</string>
+    <string name="clear_black_list">Clear black list</string>
 </resources>

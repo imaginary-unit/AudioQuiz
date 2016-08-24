@@ -102,6 +102,9 @@ public class PlaylistTracksFragment extends Fragment implements
             tracks = mModel.getAllTracks();
         mRecyclerAdapter = new PlaylistRecyclerAdapter(tracks);
         mRecyclerAdapter.setOnClickListener(this);
+        int menuMode = mShowBlackList ? PlaylistRecyclerAdapter.MENU_BLACK_LIST :
+                PlaylistRecyclerAdapter.MENU_ALL_TRACKS;
+        mRecyclerAdapter.setMenuMode(menuMode);
         mRecycler.setAdapter(mRecyclerAdapter);
     }
 
@@ -110,7 +113,13 @@ public class PlaylistTracksFragment extends Fragment implements
         mListener.onBlacklistTrack(track);
     }
 
+    @Override
+    public void onClearBlackList() {
+        mListener.onClearBlackList();
+    }
+
     public interface OnFragmentInteractionListener {
         void onBlacklistTrack(DBTrack track);
+        void onClearBlackList();
     }
 }

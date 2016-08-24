@@ -150,9 +150,13 @@ public class PlaylistViewerActivity extends AppCompatActivity
 
     @Override
     public void onBlacklistTrack(DBTrack track) {
-        // if we currently in black list view mode, remove the track from it, otherwise add
         boolean newState = mCurrentMode != BLACK_LIST;
         mModel.setTrackBlackListed(track, newState);
+    }
+
+    @Override
+    public void onClearBlackList() {
+        mModel.clearBlackList();
     }
 
     //

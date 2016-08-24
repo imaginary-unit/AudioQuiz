@@ -140,6 +140,13 @@ public class MAQDataSource implements IDataSource {
     }
 
     @Override
+    public void clearBlackList() {
+        ContentValues cv = new ContentValues();
+        cv.put(TracksTable.COLUMN_IS_BLACKLISTED, false);
+        database.update(TracksTable.TABLE_NAME, cv, null, null);
+    }
+
+    @Override
     public DBTrack[] getAllTracks() {
         Cursor cur = database.query(TracksTable.TABLE_NAME, trackCols,
                 null, null, null, null, null);

@@ -3,4 +3,8 @@
     <item
         android:id="@+id/action_blacklist"
         android:title="@string/track_blacklist" />
+    <item
+        android:id="@+id/action_clear_blacklist"
+        android:title="@string/clear_black_list"
+        android:visible="false" />
 </menu>

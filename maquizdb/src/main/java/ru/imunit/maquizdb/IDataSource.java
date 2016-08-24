@@ -19,6 +19,7 @@ public interface IDataSource {
     void addDirToBlackList(String dir);
     void removeDirFromBlackList(String dir);
     void setTrackBlackListed(DBTrack track, boolean newState);
+    void clearBlackList();
     DBTrack[] getAllTracks();
     DBTrack[] getPlaybackTracks();  // returns all tracks that aren't in the black list
     DBTrack[] getGuessedTracks();   // returns all non-blacklisted tracks, that have been guessed at least once

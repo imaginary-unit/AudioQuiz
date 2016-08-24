@@ -66,7 +66,7 @@ public class GameActivity extends AppCompatActivity
             showGameFragment();
         } else {
             // TODO: refactor options and rounds: should be in activity parameters
-            mModel.initGame(5, 10);
+            mModel.initGame(5, 3);
             showGameFragment();
         }
     }
@@ -192,7 +192,9 @@ public class GameActivity extends AppCompatActivity
 
     @Override
     public void onShowStatistics() {
-
+        Intent statsIntent = new Intent(this,
+                ActivityFactory.getActivity(ActivityFactory.STATS_ACTIVTY));
+        startActivity(statsIntent);
     }
 
     @Override

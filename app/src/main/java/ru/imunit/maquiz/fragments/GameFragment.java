@@ -356,7 +356,7 @@ public class GameFragment extends Fragment implements
     private boolean tvMovOut;
     // store last clicked TV to trigger the animation when model returns the guess result
     private TrackView tempTrackView;
-    // track view touch handler
+    // ic_file_music view touch handler
     @Override
     public boolean onTouch(View v, MotionEvent evt) {
         TrackView tv = (TrackView)v;

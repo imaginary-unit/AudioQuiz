@@ -11,100 +11,126 @@
         android:layout_height="0dp"
         android:layout_weight="0.2"/>
 
-    <TextView
-        android:id="@+id/text1_congrats"
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0"
-        android:text="@string/game_results_congrats_0"
-        android:textSize="30sp"
-        android:textColor="@color/colorAccent"
-        />
+        android:layout_weight="1"
+        android:layout_margin="15dp"
+        android:padding="5dp"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/text1_congrats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:text="@string/game_results_congrats_0"
+                android:textSize="30sp"
+                android:textColor="@color/colorAccent"
+                style="@style/OutlinedText"
+                />
+
+            <TextView
+                android:id="@+id/text2_clean"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:text="@string/game_results_clean_game"
+                android:textSize="26sp"
+                android:textColor="#ff00ff00"
+                style="@style/OutlinedText"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/text3_new_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:text="@string/game_results_new_highscore"
+                android:textSize="26sp"
+                android:textColor="#ff00ff00"
+                style="@style/OutlinedText"
+                android:visibility="gone"
+                />
+
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"/>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
     <android.support.v4.widget.Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.2"/>
 
-    <TextView
-        android:id="@+id/text2_clean"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0"
-        android:text="@string/game_results_clean_game"
-        android:textSize="26sp"
-        android:textColor="#ff00ff00"
-        android:visibility="gone"
-        />
-
-    <android.support.v4.widget.Space
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.05"/>
-
-    <TextView
-        android:id="@+id/text3_new_record"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0"
-        android:text="@string/game_results_new_highscore"
-        android:textSize="26sp"
-        android:textColor="#ff00ff00"
-        android:visibility="gone"
-        />
-
-    <android.support.v4.widget.Space
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.2"/>
-
-    <android.support.v7.widget.GridLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0">
-        <TextView
+        android:layout_weight="0.5"
+        android:layout_margin="15dp"
+        android:padding="5dp"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="10dp">
+        <android.support.v7.widget.GridLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_row="0"
-            app:layout_column="0"
-            android:layout_margin="3dp"
-            android:text="@string/game_results_score"
-            android:textSize="22sp"
-            android:textColor="@color/colorForeground" />
-        <TextView
-            android:id="@+id/textScore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_row="0"
-            app:layout_column="1"
-            android:layout_margin="3dp"
-            android:text="100500"
-            android:textSize="22sp"
-            android:textColor="@color/colorForeground" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_row="1"
-            app:layout_column="0"
-            android:layout_margin="3dp"
-            android:text="@string/game_results_highscore"
-            android:textSize="22sp"
-            android:textColor="@color/colorForeground" />
-        <TextView
-            android:id="@+id/textHighScore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_row="1"
-            app:layout_column="1"
-            android:layout_margin="3dp"
-            android:text="100600"
-            android:textSize="22sp"
-            android:textColor="@color/colorForeground" />
-    </android.support.v7.widget.GridLayout>
+            android:layout_gravity="center"
+            android:layout_weight="0">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_row="0"
+                app:layout_column="0"
+                android:layout_margin="3dp"
+                android:text="@string/game_results_score"
+                android:textSize="22sp"
+                android:textColor="@color/colorForeground" />
+            <TextView
+                android:id="@+id/textScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_row="0"
+                app:layout_column="1"
+                android:layout_margin="3dp"
+                android:textSize="22sp"
+                android:textColor="@color/colorForeground" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_row="1"
+                app:layout_column="0"
+                android:layout_margin="3dp"
+                android:text="@string/game_results_highscore"
+                android:textSize="22sp"
+                android:textColor="@color/colorForeground" />
+            <TextView
+                android:id="@+id/textHighScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_row="1"
+                app:layout_column="1"
+                android:layout_margin="3dp"
+                android:textSize="22sp"
+                android:textColor="@color/colorForeground" />
+        </android.support.v7.widget.GridLayout>
+    </android.support.v7.widget.CardView>
 
     <android.support.v4.widget.Space
         android:layout_width="match_parent"
@@ -133,27 +159,33 @@
         android:layout_margin="10dp"
         android:orientation="horizontal"
         android:layout_gravity="right">
-        <Button
+        <ImageButton
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             android:id="@+id/btnStatistics"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:layout_marginRight="20dp"
-            android:text="Statistics" />
-        <Button
+            android:background="@drawable/round_button"
+            android:src="@drawable/percent"
+            android:scaleType="fitCenter"
+            android:padding="10dp"
+            android:layout_margin="10dp"/>
+        <ImageButton
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             android:id="@+id/btnRestart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:layout_marginRight="20dp"
-            android:text="Restart" />
-        <Button
+            android:background="@drawable/round_button"
+            android:src="@drawable/repeat"
+            android:scaleType="fitCenter"
+            android:padding="10dp"
+            android:layout_margin="10dp"/>
+        <ImageButton
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             android:id="@+id/btnMenu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:text="Menu" />
-
+            android:background="@drawable/round_button"
+            android:src="@drawable/home"
+            android:scaleType="fitCenter"
+            android:padding="10dp"
+            android:layout_margin="10dp"/>
     </LinearLayout>
 
 </LinearLayout>

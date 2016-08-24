@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.Random;
@@ -97,9 +98,9 @@ public class ResultsFragment extends Fragment {
         mTextClean = (TextView)getView().findViewById(R.id.text2_clean);
         mTextNewRecord = (TextView)getView().findViewById(R.id.text3_new_record);
         mTextTip = (TextView)getView().findViewById(R.id.textTip);
-        mBtnMenu = (Button)getView().findViewById(R.id.btnMenu);
-        mBtnRestart = (Button)getView().findViewById(R.id.btnRestart);
-        mBtnStatistics = (Button)getView().findViewById(R.id.btnStatistics);
+        mBtnMenu = (ImageButton)getView().findViewById(R.id.btnMenu);
+        mBtnRestart = (ImageButton)getView().findViewById(R.id.btnRestart);
+        mBtnStatistics = (ImageButton)getView().findViewById(R.id.btnStatistics);
         setButtonListeners();
         mListener.onResultsFragmentInitialized();
     }
@@ -135,9 +136,9 @@ public class ResultsFragment extends Fragment {
     private ResultsFragmentListener mListener;
     private IGameModel mModel;
     private TextView mTextScore;
-    private Button mBtnRestart;
-    private Button mBtnStatistics;
-    private Button mBtnMenu;
+    private ImageButton mBtnRestart;
+    private ImageButton mBtnStatistics;
+    private ImageButton mBtnMenu;
     private TextView mTextCongrats;
     private TextView mTextClean;
     private TextView mTextNewRecord;

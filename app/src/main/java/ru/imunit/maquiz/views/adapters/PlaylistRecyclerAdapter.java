@@ -21,15 +21,28 @@ public class PlaylistRecyclerAdapter extends
         RecyclerView.Adapter<PlaylistRecyclerAdapter.PlaylistViewHolder> implements
         View.OnClickListener {
 
+    public static final int MENU_ALL_TRACKS = 0;
+    public static final int MENU_BLACK_LIST = 1;
+
     private List<DBTrack> mDataset;
     private ItemClickListener mListener;
+    private int mMenuMode;
 
     public PlaylistRecyclerAdapter(List<DBTrack> dataset) {
         this.mDataset = dataset;
+        mMenuMode = 0;
     }
 
     public void setOnClickListener(ItemClickListener listener) {
         mListener = listener;
+    }
+
+    public void setMenuMode(int mode) {
+        mMenuMode = mode;
+    }
+
+    public int getMenuMode() {
+        return mMenuMode;
     }
 
     @Override
@@ -46,6 +59,15 @@ public class PlaylistRecyclerAdapter extends
     public void onClick(final View view) {
         PopupMenu popup = new PopupMenu(view.getContext(), view);
         popup.getMenuInflater().inflate(R.menu.playlist_track_menu, popup.getMenu());
+        // set menu items according to current mode
+        MenuItem aBlacklist = popup.getMenu().findItem(R.id.action_blacklist);
+        if (mMenuMode == MENU_ALL_TRACKS)
+            aBlacklist.setTitle(R.string.track_blacklist);
+        else
+            aBlacklist.setTitle(R.string.track_unblacklist);
+        MenuItem aClear = popup.getMenu().findItem(R.id.action_clear_blacklist);
+        aClear.setVisible(mMenuMode == MENU_BLACK_LIST);
+        // ---
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -55,6 +77,11 @@ public class PlaylistRecyclerAdapter extends
                         mListener.onBlacklistTrack(mDataset.get(pos));
                     }
                     return true;
+                }
+                else if (item.getItemId() == R.id.action_clear_blacklist) {
+                    if (mListener != null) {
+                        mListener.onClearBlackList();
+                    }
                 }
                 return false;
             }
@@ -68,9 +95,9 @@ public class PlaylistRecyclerAdapter extends
         holder.artist.setText(track.getArtist());
         holder.title.setText(track.getName());
         if (track.getIsBlacklisted() == 0)
-            holder.icon.setImageResource(R.drawable.track);
+            holder.icon.setImageResource(R.drawable.ic_file_music);
         else
-            holder.icon.setImageResource(R.drawable.library_music);
+            holder.icon.setImageResource(R.drawable.ic_file_music_no);
         // store the position as a tag to retrieve it from view in onClick handler
         holder.itemView.setTag(R.string.tag_item_pos, pos);
     }
@@ -94,5 +121,6 @@ public class PlaylistRecyclerAdapter extends
 
     public interface ItemClickListener {
         void onBlacklistTrack(DBTrack track);
+        void onClearBlackList();
     }
 }
