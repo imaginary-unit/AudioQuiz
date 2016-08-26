@@ -47,6 +47,7 @@ public class StartActivity extends AppCompatActivity
         setContentView(R.layout.activity_start);
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle(R.string.start_toolbar_title);
         mRootLayout = findViewById(R.id.activity_start);
         if (checkStoragePermission()) {
             // TODO: maybe do music update only on first activity show
