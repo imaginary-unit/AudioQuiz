@@ -26,6 +26,9 @@ public class GameActivity extends AppCompatActivity
         implements GameFragment.GameFragmentListener,
         ResultsFragment.ResultsFragmentListener {
 
+    private static final int OPTIONS_COUNT = 5;
+    private static final int ROUNDS_COUNT = 10;
+
     private ModelRetainFragment mModelRetainFragment;
     private GameFragment mGameFragment;
     private ResultsFragment mResultsFragment;
@@ -66,7 +69,7 @@ public class GameActivity extends AppCompatActivity
             showGameFragment();
         } else {
             // TODO: refactor options and rounds: should be in activity parameters
-            mModel.initGame(5, 3);
+            mModel.initGame(OPTIONS_COUNT, ROUNDS_COUNT);
             showGameFragment();
         }
     }
@@ -186,7 +189,7 @@ public class GameActivity extends AppCompatActivity
 
     @Override
     public void onRestartGame() {
-        mModel.initGame(5, 10);
+        mModel.initGame(OPTIONS_COUNT, ROUNDS_COUNT);
         showGameFragment();
     }
 

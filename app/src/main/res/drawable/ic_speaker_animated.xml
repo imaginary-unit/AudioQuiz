@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_speaker">
+
+    <target
+        android:name="path_wave_0"
+        android:animation="@animator/wave_fade_0" />
+
+    <target
+        android:name="path_wave_1"
+        android:animation="@animator/wave_fade_1" />
+
+    <target
+        android:name="path_wave_2"
+        android:animation="@animator/wave_fade_2" />
+
+    <target
+        android:name="path_wave_3"
+        android:animation="@animator/wave_fade_3" />
+
+</animated-vector>

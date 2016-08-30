@@ -93,7 +93,6 @@ public class PlaylistViewerActivity extends AppCompatActivity
     }
 
 
-
     // View mode spinner select listener implementation
 
     @Override

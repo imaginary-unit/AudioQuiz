@@ -113,21 +113,21 @@ public class GameFragment extends Fragment implements
     public void onPause() {
         super.onPause();
         mMetronomePlaying = false;
-        if (mInfoBar != null)
-            mInfoBar.releaseAudioSession();
+//        if (mInfoBar != null)
+//            mInfoBar.releaseAudioSession();
         if (mMediaPlayer != null)
             mMediaPlayer.release();
-        Log.i("DEBUG", "onPause()");
+        // Log.i("DEBUG", "onPause()");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (mInfoBar != null)
-            mInfoBar.releaseAudioSession();
+//        if (mInfoBar != null)
+//            mInfoBar.releaseAudioSession();
         if (mMediaPlayer != null)
             mMediaPlayer.release();
-        Log.i("DEBUG", "onStop()");
+        // Log.i("DEBUG", "onStop()");
     }
 
     @Override
@@ -139,15 +139,15 @@ public class GameFragment extends Fragment implements
         else if (mModel.isGameRunning()) {
             onRoundUpdated();
         }
-        Log.i("DEBUG", "onResume()");
+        // Log.i("DEBUG", "onResume()");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        if (mInfoBar != null)
-            mInfoBar.releaseAudioSession();
+//        if (mInfoBar != null)
+//            mInfoBar.releaseAudioSession();
         if (mMediaPlayer != null)
             mMediaPlayer.release();
     }
@@ -171,13 +171,14 @@ public class GameFragment extends Fragment implements
                     @Override
                     public void onCompletion(MediaPlayer mediaPlayer) {
                         mMediaPlayer.release();
-                        mInfoBar.releaseAudioSession();
+//                        mInfoBar.releaseAudioSession();
                         mMetronomePlaying = false;
                         mUiLock = false;
                         mListener.onStartPlayback();
                     }
                 });
-                mInfoBar.setAudioSessionId(mMediaPlayer.getAudioSessionId());
+//                mInfoBar.setAudioSessionId(mMediaPlayer.getAudioSessionId());
+                mInfoBar.showDots();
                 mMediaPlayer.start();
              }
         } else {
@@ -190,7 +191,7 @@ public class GameFragment extends Fragment implements
         mTextScore.setText(String.valueOf(mModel.getGameScore()));
         mInfoBar.setInfoText(String.format(Locale.ENGLISH, "+ %d",
                 mModel.getRoundScore()));
-        mInfoBar.showTextInfo(1000);
+        mInfoBar.showInfoText();
     }
 
     @Override
@@ -203,7 +204,7 @@ public class GameFragment extends Fragment implements
         if (result == GameModel.GUESS_RESULT_CORRECT) {
             if (mMediaPlayer.isPlaying())
                 mMediaPlayer.stop();
-            mInfoBar.releaseAudioSession();
+//            mInfoBar.releaseAudioSession();
             mMediaPlayer.release();
 
             // show correct guess animation and load next round after it has finished
@@ -244,7 +245,7 @@ public class GameFragment extends Fragment implements
         else {
             if (mMediaPlayer.isPlaying())
                 mMediaPlayer.stop();
-            mInfoBar.releaseAudioSession();
+//            mInfoBar.releaseAudioSession();
             mMediaPlayer.release();
             // display failed notification and move to the next round
             tempTrackView.setAnimationListener(new Animation.AnimationListener() {
@@ -285,12 +286,10 @@ public class GameFragment extends Fragment implements
 
                 mMediaPlayer.seekTo(start);
                 mMediaPlayer.setLooping(true);
-                Log.i("Playing media from:", String.format("%d / %d", start, len));
-                mInfoBar.setAudioSessionId(mMediaPlayer.getAudioSessionId());
+                // Log.i("Playing media from:", String.format("%d / %d", start, len));
+//                mInfoBar.setAudioSessionId(mMediaPlayer.getAudioSessionId());
+                mInfoBar.showSpeakers();
                 mMediaPlayer.start();
-                /* TODO: this call on each playback start is basically a time bomb..
-                        consider refactoring
-                 */
                 mListener.onMediaReady();
             }
         });

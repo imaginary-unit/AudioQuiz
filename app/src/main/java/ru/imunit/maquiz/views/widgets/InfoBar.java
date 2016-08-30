@@ -3,11 +3,15 @@ package ru.imunit.maquiz.views.widgets;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import ru.imunit.maquiz.R;
@@ -18,6 +22,13 @@ import ru.imunit.maquiz.managers.SettingsManager;
  */
 
 public class InfoBar extends FrameLayout {
+
+    public enum State {
+        empty,
+        dots,
+        speakers,
+        txt
+    }
 
     public InfoBar(Context context) {
         super(context);
@@ -34,15 +45,15 @@ public class InfoBar extends FrameLayout {
         //init();
     }
 
-    public void setAudioSessionId(int sessionId) {
-        if (mVisualizerEnabled)
-            mAVisualizer.setAudioSessionId(sessionId);
-    }
+//    public void setAudioSessionId(int sessionId) {
+//        if (mVisualizerEnabled)
+//            mAVisualizer.setAudioSessionId(sessionId);
+//    }
 
-    public void releaseAudioSession() {
-        if (mVisualizerEnabled)
-            mAVisualizer.release();
-    }
+//    public void releaseAudioSession() {
+//        if (mVisualizerEnabled)
+//            mAVisualizer.release();
+//    }
 
     @Override
     public boolean isInEditMode() {
@@ -57,24 +68,90 @@ public class InfoBar extends FrameLayout {
         mTextInfo.setText(resId);
     }
 
-    public void showTextInfo(int duration) {
-        crossfade(mTextInfo, mAVisualizer, duration);
-    }
-
-    public void hideTextInfo() {
-        crossfade(mAVisualizer, mTextInfo, 0);
-    }
+//    public void showTextInfo(int duration) {
+//        crossfade(mTextInfo, mAVisualizer, duration);
+//    }
+//
+//    public void hideTextInfo() {
+//        crossfade(mAVisualizer, mTextInfo, 0);
+//    }
 
     public void init() {
         inflate(getContext(), R.layout.info_bar, this);
-        mVisualizerEnabled = new SettingsManager(getContext()).getVisualizerState();
-        mAVisualizer = (AudioVisualizer) findViewById(R.id.visualizer);
-        if (mVisualizerEnabled) {
-            mAVisualizer.setDivisions(2);
-            mAVisualizer.setBarHeight(0.4f);
-        }
+//        mVisualizerEnabled = new SettingsManager(getContext()).getVisualizerState();
+//        mAVisualizer = (AudioVisualizer) findViewById(R.id.visualizer);
+//        if (mVisualizerEnabled) {
+//            mAVisualizer.setDivisions(2);
+//            mAVisualizer.setBarHeight(0.4f);
+//        }
+        mState = State.empty;
+        mSpeakerLeft = (ImageView)findViewById(R.id.speakerLeft);
+        mSpeakerLeft.setVisibility(View.GONE);
+        mSpeakerRight = (ImageView)findViewById(R.id.speakerRight);
+        mSpeakerRight.setVisibility(View.GONE);
+        mDots = (ImageView)findViewById(R.id.dots);
+        mDots.setVisibility(View.GONE);
         mTextInfo = (TextView)findViewById(R.id.textInfo);
         mTextInfo.setVisibility(View.GONE);
+    }
+
+    public void showDots() {
+        setState(State.dots);
+    }
+
+    public void showSpeakers() {
+        setState(State.speakers);
+    }
+
+    public void showInfoText() {
+        setState(State.txt);
+    }
+
+    public void hideAll() {
+        setState(State.empty);
+    }
+
+    private void setState(State newState) {
+        if (mState != newState) {
+            switch (mState) {
+                case empty:
+                    break;
+                case dots:
+                    fadeOut(mDots);
+                    break;
+                case speakers:
+                    fadeOut(mSpeakerLeft);
+                    fadeOut(mSpeakerRight);
+                    break;
+                case txt:
+                    fadeOut(mTextInfo);
+                    break;
+            }
+            switch (newState) {
+                case empty:
+                    break;
+                case dots:
+                    fadeIn(mDots);
+                    Drawable dots = mDots.getDrawable();
+                    if (dots instanceof Animatable)
+                        ((Animatable)dots).start();
+                    break;
+                case speakers:
+                    fadeIn(mSpeakerLeft);
+                    fadeIn(mSpeakerRight);
+                    Drawable leftDrawable = mSpeakerLeft.getDrawable();
+                    if (leftDrawable instanceof Animatable)
+                        ((Animatable)leftDrawable).start();
+                    Drawable rightDrawable = mSpeakerRight.getDrawable();
+                    if (rightDrawable instanceof Animatable)
+                        ((Animatable)rightDrawable).start();
+                    break;
+                case txt:
+                    fadeIn(mTextInfo);
+                    break;
+            }
+            mState = newState;
+        }
     }
 
     private void crossfade(final View inView, final View outView, final int reverseDelay) {
@@ -107,6 +184,21 @@ public class InfoBar extends FrameLayout {
                 });
     }
 
+    private void fadeOut(final View view) {
+        view.setAlpha(1f);
+        view.animate()
+                .alpha(0f)
+                .setDuration(FADE_DURATION);
+    }
+
+    private void fadeIn(final View view) {
+        view.setAlpha(0f);
+        view.setVisibility(View.VISIBLE);
+        view.animate()
+                .alpha(1f)
+                .setDuration(FADE_DURATION);
+    }
+
     private class RunnableCF implements Runnable {
         private View inView;
         private View outView;
@@ -122,8 +214,11 @@ public class InfoBar extends FrameLayout {
         }
     }
     private Handler mHandler = new Handler();
-    private AudioVisualizer mAVisualizer;
+    // private AudioVisualizer mAVisualizer;
     private TextView mTextInfo;
-    private boolean mVisualizerEnabled;
+    private ImageView mSpeakerLeft;
+    private ImageView mSpeakerRight;
+    private ImageView mDots;
+    private State mState;
     private final int FADE_DURATION = 250;
 }

@@ -164,7 +164,7 @@
             android:layout_height="65dp"
             android:id="@+id/btnStatistics"
             android:background="@drawable/round_button"
-            android:src="@drawable/percent"
+            app:srcCompat="@drawable/percent"
             android:scaleType="fitCenter"
             android:padding="10dp"
             android:layout_margin="10dp"/>
@@ -173,7 +173,7 @@
             android:layout_height="65dp"
             android:id="@+id/btnRestart"
             android:background="@drawable/round_button"
-            android:src="@drawable/repeat"
+            app:srcCompat="@drawable/repeat"
             android:scaleType="fitCenter"
             android:padding="10dp"
             android:layout_margin="10dp"/>
@@ -182,7 +182,7 @@
             android:layout_height="65dp"
             android:id="@+id/btnMenu"
             android:background="@drawable/round_button"
-            android:src="@drawable/home"
+            app:srcCompat="@drawable/home"
             android:scaleType="fitCenter"
             android:padding="10dp"
             android:layout_margin="10dp"/>

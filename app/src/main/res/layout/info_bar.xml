@@ -1,14 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ru.imunit.maquiz.views.widgets.AudioVisualizer
-        android:id="@+id/visualizer"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/speakerLeft"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:visibility="visible"/>
+        android:layout_marginLeft="5dp"
+        android:layout_alignParentLeft="true"
+        app:srcCompat="@drawable/ic_speaker_animated"
+        />
+
+    <ImageView
+        android:id="@+id/speakerRight"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginRight="5dp"
+        android:layout_alignParentRight="true"
+        app:srcCompat="@drawable/ic_speaker_animated"
+        android:scaleX="-1"/>
+
+    <ImageView
+        android:id="@+id/dots"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/ic_dots_animated"
+        />
 
     <TextView
         android:id="@+id/textInfo"

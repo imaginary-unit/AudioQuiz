@@ -15,7 +15,6 @@ import android.view.animation.Animation;
 import java.io.File;
 import java.io.IOException;
 
-import ru.imunit.maquiz.views.widgets.AudioVisualizer;
 import ru.imunit.maquiz.views.widgets.InfoBar;
 import ru.imunit.maquiz.views.widgets.TrackView;
 import ru.imunit.maquizdb.DataSourceFactory;
@@ -54,7 +53,7 @@ public class TestActivity extends AppCompatActivity implements View.OnTouchListe
         mp.prepare();
 
         ib = (InfoBar)findViewById(R.id.testInfoBar);
-        ib.setAudioSessionId(mp.getAudioSessionId());
+//        ib.setAudioSessionId(mp.getAudioSessionId());
         ib.setInfoText("Significantly long testing text!!");
 
         mp.start();
@@ -123,7 +122,7 @@ public class TestActivity extends AppCompatActivity implements View.OnTouchListe
             mout = false;
             tv.animateTouchDown();
             if (ib != null) {
-                ib.showTextInfo(0);
+//                ib.showTextInfo(0);
             }
         }
         if (evt.getAction() == MotionEvent.ACTION_UP) {
@@ -131,7 +130,7 @@ public class TestActivity extends AppCompatActivity implements View.OnTouchListe
                 //Log.d("TouchTest", "Touch up");
                 tv.animateTouchUp(false);
                 if (ib != null) {
-                    ib.hideTextInfo();
+//                    ib.hideTextInfo();
                 }
             }
         }
