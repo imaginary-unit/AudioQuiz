@@ -4,6 +4,7 @@
     <color name="colorBack1">#5C6BC0</color>
     <color name="colorPrimary">#283593</color>
     <color name="colorPrimaryDark">#1A237E</color>
+    <color name="colorPrimaryDarkHalf">#771A237E</color>
     <color name="colorAccent">#C6FF00</color>
     <color name="colorAccentHalf">#77C6FF00</color>
     <color name="colorForeground">#FFFFFF</color>

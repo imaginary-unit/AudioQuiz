@@ -113,8 +113,6 @@ public class GameFragment extends Fragment implements
     public void onPause() {
         super.onPause();
         mMetronomePlaying = false;
-//        if (mInfoBar != null)
-//            mInfoBar.releaseAudioSession();
         if (mMediaPlayer != null)
             mMediaPlayer.release();
         // Log.i("DEBUG", "onPause()");
@@ -123,8 +121,6 @@ public class GameFragment extends Fragment implements
     @Override
     public void onStop() {
         super.onStop();
-//        if (mInfoBar != null)
-//            mInfoBar.releaseAudioSession();
         if (mMediaPlayer != null)
             mMediaPlayer.release();
         // Log.i("DEBUG", "onStop()");
@@ -146,8 +142,6 @@ public class GameFragment extends Fragment implements
     public void onDetach() {
         super.onDetach();
         mListener = null;
-//        if (mInfoBar != null)
-//            mInfoBar.releaseAudioSession();
         if (mMediaPlayer != null)
             mMediaPlayer.release();
     }
@@ -171,13 +165,11 @@ public class GameFragment extends Fragment implements
                     @Override
                     public void onCompletion(MediaPlayer mediaPlayer) {
                         mMediaPlayer.release();
-//                        mInfoBar.releaseAudioSession();
                         mMetronomePlaying = false;
                         mUiLock = false;
                         mListener.onStartPlayback();
                     }
                 });
-//                mInfoBar.setAudioSessionId(mMediaPlayer.getAudioSessionId());
                 mInfoBar.showDots();
                 mMediaPlayer.start();
              }
@@ -204,7 +196,6 @@ public class GameFragment extends Fragment implements
         if (result == GameModel.GUESS_RESULT_CORRECT) {
             if (mMediaPlayer.isPlaying())
                 mMediaPlayer.stop();
-//            mInfoBar.releaseAudioSession();
             mMediaPlayer.release();
 
             // show correct guess animation and load next round after it has finished
@@ -245,7 +236,6 @@ public class GameFragment extends Fragment implements
         else {
             if (mMediaPlayer.isPlaying())
                 mMediaPlayer.stop();
-//            mInfoBar.releaseAudioSession();
             mMediaPlayer.release();
             // display failed notification and move to the next round
             tempTrackView.setAnimationListener(new Animation.AnimationListener() {
@@ -380,11 +370,6 @@ public class GameFragment extends Fragment implements
                 tv.animateTouchAway();
             }
         }
-//        else if (!tvMovOut && !tvRect.contains(v.getLeft() + (int)evt.getX(), v.getTop() + (int)evt.getY())) {
-//            tvMovOut = true;
-//            tv.animateTouchAway();
-//            Log.i("Touch event", "touch out");
-//        }
         return true;
     }
 

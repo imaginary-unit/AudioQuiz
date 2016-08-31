@@ -25,7 +25,7 @@
     </string>
 
     <string name="share_subject">
-        My Audio Quiz: an Android app to check how well do you know your favourite music!
+        Audio Quiz: an Android app to check how well do you know your favourite music! Get it here:
     </string>
 
     <string name="updating_music_dialog">Updating your music library, please wait a sec..</string>
@@ -107,4 +107,11 @@
     <string name="menu_metronome">Metronome</string>
     <string name="share_dialog_title">Share this app</string>
     <string name="clear_black_list">Clear black list</string>
+
+    <string name="tooltip_playlist">Playlist</string>
+    <string name="tooltip_play">Play</string>
+    <string name="tooltip_stats">Statistics</string>
+    <string name="tooltip_rate">Rate this app on Play Market</string>
+    <string name="tooltip_share">Share this app with friends</string>
+    <string name="menu_tooltips">Show tooltips</string>
 </resources>

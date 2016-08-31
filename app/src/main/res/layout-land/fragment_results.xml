@@ -1,0 +1,196 @@
+<android.support.v7.widget.GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ru.imunit.maquiz.fragments.ResultsFragment">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:layout_marginRight="5dp"
+        app:layout_gravity="center_vertical"
+        app:layout_row="0"
+        app:layout_column="0"
+        app:layout_columnWeight="1.5"
+        android:padding="5dp"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/text1_congrats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:text="@string/game_results_congrats_0"
+                android:textSize="30sp"
+                android:textColor="@color/colorAccent"
+                style="@style/OutlinedText"
+                />
+
+            <TextView
+                android:id="@+id/text2_clean"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:text="@string/game_results_clean_game"
+                android:textSize="26sp"
+                android:textColor="#ff00ff00"
+                android:gravity="center_horizontal"
+                style="@style/OutlinedText"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/text3_new_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:text="@string/game_results_new_highscore"
+                android:textSize="26sp"
+                android:textColor="#ff00ff00"
+                style="@style/OutlinedText"
+                android:visibility="gone"
+                />
+
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"/>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:layout_margin="15dp"
+        android:layout_marginLeft="5dp"
+        app:layout_gravity="center_vertical"
+        app:layout_row="0"
+        app:layout_column="1"
+        app:layout_columnWeight="1"
+        android:padding="5dp"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="10dp">
+        <android.support.v7.widget.GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_row="0"
+                app:layout_column="0"
+                android:layout_margin="3dp"
+                android:text="@string/game_results_score"
+                android:textSize="22sp"
+                android:textColor="@color/colorForeground" />
+            <TextView
+                android:id="@+id/textScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_row="0"
+                app:layout_column="1"
+                android:layout_margin="3dp"
+                android:textSize="22sp"
+                android:textColor="@color/colorForeground" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_row="1"
+                app:layout_column="0"
+                android:layout_margin="3dp"
+                android:text="@string/game_results_highscore"
+                android:textSize="22sp"
+                android:textColor="@color/colorForeground" />
+            <TextView
+                android:id="@+id/textHighScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_row="1"
+                app:layout_column="1"
+                android:layout_margin="3dp"
+                android:textSize="22sp"
+                android:textColor="@color/colorForeground" />
+        </android.support.v7.widget.GridLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v4.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_row="1"
+        app:layout_column="0"
+        app:layout_columnSpan="2"
+        app:layout_rowWeight="1"/>
+
+    <TextView
+        android:id="@+id/textTip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_gravity="center_horizontal"
+        app:layout_row="2"
+        app:layout_column="0"
+        app:layout_columnSpan="2"
+        app:layout_rowWeight="1"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:textSize="18sp"
+        android:textColor="@color/colorForegroundHalf" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        app:layout_gravity="right"
+        app:layout_row="3"
+        app:layout_column="0"
+        app:layout_columnSpan="2"
+        app:layout_rowWeight="1">
+        <ImageButton
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:id="@+id/btnStatistics"
+            android:background="@drawable/round_button"
+            app:srcCompat="@drawable/percent"
+            android:scaleType="fitCenter"
+            android:padding="10dp"
+            android:layout_margin="10dp"/>
+        <ImageButton
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:id="@+id/btnRestart"
+            android:background="@drawable/round_button"
+            app:srcCompat="@drawable/repeat"
+            android:scaleType="fitCenter"
+            android:padding="10dp"
+            android:layout_margin="10dp"/>
+        <ImageButton
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:id="@+id/btnMenu"
+            android:background="@drawable/round_button"
+            app:srcCompat="@drawable/home"
+            android:scaleType="fitCenter"
+            android:padding="10dp"
+            android:layout_margin="10dp"/>
+    </LinearLayout>
+
+</android.support.v7.widget.GridLayout>

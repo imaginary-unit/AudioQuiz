@@ -27,7 +27,7 @@ public class GameActivity extends AppCompatActivity
         ResultsFragment.ResultsFragmentListener {
 
     private static final int OPTIONS_COUNT = 5;
-    private static final int ROUNDS_COUNT = 10;
+    private static final int ROUNDS_COUNT = 1;
 
     private ModelRetainFragment mModelRetainFragment;
     private GameFragment mGameFragment;

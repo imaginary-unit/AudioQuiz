@@ -6,16 +6,13 @@ import android.content.Context;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import ru.imunit.maquiz.R;
-import ru.imunit.maquiz.managers.SettingsManager;
 
 /**
  * Created by theuser on 31.07.16.
@@ -32,28 +29,15 @@ public class InfoBar extends FrameLayout {
 
     public InfoBar(Context context) {
         super(context);
-        //init();
     }
 
     public InfoBar(Context context, AttributeSet attrs) {
         super(context, attrs);
-        //init();
     }
 
     public InfoBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        //init();
     }
-
-//    public void setAudioSessionId(int sessionId) {
-//        if (mVisualizerEnabled)
-//            mAVisualizer.setAudioSessionId(sessionId);
-//    }
-
-//    public void releaseAudioSession() {
-//        if (mVisualizerEnabled)
-//            mAVisualizer.release();
-//    }
 
     @Override
     public boolean isInEditMode() {
@@ -68,22 +52,8 @@ public class InfoBar extends FrameLayout {
         mTextInfo.setText(resId);
     }
 
-//    public void showTextInfo(int duration) {
-//        crossfade(mTextInfo, mAVisualizer, duration);
-//    }
-//
-//    public void hideTextInfo() {
-//        crossfade(mAVisualizer, mTextInfo, 0);
-//    }
-
     public void init() {
         inflate(getContext(), R.layout.info_bar, this);
-//        mVisualizerEnabled = new SettingsManager(getContext()).getVisualizerState();
-//        mAVisualizer = (AudioVisualizer) findViewById(R.id.visualizer);
-//        if (mVisualizerEnabled) {
-//            mAVisualizer.setDivisions(2);
-//            mAVisualizer.setBarHeight(0.4f);
-//        }
         mState = State.empty;
         mSpeakerLeft = (ImageView)findViewById(R.id.speakerLeft);
         mSpeakerLeft.setVisibility(View.GONE);
@@ -214,7 +184,6 @@ public class InfoBar extends FrameLayout {
         }
     }
     private Handler mHandler = new Handler();
-    // private AudioVisualizer mAVisualizer;
     private TextView mTextInfo;
     private ImageView mSpeakerLeft;
     private ImageView mSpeakerRight;

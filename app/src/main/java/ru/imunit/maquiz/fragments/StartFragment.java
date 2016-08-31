@@ -1,21 +1,19 @@
 package ru.imunit.maquiz.fragments;
 
-import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 
+import it.sephiroth.android.library.tooltip.Tooltip;
 import ru.imunit.maquiz.R;
 
-import static android.content.Context.ACTIVITY_SERVICE;
+import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,9 +21,21 @@ import static android.content.Context.ACTIVITY_SERVICE;
  * {@link StartFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class StartFragment extends Fragment {
+public class StartFragment extends Fragment implements View.OnClickListener, View.OnTouchListener {
 
+    private final int TOOLTIP_DURATION = 1000;
+    private final int TOOLTIP_DELAY = 200;
     private OnFragmentInteractionListener mListener;
+    private ImageButton mPlaylists;
+    private ImageButton mPlay;
+    private ImageButton mStats;
+    private ImageButton mShare;
+    private ImageButton mRate;
+    private Tooltip.TooltipView mTooltipPlaylists;
+    private Tooltip.TooltipView mTooltipPlay;
+    private Tooltip.TooltipView mTooltipStats;
+    private Tooltip.TooltipView mTooltipShare;
+    private Tooltip.TooltipView mTooltipRate;
 
     public StartFragment() {
         // Required empty public constructor
@@ -47,64 +57,62 @@ public class StartFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ImageButton bPlaylists = (ImageButton)getView().findViewById(R.id.playlists);
-        bPlaylists.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        playlistsClick();
-                    }
-                }
-        );
+        mPlaylists = (ImageButton)getView().findViewById(R.id.playlists);
+        mPlaylists.setOnClickListener(this);
+        mPlaylists.setOnTouchListener(this);
 
-        ImageButton bPlay = (ImageButton)getView().findViewById(R.id.play);
-        bPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mListener != null) {
-                    mListener.onPlay();
-                }
-            }
-        });
+        mPlay = (ImageButton)getView().findViewById(R.id.play);
+        mPlay.setOnClickListener(this);
+        mPlay.setOnTouchListener(this);
 
-        ImageButton bStats = (ImageButton)getView().findViewById(R.id.stats);
-        bStats.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener != null) {
-                    mListener.onStatsOpen();
-                }
-            }
-        });
+        mStats = (ImageButton)getView().findViewById(R.id.stats);
+        mStats.setOnClickListener(this);
+        mStats.setOnTouchListener(this);
 
-        ImageButton bRate = (ImageButton)getView().findViewById(R.id.rateApp);
-        bRate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener != null) {
-                    mListener.onRateApp();
-                }
-            }
-        });
+        mRate = (ImageButton)getView().findViewById(R.id.rateApp);
+        mRate.setOnClickListener(this);
+        mRate.setOnTouchListener(this);
 
-        ImageButton bShare = (ImageButton)getView().findViewById(R.id.shareApp);
-        bShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener != null) {
-                    mListener.onShareApp();
-                }
-            }
-        });
+        mShare = (ImageButton)getView().findViewById(R.id.shareApp);
+        mShare.setOnClickListener(this);
+        mShare.setOnTouchListener(this);
 
-//        ActivityManager am = (ActivityManager) getActivity().getSystemService(ACTIVITY_SERVICE);
-//        int memoryClass = am.getMemoryClass();
-//        Log.d("DEBUG", "memoryClass:" + Integer.toString(memoryClass));
+        makeTooltips();
     }
 
-    private void playlistsClick() {
+    @Override
+    public void onClick(View view) {
         if (mListener != null) {
-            mListener.onPlaylistOpen();
+            if (view == mPlaylists)
+                mListener.onPlaylistOpen();
+            else if (view == mPlay)
+                mListener.onPlay();
+            else if (view == mStats)
+                mListener.onStatsOpen();
+            else if (view == mRate)
+                mListener.onRateApp();
+            else if (view == mShare)
+                mListener.onShareApp();
         }
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent evt) {
+        if (mListener != null && mListener.getTooltipState()) {
+            if (evt.getAction() == MotionEvent.ACTION_DOWN) {
+                if (view == mPlaylists)
+                    mTooltipPlaylists.show();
+                else if (view == mPlay)
+                    mTooltipPlay.show();
+                else if (view == mStats)
+                    mTooltipStats.show();
+                else if (view == mRate)
+                    mTooltipRate.show();
+                else if (view == mShare)
+                    mTooltipShare.show();
+            }
+        }
+        return false;
     }
 
     @Override
@@ -124,11 +132,75 @@ public class StartFragment extends Fragment {
         mListener = null;
     }
 
+    private void makeTooltips() {
+        Tooltip.Gravity grav0;
+        Tooltip.Gravity grav1;
+        if (getResources().getConfiguration().orientation == ORIENTATION_PORTRAIT) {
+            grav0 = Tooltip.Gravity.TOP;
+            grav1 = Tooltip.Gravity.BOTTOM;
+        }
+        else {
+            grav0 = Tooltip.Gravity.RIGHT;
+            grav1 = Tooltip.Gravity.TOP;
+        }
+
+        mTooltipPlaylists = Tooltip.make(getContext(), new Tooltip.Builder().
+                anchor(mPlaylists, grav0).
+                closePolicy(Tooltip.ClosePolicy.TOUCH_ANYWHERE_CONSUME, TOOLTIP_DURATION).
+                text(getString(R.string.tooltip_playlist)).
+                fitToScreen(true).
+                activateDelay(TOOLTIP_DELAY).
+                withArrow(true).
+                withStyleId(R.style.ToolTipLayoutStyle).
+                build());
+
+        mTooltipPlay = Tooltip.make(getContext(), new Tooltip.Builder().
+                anchor(mPlay, grav0).
+                closePolicy(Tooltip.ClosePolicy.TOUCH_ANYWHERE_CONSUME, TOOLTIP_DURATION).
+                text(getString(R.string.tooltip_play)).
+                fitToScreen(true).
+                activateDelay(TOOLTIP_DELAY).
+                withArrow(true).
+                withStyleId(R.style.ToolTipLayoutStyle).
+                build());
+
+        mTooltipStats = Tooltip.make(getContext(), new Tooltip.Builder().
+                anchor(mStats, grav0).
+                closePolicy(Tooltip.ClosePolicy.TOUCH_ANYWHERE_CONSUME, TOOLTIP_DURATION).
+                text(getString(R.string.tooltip_stats)).
+                fitToScreen(true).
+                activateDelay(TOOLTIP_DELAY).
+                withArrow(true).
+                withStyleId(R.style.ToolTipLayoutStyle).
+                build());
+
+        mTooltipRate = Tooltip.make(getContext(), new Tooltip.Builder().
+                anchor(mRate, grav1).
+                closePolicy(Tooltip.ClosePolicy.TOUCH_ANYWHERE_CONSUME, TOOLTIP_DURATION).
+                text(getString(R.string.tooltip_rate)).
+                fitToScreen(true).
+                activateDelay(TOOLTIP_DELAY).
+                withArrow(true).
+                withStyleId(R.style.ToolTipLayoutStyle).
+                build());
+
+        mTooltipShare = Tooltip.make(getContext(), new Tooltip.Builder().
+                anchor(mShare, grav1).
+                closePolicy(Tooltip.ClosePolicy.TOUCH_ANYWHERE_CONSUME, TOOLTIP_DURATION).
+                text(getString(R.string.tooltip_share)).
+                fitToScreen(true).
+                activateDelay(TOOLTIP_DELAY).
+                withArrow(true).
+                withStyleId(R.style.ToolTipLayoutStyle).
+                build());
+    }
+
     public interface OnFragmentInteractionListener {
         void onPlaylistOpen();
         void onPlay();
         void onStatsOpen();
         void onRateApp();
         void onShareApp();
+        boolean getTooltipState();
     }
 }

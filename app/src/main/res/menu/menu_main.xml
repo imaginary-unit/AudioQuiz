@@ -12,10 +12,11 @@
         />
 
     <item
-        android:id="@+id/action_visualizer"
-        android:title="@string/menu_audio_visualizer"
+        android:id="@+id/action_tooltips"
+        android:title="@string/menu_tooltips"
         app:showAsAction="never"
         android:checkable="true"
         android:checked="true"
         />
+
 </menu>

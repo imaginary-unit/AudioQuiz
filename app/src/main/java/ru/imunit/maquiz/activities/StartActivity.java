@@ -1,10 +1,8 @@
 package ru.imunit.maquiz.activities;
 
 import android.Manifest;
-import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,7 +15,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,10 +33,10 @@ public class StartActivity extends AppCompatActivity
         ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final int PERMISSION_REQUEST_READ_STORAGE = 1;
-    private static final int PERMISSION_REQUEST_RECORD_AUDIO = 2;
     private View mRootLayout;
     private ProgressDialog mProgress = null;
     private Menu mOptionsMenu;
+    private boolean mTooltipState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +47,8 @@ public class StartActivity extends AppCompatActivity
         toolbar.setTitle(R.string.start_toolbar_title);
         mRootLayout = findViewById(R.id.activity_start);
         if (checkStoragePermission()) {
-            // TODO: maybe do music update only on first activity show
             startMusicUpdate();
         }
-        checkRecordPermission();
     }
 
     @Override
@@ -103,10 +98,15 @@ public class StartActivity extends AppCompatActivity
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("text/plain");
         share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        share.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
-        share.putExtra(Intent.EXTRA_TEXT,
-                "http://play.google.com/store/apps/details?id=" + this.getPackageName());
+        // share.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
+        share.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_subject) +
+                " http://play.google.com/store/apps/details?id=" + this.getPackageName());
         startActivity(Intent.createChooser(share, getString(R.string.share_dialog_title)));
+    }
+
+    @Override
+    public boolean getTooltipState() {
+        return mTooltipState;
     }
 
     @Override
@@ -114,7 +114,9 @@ public class StartActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.menu_main, menu);
         SettingsManager sm = new SettingsManager(this);
         menu.findItem(R.id.action_metronome).setChecked(sm.getMetronomeState());
-        menu.findItem(R.id.action_visualizer).setChecked(sm.getVisualizerState());
+        boolean tt = sm.getTooltipsShown();
+        menu.findItem(R.id.action_tooltips).setChecked(tt);
+        mTooltipState = tt;
         mOptionsMenu = menu;
         return super.onCreateOptionsMenu(menu);
     }
@@ -126,19 +128,17 @@ public class StartActivity extends AppCompatActivity
             boolean newState = !sm.getMetronomeState();
             sm.setMetronomeState(newState);
             item.setChecked(newState);
-            Log.d("Metronome state", String.valueOf(sm.getMetronomeState()));
             return true;
         }
-        else if (item.getItemId() == R.id.action_visualizer) {
+        else if (item.getItemId() == R.id.action_tooltips) {
             SettingsManager sm = new SettingsManager(this);
-            boolean newState = !sm.getVisualizerState();
-            if (checkRecordPermission()) {
-                sm.setVisualizerState(newState);
-                item.setChecked(newState);
-                Log.d("Visualizer state", String.valueOf(sm.getVisualizerState()));
-            }
+            boolean newState = !sm.getTooltipsShown();
+            sm.setTooltipsShown(newState);
+            item.setChecked(newState);
+            mTooltipState = newState;
             return true;
-        } else {
+        }
+        else {
             return super.onOptionsItemSelected(item);
         }
     }
@@ -172,21 +172,6 @@ public class StartActivity extends AppCompatActivity
         }
     }
 
-    private boolean checkRecordPermission() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.RECORD_AUDIO)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.RECORD_AUDIO},
-                    PERMISSION_REQUEST_RECORD_AUDIO);
-            return false;
-        }
-        else {
-            return true;
-        }
-    }
-
     private void startMusicUpdate() {
         mProgress = ProgressDialog.show(this, null,
                 getResources().getString(R.string.updating_music_dialog), true, true);
@@ -199,10 +184,16 @@ public class StartActivity extends AppCompatActivity
                 }
                 if (res == MusicUpdater.RESULT_ERROR) {
                     ExceptionNotifier.make(mRootLayout,
-                            getResources().getString(R.string.err_database_error)).show();
+                            getResources().getString(R.string.err_database_error)).
+                            setActionListener(new ExceptionNotifier.ActionListener() {
+                                @Override
+                                public void onClick() {
+                                    // added handler just to have dismiss button in snackbar
+                                }
+                            }).show();
                 } else if (res == MusicUpdater.RESULT_FEW_MUSIC) {
                     SettingsManager sm = new SettingsManager(StartActivity.this);
-                    if (!sm.getFewMusicNorified()) {
+                    if (!sm.getFewMusicNotified()) {
                         sm.setFewMusicNotified(true);
                         String few_mus = String.format(Locale.ENGLISH,
                                 getResources().getString(R.string.err_few_music),
@@ -217,7 +208,13 @@ public class StartActivity extends AppCompatActivity
                     }
                 } else if (res == MusicUpdater.RESULT_NO_MUSIC) {
                     ExceptionNotifier.make(mRootLayout,
-                            getResources().getString(R.string.err_no_music)).show();
+                            getResources().getString(R.string.err_no_music)).
+                            setActionListener(new ExceptionNotifier.ActionListener() {
+                                @Override
+                                public void onClick() {
+                                    // added handler just to have dismiss button in snackbar
+                                }
+                            }).show();
                 }
             }
         });
@@ -247,24 +244,6 @@ public class StartActivity extends AppCompatActivity
                 noPermissionsExit();
             } else {
                 startMusicUpdate();
-            }
-        }
-        else if (requestCode == PERMISSION_REQUEST_RECORD_AUDIO) {
-            if (grantResults.length == 0
-                || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                // if no record permissions, show the notification and disable the visualizer
-                Snackbar.make(mRootLayout, R.string.permission_record_rationale,
-                        Snackbar.LENGTH_LONG).show();
-                new SettingsManager(this).setVisualizerState(false);
-                if (mOptionsMenu != null) {
-                    mOptionsMenu.findItem(R.id.action_visualizer).setChecked(false);
-                }
-            }
-            else {
-                new SettingsManager(this).setVisualizerState(true);
-                if (mOptionsMenu != null) {
-                    mOptionsMenu.findItem(R.id.action_visualizer).setChecked(true);
-                }
             }
         }
         else {
