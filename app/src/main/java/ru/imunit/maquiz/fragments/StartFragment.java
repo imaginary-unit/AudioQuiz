@@ -21,7 +21,8 @@ import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
  * {@link StartFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class StartFragment extends Fragment implements View.OnClickListener, View.OnTouchListener {
+public class StartFragment extends Fragment implements
+        View.OnClickListener, View.OnTouchListener {
 
     private final int TOOLTIP_DURATION = 1000;
     private final int TOOLTIP_DELAY = 200;

@@ -8,17 +8,14 @@
 
     <include layout="@layout/toolbar_base" />
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:src="@drawable/shadow" />
+
     <FrameLayout
         android:id="@+id/fragment_placeholder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
-    <!--<fragment-->
-        <!--class="ru.imunit.maquiz.fragments.PlaylistTracksFragment"-->
-        <!--android:id="@+id/fragment_playlist_viewer"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--tools:layout="@layout/fragment_playlist_viewer">-->
-    <!--</fragment>-->
 
 </LinearLayout>

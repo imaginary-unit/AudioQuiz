@@ -31,9 +31,10 @@
         android:layout_margin="20dp"/>
 
     <ImageButton
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_margin="5dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="15dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:id="@+id/shareApp"
@@ -47,7 +48,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerHorizontal="true"
-        android:layout_margin="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:textSize="52sp"
         android:textStyle="bold"
@@ -56,9 +58,10 @@
         android:text="Audio Quiz" />
 
     <ImageButton
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_margin="5dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="15dp"
         android:layout_toLeftOf="@id/shareApp"
         android:layout_alignParentBottom="true"
         android:id="@+id/rateApp"

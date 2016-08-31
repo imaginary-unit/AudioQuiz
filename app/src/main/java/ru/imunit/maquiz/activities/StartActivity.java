@@ -43,8 +43,8 @@ public class StartActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.start_toolbar_title);
+        setSupportActionBar(toolbar);
         mRootLayout = findViewById(R.id.activity_start);
         if (checkStoragePermission()) {
             startMusicUpdate();

@@ -10,6 +10,11 @@
 
     <include layout="@layout/toolbar_base" />
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:src="@drawable/shadow" />
+
     <fragment
         class="ru.imunit.maquiz.fragments.StartFragment"
         android:id="@+id/fragment_start"

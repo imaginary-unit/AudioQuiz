@@ -32,10 +32,22 @@
         android:layout_margin="20dp"/>
 
     <ImageButton
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_margin="5dp"
-        android:layout_alignParentRight="true"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/rateApp"
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/star_button"
+        android:scaleType="fitCenter"/>
+
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@id/rateApp"
         android:id="@+id/shareApp"
         android:background="@android:color/transparent"
         app:srcCompat="@drawable/share_button"
@@ -47,23 +59,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/shareApp"
         android:layout_centerHorizontal="true"
-        android:layout_margin="20dp"
+        android:layout_marginTop="70dp"
         android:gravity="center"
         android:textSize="52sp"
         android:textStyle="bold"
         android:textColor="@color/colorForeground"
         style="@style/TextShadow"
         android:text="Audio Quiz" />
-
-    <ImageButton
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_margin="5dp"
-        android:layout_toLeftOf="@id/shareApp"
-        android:id="@+id/rateApp"
-        android:background="@android:color/transparent"
-        app:srcCompat="@drawable/star_button"
-        android:scaleType="fitCenter"/>
 
     <ImageButton
         android:layout_width="120dp"
