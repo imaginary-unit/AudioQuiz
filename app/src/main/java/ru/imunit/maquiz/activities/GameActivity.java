@@ -27,7 +27,7 @@ public class GameActivity extends AppCompatActivity
         ResultsFragment.ResultsFragmentListener {
 
     private static final int OPTIONS_COUNT = 5;
-    private static final int ROUNDS_COUNT = 1;
+    private static final int ROUNDS_COUNT = 10;
 
     private ModelRetainFragment mModelRetainFragment;
     private GameFragment mGameFragment;
@@ -38,10 +38,6 @@ public class GameActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-
-//        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-//        toolbar.setTitle(R.string.game_toolbar_title);
-//        setSupportActionBar(toolbar);
 
         // retain or create model
         mModelRetainFragment = (ModelRetainFragment)
@@ -198,6 +194,7 @@ public class GameActivity extends AppCompatActivity
         Intent statsIntent = new Intent(this,
                 ActivityFactory.getActivity(ActivityFactory.STATS_ACTIVTY));
         startActivity(statsIntent);
+        finish();
     }
 
     @Override
@@ -205,5 +202,6 @@ public class GameActivity extends AppCompatActivity
         Intent menuIntent = new Intent(this,
                 ActivityFactory.getActivity(ActivityFactory.START_ACTIVITY));
         startActivity(menuIntent);
+        finish();
     }
 }

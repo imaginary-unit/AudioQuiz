@@ -226,26 +226,25 @@ public class GameModel implements IGameModel {
     }
 
     private void calcRoundScoreBonuses() {
-        // TODO: remove  or reduce bonuses when there are wrong attempts
         mRoundScore += SCORE_BASE;
         int n = mGuessTime.size();
         int t0 = mGuessTime.get(n-1); // current round time
-        // adding time bonuses
-        if (t0 <= BONUS_TIME_THRESHOLD_3) {
-            mRoundScore += SCORE_BONUS_TIME_3;
-            // checking for row bonus
-            if (n >= ROW_BONUS_START) {
-                int t1 = mGuessTime.get(n-2);
-                int t2 = mGuessTime.get(n-3);
-                if ((t1 <= BONUS_TIME_THRESHOLD_3) && (t2 <= BONUS_TIME_THRESHOLD_3))
-                    mRoundScore = (int)(mRoundScore * ROW_BONUS_FACTOR);
-            }
+        // adding time bonuses (only if there are no mistakes)
+        if (mRoundPenalty <= 1) {
+            if (t0 <= BONUS_TIME_THRESHOLD_3) {
+                mRoundScore += SCORE_BONUS_TIME_3;
+                // checking for row bonus
+                if (n >= ROW_BONUS_START) {
+                    int t1 = mGuessTime.get(n - 2);
+                    int t2 = mGuessTime.get(n - 3);
+                    if ((t1 <= BONUS_TIME_THRESHOLD_3) && (t2 <= BONUS_TIME_THRESHOLD_3))
+                        mRoundScore = (int) (mRoundScore * ROW_BONUS_FACTOR);
+                }
+            } else if (t0 <= BONUS_TIME_THRESHOLD_2)
+                mRoundScore += SCORE_BONUS_TIME_2;
+            else if (t0 <= BONUS_TIME_THRESHOLD_1)
+                mRoundScore += SCORE_BONUS_TIME_1;
         }
-        else if (t0 <= BONUS_TIME_THRESHOLD_2)
-            mRoundScore += SCORE_BONUS_TIME_2;
-        else if (t0 <= BONUS_TIME_THRESHOLD_1)
-            mRoundScore += SCORE_BONUS_TIME_1;
-
         mRoundScore /= mRoundPenalty;
     }
 
@@ -270,6 +269,7 @@ public class GameModel implements IGameModel {
             throw new DatabaseException();
 
         if (mCurrentRound + 1 > mRoundsCount) {
+            mCurrentRound++;
             mDataSource.close();
             finishGame();
             return;
@@ -364,7 +364,7 @@ public class GameModel implements IGameModel {
 
     @Override
     public boolean isGameFinished() {
-        return (mRoundsCount > 0) && (mCurrentRound + 1 > mRoundsCount);
+        return (mRoundsCount > 0) && (mCurrentRound > mRoundsCount);
     }
 
     @Override

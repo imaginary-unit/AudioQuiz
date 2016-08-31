@@ -24,8 +24,7 @@
             android:label="@string/title_activity_playlist" />
 
         <activity
-            android:name=".activities.GameActivity"
-            android:noHistory="true"/>
+            android:name=".activities.GameActivity" />
 
         <activity android:name=".activities.StatsActivity" />
 

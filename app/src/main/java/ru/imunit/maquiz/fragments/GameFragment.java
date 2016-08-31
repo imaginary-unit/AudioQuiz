@@ -78,7 +78,6 @@ public class GameFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i("DEBUG", "onCreateView()");
         return inflater.inflate(R.layout.fragment_game, container, false);
     }
 
@@ -113,16 +112,20 @@ public class GameFragment extends Fragment implements
     public void onPause() {
         super.onPause();
         mMetronomePlaying = false;
-        if (mMediaPlayer != null)
+        if (mMediaPlayer != null) {
             mMediaPlayer.release();
+            mMediaPlayer = null;
+        }
         // Log.i("DEBUG", "onPause()");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (mMediaPlayer != null)
+        if (mMediaPlayer != null) {
             mMediaPlayer.release();
+            mMediaPlayer = null;
+        }
         // Log.i("DEBUG", "onStop()");
     }
 
@@ -142,8 +145,10 @@ public class GameFragment extends Fragment implements
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        if (mMediaPlayer != null)
+        if (mMediaPlayer != null) {
             mMediaPlayer.release();
+            mMediaPlayer = null;
+        }
     }
 
     /**
@@ -165,6 +170,7 @@ public class GameFragment extends Fragment implements
                     @Override
                     public void onCompletion(MediaPlayer mediaPlayer) {
                         mMediaPlayer.release();
+                        mMediaPlayer = null;
                         mMetronomePlaying = false;
                         mUiLock = false;
                         mListener.onStartPlayback();
@@ -197,6 +203,7 @@ public class GameFragment extends Fragment implements
             if (mMediaPlayer.isPlaying())
                 mMediaPlayer.stop();
             mMediaPlayer.release();
+            mMediaPlayer = null;
 
             // show correct guess animation and load next round after it has finished
             tempTrackView.setAnimationListener(new Animation.AnimationListener() {
@@ -237,6 +244,7 @@ public class GameFragment extends Fragment implements
             if (mMediaPlayer.isPlaying())
                 mMediaPlayer.stop();
             mMediaPlayer.release();
+            mMediaPlayer = null;
             // display failed notification and move to the next round
             tempTrackView.setAnimationListener(new Animation.AnimationListener() {
                 @Override
@@ -258,7 +266,11 @@ public class GameFragment extends Fragment implements
 
     @Override
     public void onPlaybackStarted() {
+        Log.i("Playback started", "11");
         Uri trackUri = Uri.fromFile(new File(mModel.getCorrectTrack().getUri()));
+        if (mMediaPlayer != null) {
+            mMediaPlayer.release();
+        }
         mMediaPlayer = new MediaPlayer();
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
@@ -276,8 +288,6 @@ public class GameFragment extends Fragment implements
 
                 mMediaPlayer.seekTo(start);
                 mMediaPlayer.setLooping(true);
-                // Log.i("Playing media from:", String.format("%d / %d", start, len));
-//                mInfoBar.setAudioSessionId(mMediaPlayer.getAudioSessionId());
                 mInfoBar.showSpeakers();
                 mMediaPlayer.start();
                 mListener.onMediaReady();
