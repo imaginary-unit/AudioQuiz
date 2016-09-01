@@ -7,25 +7,25 @@
 
     <ImageView
         android:id="@+id/speakerLeft"
-        android:layout_width="84dp"
+        android:layout_width="168dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="10dp"
         android:layout_alignParentLeft="true"
         app:srcCompat="@drawable/ic_speaker_animated"
         />
 
     <ImageView
         android:id="@+id/speakerRight"
-        android:layout_width="84dp"
+        android:layout_width="168dp"
         android:layout_height="match_parent"
-        android:layout_marginRight="5dp"
+        android:layout_marginRight="10dp"
         android:layout_alignParentRight="true"
         app:srcCompat="@drawable/ic_speaker_animated"
         android:scaleX="-1"/>
 
     <ImageView
         android:id="@+id/dots"
-        android:layout_width="126dp"
+        android:layout_width="252dp"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         app:srcCompat="@drawable/ic_dots_animated"
@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:textSize="30sp"
+        android:textSize="60sp"
         android:textStyle="bold"
         android:textColor="@color/colorAccent"
         style="@style/OutlinedText"

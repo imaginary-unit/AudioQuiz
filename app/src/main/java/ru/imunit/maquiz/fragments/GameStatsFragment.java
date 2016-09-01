@@ -2,6 +2,7 @@ package ru.imunit.maquiz.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -99,6 +100,13 @@ public class GameStatsFragment extends Fragment implements
                 gl.removeView(v);
             }
         }
+        // determine text size using screen size info
+        float textSize = 14f;
+        int screenLayout = getContext().getResources().getConfiguration().screenLayout;
+        screenLayout &= Configuration.SCREENLAYOUT_SIZE_MASK;
+        if (screenLayout == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+            textSize = 28f;
+        }
         // add new line for each top score entry
         n = topScores.size();
         for (int i=0; i < n; i++) {
@@ -107,11 +115,12 @@ public class GameStatsFragment extends Fragment implements
             params.width = GridLayout.LayoutParams.WRAP_CONTENT;
             params.height = GridLayout.LayoutParams.WRAP_CONTENT;
             params.bottomMargin = 5;
-            params.rightMargin = 5;
+            params.rightMargin = 30;
             params.columnSpec = GridLayout.spec(0);
             params.rowSpec = GridLayout.spec(i+1);
             tNum.setLayoutParams(params);
-            tNum.setTextColor(getResources().getColor(R.color.colorForeground));
+            tNum.setTextColor(getResources().getColor(R.color.colorAccent));
+            tNum.setTextSize(textSize);
             tNum.setText(String.format(Locale.ENGLISH, "# %d.", i+1));
             TextView tScore = new TextView(getContext());
             params = new GridLayout.LayoutParams();
@@ -123,6 +132,7 @@ public class GameStatsFragment extends Fragment implements
             params.rowSpec = GridLayout.spec(i+1);
             tScore.setLayoutParams(params);
             tScore.setTextColor(getResources().getColor(R.color.colorForeground));
+            tScore.setTextSize(textSize);
             tScore.setText(String.valueOf(topScores.get(i)));
             gl.addView(tNum);
             gl.addView(tScore);

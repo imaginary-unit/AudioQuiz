@@ -8,19 +8,19 @@
     <android.support.v7.widget.CardView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:layout_marginRight="5dp"
+        android:layout_margin="30dp"
+        android:layout_marginRight="10dp"
         app:layout_gravity="center_vertical"
         app:layout_row="0"
         app:layout_column="0"
         app:layout_columnWeight="1.5"
-        android:padding="5dp"
         app:cardBackgroundColor="@color/colorPrimary"
-        app:cardCornerRadius="10dp">
+        app:cardCornerRadius="20dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="10dp">
 
             <android.support.v4.widget.Space
                 android:layout_width="match_parent"
@@ -34,7 +34,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:text="@string/game_results_congrats_0"
-                android:textSize="30sp"
+                android:textSize="60sp"
                 android:textColor="@color/colorAccent"
                 style="@style/OutlinedText"
                 />
@@ -46,7 +46,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:text="@string/game_results_clean_game"
-                android:textSize="26sp"
+                android:textSize="52sp"
                 android:textColor="#ff00ff00"
                 android:gravity="center_horizontal"
                 style="@style/OutlinedText"
@@ -60,7 +60,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:text="@string/game_results_new_highscore"
-                android:textSize="26sp"
+                android:textSize="52sp"
                 android:textColor="#ff00ff00"
                 style="@style/OutlinedText"
                 android:visibility="gone"
@@ -78,28 +78,28 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
-        android:layout_margin="15dp"
-        android:layout_marginLeft="5dp"
+        android:layout_margin="30dp"
+        android:layout_marginLeft="10dp"
         app:layout_gravity="center_vertical"
         app:layout_row="0"
         app:layout_column="1"
         app:layout_columnWeight="1"
-        android:padding="5dp"
         app:cardBackgroundColor="@color/colorPrimary"
         app:cardCornerRadius="10dp">
         <android.support.v7.widget.GridLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="0">
+            android:layout_weight="0"
+            android:padding="10dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_row="0"
                 app:layout_column="0"
-                android:layout_margin="3dp"
+                android:layout_margin="6dp"
                 android:text="@string/game_results_score"
-                android:textSize="22sp"
+                android:textSize="44sp"
                 android:textColor="@color/colorForeground" />
             <TextView
                 android:id="@+id/textScore"
@@ -107,17 +107,17 @@
                 android:layout_height="wrap_content"
                 app:layout_row="0"
                 app:layout_column="1"
-                android:layout_margin="3dp"
-                android:textSize="22sp"
+                android:layout_margin="6dp"
+                android:textSize="44sp"
                 android:textColor="@color/colorForeground" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_row="1"
                 app:layout_column="0"
-                android:layout_margin="3dp"
+                android:layout_margin="6dp"
                 android:text="@string/game_results_highscore"
-                android:textSize="22sp"
+                android:textSize="44sp"
                 android:textColor="@color/colorForeground" />
             <TextView
                 android:id="@+id/textHighScore"
@@ -125,8 +125,8 @@
                 android:layout_height="wrap_content"
                 app:layout_row="1"
                 app:layout_column="1"
-                android:layout_margin="3dp"
-                android:textSize="22sp"
+                android:layout_margin="6dp"
+                android:textSize="44sp"
                 android:textColor="@color/colorForeground" />
         </android.support.v7.widget.GridLayout>
     </android.support.v7.widget.CardView>
@@ -148,9 +148,9 @@
         app:layout_column="0"
         app:layout_columnSpan="2"
         app:layout_rowWeight="1"
-        android:layout_marginLeft="18dp"
-        android:layout_marginRight="18dp"
-        android:textSize="18sp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp"
+        android:textSize="36sp"
         android:textColor="@color/colorForegroundHalf" />
 
     <LinearLayout
@@ -165,32 +165,32 @@
         app:layout_columnSpan="2"
         app:layout_rowWeight="1">
         <ImageButton
-            android:layout_width="65dp"
-            android:layout_height="65dp"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
             android:id="@+id/btnStatistics"
             android:background="@drawable/round_button"
             app:srcCompat="@drawable/percent"
             android:scaleType="fitCenter"
-            android:padding="10dp"
-            android:layout_margin="10dp"/>
+            android:padding="20dp"
+            android:layout_margin="20dp"/>
         <ImageButton
-            android:layout_width="65dp"
-            android:layout_height="65dp"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
             android:id="@+id/btnRestart"
             android:background="@drawable/round_button"
             app:srcCompat="@drawable/repeat"
             android:scaleType="fitCenter"
-            android:padding="10dp"
-            android:layout_margin="10dp"/>
+            android:padding="20dp"
+            android:layout_margin="20dp"/>
         <ImageButton
-            android:layout_width="65dp"
-            android:layout_height="65dp"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
             android:id="@+id/btnMenu"
             android:background="@drawable/round_button"
             app:srcCompat="@drawable/home"
             android:scaleType="fitCenter"
-            android:padding="10dp"
-            android:layout_margin="10dp"/>
+            android:padding="20dp"
+            android:layout_margin="20dp"/>
     </LinearLayout>
 
 </android.support.v7.widget.GridLayout>

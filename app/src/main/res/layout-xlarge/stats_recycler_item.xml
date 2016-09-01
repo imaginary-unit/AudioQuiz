@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/trackInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_row="0"
+        app:layout_columnSpan="2"
+        android:ellipsize="marquee"
+        android:maxLines="1"
+        android:text="Track artist - Track title"
+        android:textSize="32sp"
+        android:textColor="@color/colorForeground" />
+
+    <TextView
+        android:id="@+id/guessed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_row="1"
+        app:layout_column="0"
+        android:layout_margin="10dp"
+        android:ellipsize="marquee"
+        android:maxLines="1"
+        android:text="Guessed: 112;"
+        android:textSize="28sp"
+        android:textColor="@color/colorForeground" />
+
+    <TextView
+        android:id="@+id/correct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_row="1"
+        app:layout_column="1"
+        android:layout_margin="10dp"
+        android:ellipsize="marquee"
+        android:maxLines="1"
+        android:text="Correct: 107 (96%)"
+        android:textSize="28sp"
+        android:textColor="@color/colorAccent" />
+
+</android.support.v7.widget.GridLayout>

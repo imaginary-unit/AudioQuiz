@@ -36,9 +36,41 @@
         <item name="ttlm_strokeWeight">@dimen/ttlm_default_stroke_weight</item>
         <item name="ttlm_cornerRadius">@dimen/ttlm_default_corner_radius</item>
         <item name="ttlm_arrowRatio">1.4</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textAppearance">@style/TooltipTextAppearance</item>
         <item name="ttlm_overlayStyle">@style/ToolTipOverlayDefaultStyle</item>
         <item name="ttlm_elevation">@dimen/ttlm_default_elevation</item>
+    </style>
+
+    <style name="ToolTipLayoutStyleXlarge">
+        <item name="ttlm_padding">@dimen/ttlm_default_padding</item>
+        <item name="ttlm_strokeColor">@android:color/transparent</item>
+        <item name="ttlm_backgroundColor">@color/colorPrimaryDarkHalf</item>
+        <item name="ttlm_strokeWeight">@dimen/ttlm_default_stroke_weight</item>
+        <item name="ttlm_cornerRadius">@dimen/ttlm_default_corner_radius</item>
+        <item name="ttlm_arrowRatio">1.4</item>
+        <item name="android:textAppearance">@style/TooltipTextAppearanceXlarge</item>
+        <item name="ttlm_overlayStyle">@style/ToolTipOverlayDefaultStyle</item>
+        <item name="ttlm_elevation">@dimen/ttlm_default_elevation</item>
+    </style>
+
+    <style name="TooltipTextAppearance">
+        <item name="android:textColor">@color/colorForeground</item>
+        <item name="android:textSize">16dp</item>
+    </style>
+
+    <style name="TooltipTextAppearanceXlarge">
+        <item name="android:textColor">@color/colorForeground</item>
+        <item name="android:textSize">30dp</item>
+    </style>
+
+    <style name="TabLayoutTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
+        <item name="android:textSize">16dp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="TabLayoutTextAppearanceXlarge" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
+        <item name="android:textSize">28dp</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
 </resources>

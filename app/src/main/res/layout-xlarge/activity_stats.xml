@@ -19,8 +19,9 @@
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="15dp"
             app:tabIndicatorColor="@color/colorAccent"
-            app:tabTextAppearance="@style/TabLayoutTextAppearance"
+            app:tabTextAppearance="@style/TabLayoutTextAppearanceXlarge"
             app:tabTextColor="@color/colorForegroundHalf"
             app:tabSelectedTextColor="@color/colorForeground"/>
     </android.support.design.widget.AppBarLayout>

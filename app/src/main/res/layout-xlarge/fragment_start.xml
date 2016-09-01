@@ -1,0 +1,83 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    tools:context="ru.imunit.maquiz.fragments.StartFragment">
+
+    <ImageButton
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/playlists"
+        android:background="@drawable/round_button"
+        app:srcCompat="@drawable/playlist_play"
+        android:scaleType="fitCenter"
+        android:padding="20dp"
+        android:layout_margin="40dp"/>
+
+    <ImageButton
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/stats"
+        android:background="@drawable/round_button"
+        app:srcCompat="@drawable/percent"
+        android:scaleType="fitCenter"
+        android:padding="20dp"
+        android:layout_margin="40dp"/>
+
+    <ImageButton
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/shareApp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/share_button"
+        android:scaleType="fitCenter" />
+
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:textSize="104sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorForeground"
+        style="@style/TextShadow"
+        android:text="Audio Quiz" />
+
+    <ImageButton
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="30dp"
+        android:layout_toLeftOf="@id/shareApp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/rateApp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/star_button"
+        android:scaleType="fitCenter"/>
+
+    <ImageButton
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:layout_toRightOf="@id/playlists"
+        android:layout_centerVertical="true"
+        android:id="@+id/play"
+        android:background="@drawable/round_button"
+        app:srcCompat="@drawable/ic_play_arrow"
+        android:scaleType="fitCenter"
+        android:layout_margin="20dp"/>
+
+</RelativeLayout>

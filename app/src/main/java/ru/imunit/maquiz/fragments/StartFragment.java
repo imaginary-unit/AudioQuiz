@@ -1,6 +1,7 @@
 package ru.imunit.maquiz.fragments;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -145,6 +146,14 @@ public class StartFragment extends Fragment implements
             grav1 = Tooltip.Gravity.TOP;
         }
 
+        // determine text size using screen size info
+        int resId = R.style.ToolTipLayoutStyle;
+        int screenLayout = getContext().getResources().getConfiguration().screenLayout;
+        screenLayout &= Configuration.SCREENLAYOUT_SIZE_MASK;
+        if (screenLayout == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+            resId = R.style.ToolTipLayoutStyleXlarge;
+        }
+
         mTooltipPlaylists = Tooltip.make(getContext(), new Tooltip.Builder().
                 anchor(mPlaylists, grav0).
                 closePolicy(Tooltip.ClosePolicy.TOUCH_ANYWHERE_CONSUME, TOOLTIP_DURATION).
@@ -152,7 +161,7 @@ public class StartFragment extends Fragment implements
                 fitToScreen(true).
                 activateDelay(TOOLTIP_DELAY).
                 withArrow(true).
-                withStyleId(R.style.ToolTipLayoutStyle).
+                withStyleId(resId).
                 build());
 
         mTooltipPlay = Tooltip.make(getContext(), new Tooltip.Builder().
@@ -162,7 +171,7 @@ public class StartFragment extends Fragment implements
                 fitToScreen(true).
                 activateDelay(TOOLTIP_DELAY).
                 withArrow(true).
-                withStyleId(R.style.ToolTipLayoutStyle).
+                withStyleId(resId).
                 build());
 
         mTooltipStats = Tooltip.make(getContext(), new Tooltip.Builder().
@@ -172,7 +181,7 @@ public class StartFragment extends Fragment implements
                 fitToScreen(true).
                 activateDelay(TOOLTIP_DELAY).
                 withArrow(true).
-                withStyleId(R.style.ToolTipLayoutStyle).
+                withStyleId(resId).
                 build());
 
         mTooltipRate = Tooltip.make(getContext(), new Tooltip.Builder().
@@ -182,7 +191,7 @@ public class StartFragment extends Fragment implements
                 fitToScreen(true).
                 activateDelay(TOOLTIP_DELAY).
                 withArrow(true).
-                withStyleId(R.style.ToolTipLayoutStyle).
+                withStyleId(resId).
                 build());
 
         mTooltipShare = Tooltip.make(getContext(), new Tooltip.Builder().
@@ -192,7 +201,7 @@ public class StartFragment extends Fragment implements
                 fitToScreen(true).
                 activateDelay(TOOLTIP_DELAY).
                 withArrow(true).
-                withStyleId(R.style.ToolTipLayoutStyle).
+                withStyleId(resId).
                 build());
     }
 
