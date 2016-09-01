@@ -14,9 +14,7 @@ import java.util.List;
 import ru.imunit.maquiz.R;
 import ru.imunit.maquizdb.entities.DBTrack;
 
-/**
- * Created by lemoist on 19.05.16.
- */
+
 public class PlaylistRecyclerAdapter extends
         RecyclerView.Adapter<PlaylistRecyclerAdapter.PlaylistViewHolder> implements
         View.OnClickListener {
@@ -49,8 +47,6 @@ public class PlaylistRecyclerAdapter extends
     public PlaylistViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate
                 (R.layout.recycler_item_2, parent, false);
-//        ImageView iv = (ImageView)v.findViewById(R.id.icon);
-//        iv.setImageResource(R.drawable.folder);
         v.setOnClickListener(this);
         return new PlaylistViewHolder(v);
     }

@@ -7,7 +7,6 @@ import android.graphics.drawable.PaintDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
@@ -18,10 +17,20 @@ import android.widget.TextView;
 import ru.imunit.maquiz.R;
 import ru.imunit.maquizdb.entities.DBTrack;
 
-/**
- * Created by theuser on 09.06.16.
- */
+
 public class TrackView extends FrameLayout {
+
+    private DBTrack mTrack;
+    private ImageView mIcon;
+    private TextView mArtist;
+    private TextView mTitle;
+
+    private ImageView mHighlight;
+    private PaintDrawable mDrawable;
+    private Animation.AnimationListener mAnimationListener;
+
+    private final int ANIM_TIME = 100;
+    private final int BLINK_TIME = 300;
 
     public TrackView(Context context) {
         super(context);
@@ -93,18 +102,6 @@ public class TrackView extends FrameLayout {
         mDrawable = createGradient(getResources().getColor(R.color.colorForegroundHalf));
     }
 
-    private DBTrack mTrack;
-    private ImageView mIcon;
-    private TextView mArtist;
-    private TextView mTitle;
-
-    private ImageView mHighlight;
-    private PaintDrawable mDrawable;
-    private Animation.AnimationListener mAnimationListener;
-
-    private final int ANIM_TIME = 100;
-    private final int BLINK_TIME = 300;
-
     private class HighlightAnim extends Animation {
 
         public HighlightAnim(View view, int targetSize) {
@@ -151,8 +148,6 @@ public class TrackView extends FrameLayout {
             // divide the [0; 1] interval to BLINKS equal intervals
             boolean even = (int)(interpolatedTime * BLINKS) % 2 == 0;
             // show view while even interval, hide while odd
-            //int vis = even ? VISIBLE : INVISIBLE;
-            //mView.setVisibility(vis);
             int w = even ? mWidth : 0;
             mView.getLayoutParams().width = w;
             mView.requestLayout();

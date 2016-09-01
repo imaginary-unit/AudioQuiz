@@ -38,10 +38,6 @@ public class MAQDataSource implements IDataSource {
         dbHelper = new MAQDbHelper(context);
     }
 
-    public void foo() {
-        database = dbHelper.getReadableDatabase();
-    }
-
     @Override
     public boolean openReadable() {
         try {
@@ -51,7 +47,6 @@ public class MAQDataSource implements IDataSource {
             return false;
         }
         return true;
-//        return false;
     }
 
     @Override
@@ -63,7 +58,6 @@ public class MAQDataSource implements IDataSource {
             return false;
         }
         return true;
-//        return false;
     }
 
     public void close() {

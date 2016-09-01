@@ -1,44 +1,24 @@
 package ru.imunit.maquiz.fragments;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import ru.imunit.maquiz.R;
-import ru.imunit.maquiz.managers.MusicUpdater;
-import ru.imunit.maquiz.models.GameModel;
-import ru.imunit.maquiz.models.IGameModel;
 import ru.imunit.maquiz.models.IPlaylistModel;
 import ru.imunit.maquiz.models.PlaylistModel;
-import ru.imunit.maquiz.views.adapters.CheckRecyclerAdapter;
 import ru.imunit.maquiz.views.adapters.PlaylistRecyclerAdapter;
-import ru.imunit.maquizdb.DataSourceFactory;
-import ru.imunit.maquizdb.IDataSource;
 import ru.imunit.maquizdb.entities.DBTrack;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link PlaylistTracksFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- */
+
 public class PlaylistTracksFragment extends Fragment implements
         PlaylistModel.ModelUpdateListener,
         PlaylistRecyclerAdapter.ItemClickListener {

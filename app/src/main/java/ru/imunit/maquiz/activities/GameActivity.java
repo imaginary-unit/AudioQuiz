@@ -72,7 +72,6 @@ public class GameActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // inflate menu here
         return super.onCreateOptionsMenu(menu);
     }
 

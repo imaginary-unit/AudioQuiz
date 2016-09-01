@@ -33,10 +33,7 @@ public class GamesTable {
     }
 
     public static void onUpgrade(int oldVersion, int newVersion, SQLiteDatabase db) {
-        Log.w(GamesTable.class.getName(), String.format
-                ("Upgrading table %s from v.%d to v.%d",
-                        TABLE_NAME, oldVersion, newVersion));
-        db.execSQL("alter table `games` add column `longest_fast_row` integer not null default 0;");
+
     }
 
 }

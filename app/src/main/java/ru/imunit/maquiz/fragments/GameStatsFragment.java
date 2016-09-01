@@ -1,14 +1,11 @@
 package ru.imunit.maquiz.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,15 +18,11 @@ import ru.imunit.maquiz.R;
 import ru.imunit.maquiz.models.IStatsModel;
 import ru.imunit.maquiz.models.StatsModel;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link GameStatsListener} interface
- * to handle interaction events.
- */
 public class GameStatsFragment extends Fragment implements
         StatsModel.ModelUpdateListener {
 
+    private GameStatsListener mListener;
+    private IStatsModel mModel;
 
     public interface GameStatsListener {
         void onGameStatsInitialized();
@@ -46,8 +39,6 @@ public class GameStatsFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        Log.i("GameStats", "DBG CV");
         return inflater.inflate(R.layout.fragment_game_stats, container, false);
     }
 
@@ -67,7 +58,6 @@ public class GameStatsFragment extends Fragment implements
         super.onViewCreated(view, savedInstanceState);
         if (mListener != null)
             mListener.onGameStatsInitialized();
-        Log.i("GameStats", "DBG View created");
     }
 
     @Override
@@ -150,7 +140,4 @@ public class GameStatsFragment extends Fragment implements
         ags.setText(String.valueOf(mModel.getAverageScore()));
         lfgr.setText(String.valueOf(mModel.getLongestFastGuessRow()));
     }
-
-    private GameStatsListener mListener;
-    private IStatsModel mModel;
 }

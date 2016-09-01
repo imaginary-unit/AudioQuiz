@@ -35,7 +35,6 @@ public class StartActivity extends AppCompatActivity
     private static final int PERMISSION_REQUEST_READ_STORAGE = 1;
     private View mRootLayout;
     private ProgressDialog mProgress = null;
-    private Menu mOptionsMenu;
     private boolean mTooltipState;
 
     @Override
@@ -55,9 +54,9 @@ public class StartActivity extends AppCompatActivity
     public void onPlaylistOpen() {
         if (!checkStoragePermission())
             return;
-        Intent playlistsIntent = new Intent(this,
+        Intent playlistIntent = new Intent(this,
                 ActivityFactory.getActivity(ActivityFactory.PLAYLIST_ACTIVITY));
-        startActivity(playlistsIntent);
+        startActivity(playlistIntent);
     }
 
     @Override
@@ -117,7 +116,6 @@ public class StartActivity extends AppCompatActivity
         boolean tt = sm.getTooltipsShown();
         menu.findItem(R.id.action_tooltips).setChecked(tt);
         mTooltipState = tt;
-        mOptionsMenu = menu;
         return super.onCreateOptionsMenu(menu);
     }
 

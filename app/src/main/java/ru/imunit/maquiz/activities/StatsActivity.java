@@ -24,34 +24,14 @@ import ru.imunit.maquizdb.DataSourceFactory;
 public class StatsActivity extends AppCompatActivity implements
     GameStatsFragment.GameStatsListener, TrackStatsFragment.TrackStatsListener {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    private boolean gsInitialized;
+    private boolean tsInitialized;
+    private final String SAVED_TAB = "savedTab";
+    private ViewPager mViewPager;
+    private StatsModel mModel;
+    private GameStatsFragment mGameStatsFragment;
+    private TrackStatsFragment mTrackStatsFragment;
 
-        int tab = StatsPagerAdapter.GAMES_TAB;
-        if (savedInstanceState != null) {
-            tab = savedInstanceState.getInt(SAVED_TAB);
-            mGameStatsFragment = (GameStatsFragment)getSupportFragmentManager().
-                    getFragment(savedInstanceState, GameStatsFragment.class.getName());
-            mTrackStatsFragment = (TrackStatsFragment)getSupportFragmentManager().
-                    getFragment(savedInstanceState, TrackStatsFragment.class.getName());
-        }
-        if (mGameStatsFragment == null)
-            mGameStatsFragment = new GameStatsFragment();
-        if (mTrackStatsFragment == null)
-            mTrackStatsFragment = new TrackStatsFragment();
-
-        setContentView(R.layout.activity_stats);
-        // set toolbar
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.stats_toolbar_title);
-        setSupportActionBar(toolbar);
-        // init content
-        gsInitialized = false;
-        tsInitialized = false;
-        initTabs(tab);
-        initModel();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -93,9 +73,34 @@ public class StatsActivity extends AppCompatActivity implements
             mModel.startUpdate();
     }
 
-//    private String getFragmentTag(int pos) {
-//        return "android:switcher:"+R.id.viewPager+":"+pos;
-//    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        int tab = StatsPagerAdapter.GAMES_TAB;
+        if (savedInstanceState != null) {
+            tab = savedInstanceState.getInt(SAVED_TAB);
+            mGameStatsFragment = (GameStatsFragment)getSupportFragmentManager().
+                    getFragment(savedInstanceState, GameStatsFragment.class.getName());
+            mTrackStatsFragment = (TrackStatsFragment)getSupportFragmentManager().
+                    getFragment(savedInstanceState, TrackStatsFragment.class.getName());
+        }
+        if (mGameStatsFragment == null)
+            mGameStatsFragment = new GameStatsFragment();
+        if (mTrackStatsFragment == null)
+            mTrackStatsFragment = new TrackStatsFragment();
+
+        setContentView(R.layout.activity_stats);
+        // set toolbar
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.stats_toolbar_title);
+        setSupportActionBar(toolbar);
+        // init content
+        gsInitialized = false;
+        tsInitialized = false;
+        initTabs(tab);
+        initModel();
+    }
 
     private void initTabs(int defaultTab) {
         Map<Integer, Fragment> tabs = new HashMap<>();
@@ -128,11 +133,4 @@ public class StatsActivity extends AppCompatActivity implements
         mModel.startClear();
     }
 
-    private boolean gsInitialized;
-    private boolean tsInitialized;
-    private final String SAVED_TAB = "savedTab";
-    private ViewPager mViewPager;
-    private StatsModel mModel;
-    private GameStatsFragment mGameStatsFragment;
-    private TrackStatsFragment mTrackStatsFragment;
 }

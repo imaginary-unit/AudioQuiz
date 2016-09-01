@@ -88,7 +88,6 @@ public class PlaylistViewerActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // inflate menu here
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -158,19 +157,4 @@ public class PlaylistViewerActivity extends AppCompatActivity
         mModel.clearBlackList();
     }
 
-    //
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 }

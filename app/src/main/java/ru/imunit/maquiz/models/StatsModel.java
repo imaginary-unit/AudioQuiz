@@ -4,18 +4,30 @@ import android.os.AsyncTask;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import ru.imunit.maquizdb.IDataSource;
 import ru.imunit.maquizdb.entities.DBTrack;
 
-/**
- * Created by theuser on 08.07.16.
- */
 
 public class StatsModel implements IStatsModel {
+    // model parameters
+    private final int TOP_SCORES_COUNT = 5;
+    private final int ACTION_PULL = 1;
+    private final int ACTION_CLEAR = 0;
+    // service model fields
+    private IDataSource mDataSource;
+    private List<ModelUpdateListener> mListeners;
+    private AsyncExceptionListener mAEListener;
+    // stats data
+    private List<DBTrack> mTrackList;
+    private List<Integer> mTopScores;
+    private int mGamesCount;
+    private int mCleanGamesCount;
+    private float mCorrectGuessRatio;
+    private int mAverageScore;
+    private int mLongestFastGuessRow;
+
 
     public interface ModelUpdateListener {
         void onUpdateStarted();
@@ -153,21 +165,4 @@ public class StatsModel implements IStatsModel {
         mDataSource.close();
         return true;
     }
-
-    // model parameters
-    private final int TOP_SCORES_COUNT = 5;
-    private final int ACTION_PULL = 1;
-    private final int ACTION_CLEAR = 0;
-    // service model fields
-    private IDataSource mDataSource;
-    private List<ModelUpdateListener> mListeners;
-    private AsyncExceptionListener mAEListener;
-    // stats data
-    private List<DBTrack> mTrackList;
-    private List<Integer> mTopScores;
-    private int mGamesCount;
-    private int mCleanGamesCount;
-    private float mCorrectGuessRatio;
-    private int mAverageScore;
-    private int mLongestFastGuessRow;
 }

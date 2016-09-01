@@ -30,8 +30,6 @@ public class MAQDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.w(MAQDbHelper.class.getName(), String.format("Upgrading database %s from v.%d to v.%d",
-                DATABASE_NAME, oldVersion, newVersion));
         GamesTable.onUpgrade(oldVersion, newVersion, db);
         TracksTable.onUpgrade(oldVersion, newVersion, db);
         BlackDirsTable.onUpgrade(oldVersion, newVersion, db);

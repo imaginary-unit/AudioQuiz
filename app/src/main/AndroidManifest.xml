@@ -28,8 +28,6 @@
 
         <activity android:name=".activities.StatsActivity" />
 
-        <activity android:name=".TestActivity" />
-
     </application>
 
 </manifest>

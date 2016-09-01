@@ -14,9 +14,6 @@ import android.widget.TextView;
 
 import ru.imunit.maquiz.R;
 
-/**
- * Created by theuser on 31.07.16.
- */
 
 public class InfoBar extends FrameLayout {
 
@@ -26,6 +23,14 @@ public class InfoBar extends FrameLayout {
         speakers,
         txt
     }
+
+    private Handler mHandler = new Handler();
+    private TextView mTextInfo;
+    private ImageView mSpeakerLeft;
+    private ImageView mSpeakerRight;
+    private ImageView mDots;
+    private State mState;
+    private final int FADE_DURATION = 250;
 
     public InfoBar(Context context) {
         super(context);
@@ -148,7 +153,7 @@ public class InfoBar extends FrameLayout {
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        // TODO: can't remove this listener after it has been set..
+                        // TODO: how to remove this listener after it has been set?
                         // outView.setVisibility(View.GONE);
                     }
                 });
@@ -183,11 +188,5 @@ public class InfoBar extends FrameLayout {
             crossfade(this.inView, this.outView, 0);
         }
     }
-    private Handler mHandler = new Handler();
-    private TextView mTextInfo;
-    private ImageView mSpeakerLeft;
-    private ImageView mSpeakerRight;
-    private ImageView mDots;
-    private State mState;
-    private final int FADE_DURATION = 250;
+
 }

@@ -2,16 +2,16 @@ package ru.imunit.maquiz.managers;
 
 import android.support.design.widget.Snackbar;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import ru.imunit.maquiz.R;
 
-/**
- * Created by theuser on 13.07.16.
- */
 
 public class ExceptionNotifier {
+
+    private ActionListener mActionListener;
+    private View mHost;
+    private CharSequence mMessage;
 
     public interface ActionListener {
         void onClick();
@@ -65,7 +65,4 @@ public class ExceptionNotifier {
         mMessage = message;
     }
 
-    private ActionListener mActionListener;
-    private View mHost;
-    private CharSequence mMessage;
 }

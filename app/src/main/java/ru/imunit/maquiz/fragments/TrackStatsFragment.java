@@ -1,13 +1,11 @@
 package ru.imunit.maquiz.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +15,12 @@ import ru.imunit.maquiz.models.IStatsModel;
 import ru.imunit.maquiz.models.StatsModel;
 import ru.imunit.maquiz.views.adapters.StatsRecyclerAdapter;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link TrackStatsListener} interface
- * to handle interaction events.
- */
+
 public class TrackStatsFragment extends Fragment implements
         StatsModel.ModelUpdateListener {
+
+    private TrackStatsListener mListener;
+    private IStatsModel mModel;
 
     public interface TrackStatsListener {
         void onTrackStatsInitialized();
@@ -41,8 +37,6 @@ public class TrackStatsFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        Log.i("TrackStats", "DBG CV");
         return inflater.inflate(R.layout.fragment_track_stats, container, false);
     }
 
@@ -62,7 +56,6 @@ public class TrackStatsFragment extends Fragment implements
         super.onViewCreated(view, savedInstanceState);
         if (mListener != null)
             mListener.onTrackStatsInitialized();
-        Log.i("TrackStats", "DBG View created");
     }
 
     @Override
@@ -70,7 +63,6 @@ public class TrackStatsFragment extends Fragment implements
         super.onDetach();
         mListener = null;
     }
-
 
     @Override
     public void onUpdateStarted() {
@@ -85,6 +77,4 @@ public class TrackStatsFragment extends Fragment implements
         rv.setAdapter(adapter);
     }
 
-    private TrackStatsListener mListener;
-    private IStatsModel mModel;
 }

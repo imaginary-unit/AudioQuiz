@@ -3,11 +3,15 @@ package ru.imunit.maquiz.managers;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-/**
- * Created by lemoist on 10.08.16.
- */
 
 public class SettingsManager {
+
+    private Context mContext;
+
+    private static final String PREFS_NAME = "GamePreferences";
+    private static final String METRONOME_STATE = "metronomeState";
+    private static final String FEW_MUSIC_NOTIFIED = "fewMusicNotified";
+    private static final String TOOLTIPS_SHOWN = "showTooltips";
 
     public SettingsManager(Context context) {
         mContext = context;
@@ -48,11 +52,4 @@ public class SettingsManager {
         SharedPreferences sp = mContext.getSharedPreferences(PREFS_NAME, 0);
         return sp.getBoolean(TOOLTIPS_SHOWN, true);
     }
-
-    private Context mContext;
-
-    private static final String PREFS_NAME = "GamePreferences";
-    private static final String METRONOME_STATE = "metronomeState";
-    private static final String FEW_MUSIC_NOTIFIED = "fewMusicNotified";
-    private static final String TOOLTIPS_SHOWN = "showTooltips";
 }

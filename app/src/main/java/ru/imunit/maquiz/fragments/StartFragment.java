@@ -16,12 +16,7 @@ import ru.imunit.maquiz.R;
 
 import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link StartFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- */
+
 public class StartFragment extends Fragment implements
         View.OnClickListener, View.OnTouchListener {
 
@@ -51,7 +46,6 @@ public class StartFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_start, container, false);
     }
 

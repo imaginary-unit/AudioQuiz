@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,12 +30,7 @@ import ru.imunit.maquizdb.entities.DBTrack;
 
 import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link GameFragmentListener} interface
- * to handle interaction events.
- */
+
 public class GameFragment extends Fragment implements
         GameModel.ModelUpdateListener,
         View.OnTouchListener {
@@ -115,7 +109,6 @@ public class GameFragment extends Fragment implements
             mMediaPlayer.release();
             mMediaPlayer = null;
         }
-        // Log.i("DEBUG", "onPause()");
     }
 
     @Override
@@ -125,7 +118,6 @@ public class GameFragment extends Fragment implements
             mMediaPlayer.release();
             mMediaPlayer = null;
         }
-        // Log.i("DEBUG", "onStop()");
     }
 
     @Override
@@ -137,7 +129,6 @@ public class GameFragment extends Fragment implements
         else if (mModel.isGameRunning()) {
             onRoundUpdated();
         }
-        // Log.i("DEBUG", "onResume()");
     }
 
     @Override
@@ -265,7 +256,6 @@ public class GameFragment extends Fragment implements
 
     @Override
     public void onPlaybackStarted() {
-        Log.i("Playback started", "11");
         Uri trackUri = Uri.fromFile(new File(mModel.getCorrectTrack().getUri()));
         if (mMediaPlayer != null) {
             mMediaPlayer.release();

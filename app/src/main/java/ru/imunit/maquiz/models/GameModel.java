@@ -2,7 +2,6 @@ package ru.imunit.maquiz.models;
 
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,9 +17,6 @@ import ru.imunit.maquizdb.IDataSource;
 import ru.imunit.maquizdb.entities.DBGame;
 import ru.imunit.maquizdb.entities.DBTrack;
 
-/**
- * Created by lemoist on 08.06.16.
- */
 
 public class GameModel implements IGameModel {
 
@@ -162,28 +158,23 @@ public class GameModel implements IGameModel {
     private boolean writeStats() {
         DBGame game = new DBGame();
         game.setScore(mGameScore);
-        Log.i("Game.score =", String.valueOf(game.getScore()));
         // number of guesses
         Integer s = 0;
         for (Integer val : mGuess.values())
             s += val;
         game.setGuess(s);
-        Log.i("Game.guess =", String.valueOf(game.getGuess()));
         // number of correct guesses
         s = 0;
         for (Integer val : mCorrectGuess.values())
             s += val;
         game.setCorrectGuess(s);
-        Log.i("Game.correct_guess =", String.valueOf(game.getCorrectGuess()));
         long gtAvg = 0;
         // calculating average and best guess time
         for (Integer val : mGuessTime)
             gtAvg += val;
         gtAvg /= mGuessTime.size();
         game.setAvgGuessTime(gtAvg);
-        Log.i("Game.avg_guess_time =", String.valueOf(game.getAvgGuessTime()));
         game.setBestGuessTime(Collections.min(mGuessTime));
-        Log.i("Game.best_guess_time =", String.valueOf(game.getBestGuessTime()));
         // finding the longest fast row
         int max = 0;
         int cur = 0;
@@ -198,7 +189,6 @@ public class GameModel implements IGameModel {
             }
         }
         game.setLongestFastRow(max);
-        Log.i("Game.longest_fast_row =", String.valueOf(game.getLongestFastRow()));
 
         if (!mDataSource.openWritable())
             return false;
@@ -296,7 +286,6 @@ public class GameModel implements IGameModel {
         for (ModelUpdateListener listener : mListeners) {
             listener.onRoundUpdated();
         }
-        // startPlayback();
     }
 
     public void startPlayback() {
@@ -327,7 +316,6 @@ public class GameModel implements IGameModel {
         } else {
             mTracksGuessed.add(track);
             // check if there is only one option left
-            // if (mRoundPenalty >= Math.pow(WRONG_GUESS_PENALTY, mOptionsCount-2)) {
             if (mOptionsCount - mTracksGuessed.size() < 2) {
                 timerHandler.removeCallbacks(timerUpdate);
                 mRoundScore = 0;
@@ -359,7 +347,7 @@ public class GameModel implements IGameModel {
 
     @Override
     public boolean isGameRunning() {
-        return mCurrentRound > 0 && mCurrentRound <= mRoundsCount;
+        return (mCurrentRound > 0) && (mCurrentRound <= mRoundsCount);
     }
 
     @Override

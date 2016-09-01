@@ -8,7 +8,6 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -17,13 +16,21 @@ import java.util.Random;
 import ru.imunit.maquiz.R;
 import ru.imunit.maquiz.models.IGameModel;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ResultsFragmentListener} interface
- * to handle interaction events.
- */
+
 public class ResultsFragment extends Fragment {
+
+    private ResultsFragmentListener mListener;
+    private IGameModel mModel;
+    private TextView mTextScore;
+    private ImageButton mBtnRestart;
+    private ImageButton mBtnStatistics;
+    private ImageButton mBtnMenu;
+    private TextView mTextCongrats;
+    private TextView mTextClean;
+    private TextView mTextNewRecord;
+    private TextView mTextHighscore;
+    private TextView mTextTip;
+
 
     public interface ResultsFragmentListener {
         void onResultsFragmentInitialized();
@@ -31,7 +38,6 @@ public class ResultsFragment extends Fragment {
         void onShowStatistics();
         void onShowMenu();
     }
-
 
     public ResultsFragment() {
         // Required empty public constructor
@@ -133,15 +139,4 @@ public class ResultsFragment extends Fragment {
         });
     }
 
-    private ResultsFragmentListener mListener;
-    private IGameModel mModel;
-    private TextView mTextScore;
-    private ImageButton mBtnRestart;
-    private ImageButton mBtnStatistics;
-    private ImageButton mBtnMenu;
-    private TextView mTextCongrats;
-    private TextView mTextClean;
-    private TextView mTextNewRecord;
-    private TextView mTextHighscore;
-    private TextView mTextTip;
 }

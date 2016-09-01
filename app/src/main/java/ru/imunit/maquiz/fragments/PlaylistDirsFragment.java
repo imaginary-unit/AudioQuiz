@@ -1,7 +1,6 @@
 package ru.imunit.maquiz.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,19 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import ru.imunit.maquiz.R;
 import ru.imunit.maquiz.models.IPlaylistModel;
 import ru.imunit.maquiz.models.PlaylistModel;
 import ru.imunit.maquiz.views.adapters.CheckRecyclerAdapter;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link PlaylistDirsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- */
+
 public class PlaylistDirsFragment extends Fragment implements
         PlaylistModel.ModelUpdateListener,
         CheckRecyclerAdapter.ItemClickListener {
@@ -85,13 +78,7 @@ public class PlaylistDirsFragment extends Fragment implements
 
     /**
      * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
+     * fragment
      */
     public interface OnFragmentInteractionListener {
         void onDirectoryClick(String dir, boolean state);

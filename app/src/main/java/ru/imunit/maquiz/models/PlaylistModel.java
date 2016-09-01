@@ -12,11 +12,15 @@ import ru.imunit.maquiz.managers.MusicUpdater;
 import ru.imunit.maquizdb.IDataSource;
 import ru.imunit.maquizdb.entities.DBTrack;
 
-/**
- * Created by theuser on 27.06.16.
- */
 
 public class PlaylistModel implements IPlaylistModel {
+
+    private IDataSource mDataSource;
+    private List<ModelUpdateListener> mListeners;
+    private AsyncExceptionListener mAEListener;
+    private List<DBTrack> mAllTracks;
+    private HashMap<String, Boolean> mDirectories;
+    private boolean mUpdateRequired;
 
     public interface ModelUpdateListener {
         void onDataUpdated();
@@ -168,10 +172,4 @@ public class PlaylistModel implements IPlaylistModel {
         updater.startUpdate();
     }
 
-    private IDataSource mDataSource;
-    private List<ModelUpdateListener> mListeners;
-    private AsyncExceptionListener mAEListener;
-    private List<DBTrack> mAllTracks;
-    private HashMap<String, Boolean> mDirectories;
-    private boolean mUpdateRequired;
 }

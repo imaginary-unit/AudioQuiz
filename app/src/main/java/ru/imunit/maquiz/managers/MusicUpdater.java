@@ -1,13 +1,10 @@
 package ru.imunit.maquiz.managers;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
-import android.support.annotation.StringRes;
-import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -21,9 +18,7 @@ import ru.imunit.maquizdb.DataSourceFactory;
 import ru.imunit.maquizdb.IDataSource;
 import ru.imunit.maquizdb.entities.DBTrack;
 
-/**
- * Created by lemoist on 19.05.16.
- */
+
 public class MusicUpdater {
 
     public static final int RESULT_OK = 0;
@@ -80,15 +75,11 @@ public class MusicUpdater {
         DBTrack[] appTracks = dataSource.getAllTracks();
         HashSet<DBTrack> appSet = new HashSet<>();
         Collections.addAll(appSet, appTracks);
-        Log.i("Tracks:", String.format("%d found on app DB", appSet.size()));
 
         // fill blacklisted directories
         mBlacklistedDirs = Arrays.asList(dataSource.getBlackDirs());
-
         // obtain MediaStore tracks
         HashSet<DBTrack> sysSet = getSystemMusic();
-        Log.i("Tracks:", String.format("%d found on MediaStore", sysSet.size()));
-
         // compare sets and make DB insertions / deletions
         HashSet<DBTrack> delSet = new HashSet<>(appSet);
         delSet.removeAll(sysSet);
@@ -96,21 +87,16 @@ public class MusicUpdater {
         addSet.removeAll(appSet);
 
         dataSource.deleteTracks(delSet.toArray(new DBTrack[delSet.size()]));
-        Log.i("Tracks:", String.format("Deleting %d tracks from app DB", delSet.size()));
         dataSource.addTracks(addSet.toArray(new DBTrack[addSet.size()]));
-        Log.i("Tracks:", String.format("Inserting %d tracks into app DB", addSet.size()));
         dataSource.close();
 
         int count = sysSet.size();
-        if (count >= FEW_MUSIC_THRESHOLD) {
+        if (count >= FEW_MUSIC_THRESHOLD)
             return RESULT_OK;
-        }
-        else if (count == 0) {
+        else if (count == 0)
             return RESULT_NO_MUSIC;
-        }
-        else {
+        else
             return RESULT_FEW_MUSIC;
-        }
     }
 
     private HashSet<DBTrack> getSystemMusic() {
@@ -145,7 +131,7 @@ public class MusicUpdater {
         return songs;
     }
 
-    // function to check if a ic_file_music at the given path is in an allowed directory
+    // function to check if a music file at the given path is in an allowed directory
     private boolean checkTrackDir(String path) {
         File f = new File(path);
         String dir = f.getParent();

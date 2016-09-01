@@ -1,7 +1,6 @@
 package ru.imunit.maquiz.views.adapters;
 
 import android.content.Context;
-import android.support.v4.content.ParallelExecutorCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +13,12 @@ import java.util.Locale;
 import ru.imunit.maquiz.R;
 import ru.imunit.maquizdb.entities.DBTrack;
 
-/**
- * Created by theuser on 10.07.16.
- */
 
 public class StatsRecyclerAdapter extends
 RecyclerView.Adapter<StatsRecyclerAdapter.PlaylistViewHolder> {
+
+    private List<DBTrack> mDataset;
+    private Context mContext;
 
     public class PlaylistViewHolder extends RecyclerView.ViewHolder {
         public TextView trackInfo;
@@ -64,6 +63,4 @@ RecyclerView.Adapter<StatsRecyclerAdapter.PlaylistViewHolder> {
         return mDataset.size();
     }
 
-    private List<DBTrack> mDataset;
-    private Context mContext;
 }
