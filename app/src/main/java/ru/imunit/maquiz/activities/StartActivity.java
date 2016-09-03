@@ -20,6 +20,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.ads.MobileAds;
+
 import java.util.Locale;
 
 import ru.imunit.maquiz.R;
@@ -48,6 +50,10 @@ public class StartActivity extends AppCompatActivity
         if (checkStoragePermission()) {
             startMusicUpdate();
         }
+        // initialize ads
+        boolean ads = new SettingsManager(this).getAdsEnabled();
+        if (ads)
+            MobileAds.initialize(this, getString(R.string.ad_app_id));
     }
 
     @Override

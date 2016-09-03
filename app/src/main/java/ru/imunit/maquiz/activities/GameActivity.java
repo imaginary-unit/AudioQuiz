@@ -1,14 +1,13 @@
 package ru.imunit.maquiz.activities;
 
 import android.content.Intent;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 
 import ru.imunit.maquiz.R;
 import ru.imunit.maquiz.exceptions.DatabaseException;
@@ -22,24 +21,30 @@ import ru.imunit.maquiz.models.GameModel;
 import ru.imunit.maquizdb.DataSourceFactory;
 import ru.imunit.maquizdb.entities.DBTrack;
 
+
 public class GameActivity extends AppCompatActivity
         implements GameFragment.GameFragmentListener,
         ResultsFragment.ResultsFragmentListener {
 
     private static final int OPTIONS_COUNT = 5;
-    private static final int ROUNDS_COUNT = 10;
+    private static final int ROUNDS_COUNT = 2;
 
     private ModelRetainFragment mModelRetainFragment;
     private GameFragment mGameFragment;
     private ResultsFragment mResultsFragment;
     private GameModel mModel;
+    private InterstitialAd mIntAd;
+    private boolean mAdsEnabled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        // retain or create model
+        // check if we should show ads
+        mAdsEnabled = new SettingsManager(this).getAdsEnabled();
+
+        // retain or create model and interstitial ad instance
         mModelRetainFragment = (ModelRetainFragment)
                 getSupportFragmentManager().findFragmentByTag("ModelRetain");
         if (mModelRetainFragment == null) {
@@ -49,7 +54,16 @@ public class GameActivity extends AppCompatActivity
                     .add(mModelRetainFragment, "ModelRetain").commit();
             mModelRetainFragment.getModel().setMetronomeEnabled(
                     new SettingsManager(this).getMetronomeState());
+            if (mAdsEnabled) {
+                InterstitialAd newAd = new InterstitialAd(this);
+                newAd.setAdUnitId(getString(R.string.ad_unit_id));
+                mModelRetainFragment.setInterstitialAd(newAd);
+            }
         }
+
+        mAdsEnabled = new SettingsManager(this).getAdsEnabled();
+        if (mAdsEnabled)
+            mIntAd = mModelRetainFragment.getInterstitialAd();
         mModel = mModelRetainFragment.getModel();
         mModel.setAsyncExceptionListener(new GameModel.AsyncExceptionListener() {
             @Override
@@ -64,9 +78,7 @@ public class GameActivity extends AppCompatActivity
         } else if (mModel.isGameRunning()) {
             showGameFragment();
         } else {
-            // TODO: refactor options and rounds: should be in activity parameters
-            mModel.initGame(OPTIONS_COUNT, ROUNDS_COUNT);
-            showGameFragment();
+            startNewGame();
         }
     }
 
@@ -87,6 +99,11 @@ public class GameActivity extends AppCompatActivity
     }
 
     private void showResultsFragment() {
+        // show ad
+        if (mAdsEnabled && mIntAd != null && mIntAd.isLoaded()) {
+            mIntAd.show();
+        }
+
         // unsubscribe game fragment from model if it is added
         GameFragment gf = (GameFragment)getSupportFragmentManager().findFragmentByTag("GameFragment");
         if (gf != null)
@@ -122,6 +139,19 @@ public class GameActivity extends AppCompatActivity
         Intent startIntent = new Intent(this,
                 ActivityFactory.getActivity(ActivityFactory.START_ACTIVITY));
         startActivity(startIntent);
+    }
+
+    private void startNewGame() {
+        mModel.initGame(OPTIONS_COUNT, ROUNDS_COUNT);
+        showGameFragment();
+        requestNewAd();
+    }
+
+    private void requestNewAd() {
+        if (mAdsEnabled) {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mIntAd.loadAd(adRequest);
+        }
     }
 
     // GameFragment listener
@@ -184,8 +214,7 @@ public class GameActivity extends AppCompatActivity
 
     @Override
     public void onRestartGame() {
-        mModel.initGame(OPTIONS_COUNT, ROUNDS_COUNT);
-        showGameFragment();
+        startNewGame();
     }
 
     @Override

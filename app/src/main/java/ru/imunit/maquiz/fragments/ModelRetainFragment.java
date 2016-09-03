@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+import com.google.android.gms.ads.InterstitialAd;
+
 import ru.imunit.maquiz.models.GameModel;
 
 /**
@@ -13,6 +15,7 @@ import ru.imunit.maquiz.models.GameModel;
 public class ModelRetainFragment extends Fragment {
 
     private GameModel mModel;
+    private InterstitialAd mIntAd;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,5 +29,13 @@ public class ModelRetainFragment extends Fragment {
 
     public GameModel getModel() {
         return mModel;
+    }
+
+    public void setInterstitialAd(InterstitialAd ad) {
+        mIntAd = ad;
+    }
+
+    public InterstitialAd getInterstitialAd() {
+        return mIntAd;
     }
 }

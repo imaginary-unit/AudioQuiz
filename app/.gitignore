@@ -1,1 +1,5 @@
 /build
+
+# Ignore AdMod unit ID and google services config file
+src/MyAudioQuiz/app/src/main/res/values/strings-service.xml
+google-services.json
