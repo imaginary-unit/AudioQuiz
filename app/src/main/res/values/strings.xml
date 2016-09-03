@@ -84,8 +84,8 @@
 
     <string name="err_database_error">An error occurred while opening the device database</string>
     <string name="err_no_music">
-        Sadly we can\'t find any music on your device. Consider downloading some music files to be
-        able to play.
+        Sorry, at least 5 music files on your local storage are necessary for this game.
+        Consider downloading more music to be able to play.
     </string>
     <string name="err_few_music">
         It seems like you have less than %d music files on your device. It\'s OK to play, but for better
@@ -93,9 +93,8 @@
     </string>
     <string name="err_permissions_title">Vital permissions denied</string>
     <string name="err_permissions_text">
-        Read external storage permission, that is needed to scan your local music database,
-        was not granted, so the application can\'t continue operating correctly and will be
-        closed now.
+        Read external storage permission is required to scan your local music database, but it
+        was not granted. The application will be closed now.
     </string>
     <string name="err_music_io">
         Oops, seems like some of music files on your device can\'t be read for some reason.

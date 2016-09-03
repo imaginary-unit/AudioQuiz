@@ -15,7 +15,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -210,7 +209,7 @@ public class StartActivity extends AppCompatActivity
                                     }
                                 }).show();
                     }
-                } else if (res == MusicUpdater.RESULT_NO_MUSIC) {
+                } else if (res == MusicUpdater.RESULT_NOT_ENOUGH_MUSIC) {
                     ExceptionNotifier.make(mRootLayout,
                             getResources().getString(R.string.err_no_music)).
                             setActionListener(new ExceptionNotifier.ActionListener() {
