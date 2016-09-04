@@ -30,15 +30,14 @@
                 android:src="@drawable/library_music"/>
             <TextView
                 android:id="@+id/textTracks"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_row="0"
                 app:layout_column="1"
                 app:layout_columnWeight="1"
                 app:layout_gravity="center_vertical"
                 android:textSize="28sp"
-                android:textColor="@color/colorForeground"
-                android:text="1 / 10"/>
+                android:textColor="@color/colorForeground" />
 
             <ImageView
                 android:id="@+id/iconTime"
@@ -50,15 +49,14 @@
                 android:src="@drawable/timer"/>
             <TextView
                 android:id="@+id/textTime"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_row="0"
                 app:layout_column="3"
                 app:layout_columnWeight="1"
                 app:layout_gravity="center_vertical"
                 android:textSize="28sp"
-                android:textColor="@color/colorForeground"
-                android:text="0 s"/>
+                android:textColor="@color/colorForeground" />
 
             <ImageView
                 android:id="@+id/iconScore"
@@ -70,15 +68,14 @@
                 android:src="@drawable/star"/>
             <TextView
                 android:id="@+id/textScore"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_row="0"
                 app:layout_column="5"
                 app:layout_columnWeight="1"
                 app:layout_gravity="center_vertical"
                 android:textSize="28sp"
-                android:textColor="@color/colorForeground"
-                android:text="0"/>
+                android:textColor="@color/colorForeground" />
 
             <ru.imunit.maquiz.views.widgets.InfoBar
                 android:id="@+id/infoBar"

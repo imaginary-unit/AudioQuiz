@@ -35,8 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
-                android:text="@string/game_results_congrats_0"
-                android:textSize="30sp"
+                android:textSize="28sp"
                 android:textColor="@color/colorAccent"
                 style="@style/OutlinedText"
                 />

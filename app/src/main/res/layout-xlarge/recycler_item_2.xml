@@ -29,7 +29,6 @@
             android:layout_marginBottom="20dp"
             android:ellipsize="marquee"
             android:maxLines="1"
-            android:text="Second line"
             android:textSize="28sp"
             android:textColor="@color/colorForegroundHalf"
             />
@@ -46,7 +45,6 @@
             android:ellipsize="marquee"
             android:maxLines="1"
             android:gravity="center_vertical"
-            android:text="First line"
             android:textSize="32sp"
             android:textColor="@color/colorForeground"
             />

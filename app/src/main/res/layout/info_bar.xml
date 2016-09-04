@@ -40,7 +40,6 @@
         android:textStyle="bold"
         android:textColor="@color/colorAccent"
         style="@style/OutlinedText"
-        android:text="Instant answer! +60"
         android:visibility="gone"
         />
 

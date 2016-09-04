@@ -184,7 +184,7 @@ public class GameFragment extends Fragment implements
 
     @Override
     public void onTimerUpdated(int time) {
-        mTextTime.setText(String.format(Locale.ENGLISH, "%.2f", (float)time / 1E3f));
+        mTextTime.setText(String.format(Locale.ENGLISH, "%.1f", (float)time / 1E3f));
     }
 
     @Override
@@ -293,8 +293,7 @@ public class GameFragment extends Fragment implements
     private void updateRoundUi() {
         mTextRound.setText(String.format(Locale.ENGLISH, "%d / %d",
                 mModel.getCurrentRound(), mModel.getRoundsCount()));
-        mTextTime.setText(String.format(Locale.ENGLISH, "%.2f",
-                ((float)mModel.getPlaybackTime() / 1E3f)));
+        onTimerUpdated(mModel.getPlaybackTime());
         mTextScore.setText(String.valueOf(mModel.getGameScore()));
 
         if (getResources().getConfiguration().orientation == ORIENTATION_PORTRAIT) {

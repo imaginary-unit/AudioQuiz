@@ -61,12 +61,15 @@ public class ResultsFragment extends Fragment {
             mTextNewRecord.setVisibility(View.VISIBLE);
             mTextHighscore.setText(String.valueOf(curScore));
         }
-        else if (ratio < 1f && ratio >= 0.75f)
+        else if (ratio >= 0.75f)
             congrat = getResources().getString(R.string.game_results_congrats_2);
-        else if (ratio < 0.75f && ratio >= 0.5f)
+        else if (ratio >= 0.5f)
             congrat = getResources().getString(R.string.game_results_congrats_1);
-        else if (ratio < 0.5f)
+        else if (ratio >= 0.1f)
             congrat = getResources().getString(R.string.game_results_congrats_0);
+        else
+            congrat = getResources().getString(R.string.game_results_congrats_bad);
+
         mTextCongrats.setText(congrat);
 
         if (mModel.isGameClean()) {
@@ -75,7 +78,7 @@ public class ResultsFragment extends Fragment {
 
         String[] tips = getResources().getStringArray(R.array.game_results_tips);
         int idx = new Random().nextInt(tips.length);
-        mTextTip.setText(Html.fromHtml("<b>Tip:</b> " + tips[idx]));
+        mTextTip.setText(Html.fromHtml(getString(R.string.game_results_tip_title) + tips[idx]));
     }
 
     @Override

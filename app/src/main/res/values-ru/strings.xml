@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="clear_black_list">Очистить черный список</string>
+    <string name="clear_statistics">Очистить</string>
+
+    <string name="empty_tag_placeholder">&lt;неизвестный исполнитель&gt;</string>
+    <string name="err_database_error">
+        Произошла ошибка при попытке доступа к внутреннему хранилищу устройства
+    </string>
+    <string name="err_few_music">
+        Похоже, что на вашем устройстве меньше %d аудиозаписей. Этого достаточно, но напомним,
+        что чем больше у вас музыки, тем интереснее играть :)
+    </string>
+    <string name="err_music_io">
+        Упс, не удалось прочитать некоторые из аудио-файлов на устройстве. Пожалуйста, проверьте,
+        не повреждены ли файлы в списке вопроизведения
+    </string>
+    <string name="err_no_music">
+        К сожалению, на вашем устройстве не удалось найти минимально необходимое число аудиозаписей
+        (5). Чтобы начать игру, пожалуйста, загрузите немного музыки.
+    </string>
+    <string name="err_permissions_text">
+        Вы запретили права доступа к локальному хранилищу, которые необходимы для чтения
+        аудиофайлов. Приложение будет закрыто.
+    </string>
+    <string name="err_permissions_title">Закрыты необходимые права доступа</string>
+
+    <string name="game_results_clean_game">Без ошибок (бонус х1.5)</string>
+    <string name="game_results_congrats_0">Неплохо!</string>
+    <string name="game_results_congrats_1">Замечательно!</string>
+    <string name="game_results_congrats_3">Вы восхитительны!</string>
+    <string name="game_results_congrats_2">Отлично!</string>
+    <string name="game_results_congrats_bad">В другой раз повезет :)</string>
+    <string name="game_results_highscore">Рекорд:</string>
+    <string name="game_results_new_highscore">Новый рекорд!</string>
+    <string name="game_results_score">Счет:</string>
+    <string name="game_results_tip_title"><![CDATA["<b>Совет:</b> "]]></string>
+    <string-array name="game_results_tips">
+        <item>
+            последовательность из более чем двух быстрых ответов (менее 3 сек.) удваивает ваш счет
+            за текущий раунд.
+        </item>
+        <item>
+            за безошибочную игру вы получаете бонус, умножающий ваш общий счет на 1.5.
+            Не торопитесь!
+        </item>
+        <item>
+            используйте несколько секунд, пока играет метроном, чтобы пробежать глазами по
+            вариантам ответов - это поможет вам угадать песню быстрее.
+        </item>
+        <item>
+            если верный ответ дан в первые 3, 5 или 10 секунд, это добавляет вам бонусные очки.
+            Однако за каждую ошибочную попытку ваш счет за текущий раунд делится пополам.
+        </item>
+        <item>
+            если хотите исключить отдельную песню или директорию из списка для игры, вы можете
+            сделать это на экране "Список музыки".
+        </item>
+        <item>
+            Британские ученые установили, что нажатие на кнопку "Оценить" или "Поделиться" в
+            главном меню мгновенно повышает карму :)
+        </item>
+    </string-array>
+
+    <string name="menu_audio_visualizer">Аудио-визуализатор</string>
+    <string name="menu_metronome">Метроном</string>
+    <string name="menu_tooltips">Всплывающие подсказки</string>
+
+    <string name="ok">OK</string>
+
+    <string name="permission_storage_rationale">
+        Права на чтение необходимы для доступа к вашей музыке!
+    </string>
+    <string name="playlist_toolbar_title">Список музыки</string>
+    <string-array name="playlist_view_options">
+        <item>Вся музыка</item>
+        <item>Черный список</item>
+        <item>Директории</item>
+    </string-array>
+
+    <string name="select_dirs">Директории аудио</string>
+    <string name="settings_title">Настройки</string>
+    <string name="share_dialog_title">Поделиться приложением</string>
+    <string name="share_subject">
+        Audio Quiz: приложение для Android, в котором можно проверить, насколько хорошо ты
+        знаешь свою любимую музыку! Скачать здесь:
+    </string>
+    <string name="start_toolbar_title">Меню</string>
+    <string name="statistics_toolbar_title">Статистика</string>
+    <string name="stats_average_game_score">Средний счет за игру</string>
+    <string name="stats_clean_games">Игры без ошибок</string>
+    <string name="stats_correct_guess_ratio">Процент правильных ответов</string>
+    <string name="stats_games_played">Количество игр</string>
+    <string name="stats_games_tab">По играм</string>
+    <string name="stats_tracks_tab">По файлам</string>
+    <string name="stats_longest_fast_row">Макс. число быстрых ответов подряд</string>
+    <string name="stats_number_placeholder">0</string>
+    <string name="stats_toolbar_title">Статистика</string>
+    <string name="stats_top_scores">Лучшие результаты</string>
+    <string name="stats_track_correct">Верные</string>
+    <string name="stats_track_guessed">Ответы</string>
+
+    <string name="tooltip_play">Играть</string>
+    <string name="tooltip_playlist">Список музыки</string>
+    <string name="tooltip_rate">Оцените приложение на Play Market</string>
+    <string name="tooltip_share">Поделитесь приложением с друзьями</string>
+    <string name="tooltip_stats">Статистика</string>
+    <string name="track_blacklist">В черный список</string>
+    <string name="track_unblacklist">Убрать из черного списка</string>
+
+    <string name="updating_music_dialog">Сеундочку.. Обновляем вашу аудио библиотеку</string>
+</resources>

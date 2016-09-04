@@ -1,52 +1,49 @@
 <resources>
-    <string name="app_name">Audio Quiz</string>
+    <!-- don't translate! -->
+    <string name="app_name" translatable="false">Audio Quiz</string>
 
-    <string name="playlist_toolbar_title">Playlist</string>
-    <string name="statistics_toolbar_title">Statistics</string>
-    <string name="start_toolbar_title">Menu</string>
+    <string name="clear_black_list">Clear black list</string>
+    <string name="clear_statistics">Clear</string>
 
-    <string name="action_playlists">Edit playlists</string>
-    <string name="settings_title">Settings</string>
-    <string name="action_settings">Settings</string>
-    <string name="select_dirs">Music directories</string>
-
-    <string name="track_blacklist">Add to black list</string>
-    <string name="track_unblacklist">Remove from black list</string>
-
-    <string name="title_activity_playlist">PlaylistActivity</string>
-    <string name="title_activity_start">StartActivity</string>
-    <string name="title_activity_sync">SyncActivity</string>
-
-    <string name="permission_storage_rationale">
-        Read storage permission should be granted to scan and play your music files!
+    <!-- Error messages -->
+    <string name="err_database_error">An error occurred while accessing the device storage</string>
+    <string name="err_no_music">
+        Sorry, at least 5 music files on your local storage are necessary for this game.
+        Consider downloading more music to be able to play.
     </string>
-    <string name="permission_record_rationale">
-        You haven\'t granted the audio recording permission - audio visualizer will be disabled.
+    <string name="err_few_music">
+        It seems like you have less than %d music files on your device. It\'s OK to play, but for
+        optimal experience we recommend to get more music :)
     </string>
-
-    <string name="share_subject">
-        Audio Quiz: an Android app to check how well do you know your favourite music! Get it here:
+    <string name="err_permissions_title">Vital permissions denied</string>
+    <string name="err_permissions_text">
+        Read external storage permission is required to scan your local music database, but it
+        was not granted. The application will be closed now.
     </string>
-
-    <string name="updating_music_dialog">Updating your music library, please wait a sec..</string>
-
-    <string name="ok">OK</string>
+    <string name="err_music_io">
+        Oops, some of music files on your device can\'t be read.
+        Please check if the files from the playlist are available and not corrupted.
+    </string>
+    <string name="empty_tag_placeholder">&lt;unknown artist&gt;</string>
 
     <string name="game_results_score">Score:</string>
     <string name="game_results_highscore">Highscore:</string>
+    <string name="game_results_congrats_bad">Better luck next time :)</string>
     <string name="game_results_congrats_0">Not bad!</string>
     <string name="game_results_congrats_1">Great!</string>
     <string name="game_results_congrats_2">Excellent!</string>
     <string name="game_results_congrats_3">You\'re awesome!</string>
-
+    <string name="game_results_clean_game">Flawless game (x1.5 bonus)</string>
+    <string name="game_results_new_highscore">New highscore!</string>
+    <string name="game_results_tip_title"><![CDATA["<b>Tip:</b> "]]></string>
     <string-array name="game_results_tips">
         <item>
-            make sequences of more than 2 fast answers (&lt; than 3 sec.) to multiply the round
+            make sequences of more than 2 fast answers (faster than 3 sec.) to multiply the round
             score by 2.
         </item>
         <item>
-            a clean game (one without a single wrong answer) multiplies your score by 1.5. Don\'t
-            rush, play clean!
+            a flawless game (one without a single wrong answer) multiplies your overall
+            score by 1.5. Don\'t rush, play clean!
         </item>
         <item>
             make use of the time while the metronome is ticking to quickly scan through answers so
@@ -56,61 +53,65 @@
             answering within first 3, 5 or 10 sec. gives you extra points, however for each wrong
             answer you will get twice as less score in the current round.
         </item>
+        <item>
+            if you want to exclude specific song or directory from the game, you can do so in the
+            playlist screen.
+        </item>
+        <item>
+            British scientists have established that clicking "Rate" or "Share" button on the menu
+            screen instantly earns you some karma points :)
+        </item>
     </string-array>
 
-    <string name="empty_tag_placeholder">&lt;unknown&gt;</string>
+    <string name="menu_audio_visualizer">Audio visualizer</string>
+    <string name="menu_metronome">Metronome</string>
+    <string name="menu_tooltips">Show tooltips</string>
 
+    <string name="ok">OK</string>
+
+    <string name="playlist_toolbar_title">Playlist</string>
+    <string name="permission_storage_rationale">
+        Read storage permission should be granted to scan and play your music files!
+    </string>
     <string-array name="playlist_view_options">
         <item>All tracks</item>
         <item>Black list</item>
         <item>Music directories</item>
     </string-array>
 
-    <string name="tag_item_pos">item pos</string>
-
+    <string name="statistics_toolbar_title">Statistics</string>
+    <string name="start_toolbar_title">Menu</string>
+    <string name="settings_title">Settings</string>
+    <string name="select_dirs">Music directories</string>
+    <string name="share_subject">
+        Audio Quiz: an Android app to check how well do you know your favourite music! Get it here:
+    </string>
     <string name="stats_games_played">Games played</string>
-    <string name="stats_clean_games">Clean games</string>
+    <string name="stats_clean_games">Flawless games</string>
     <string name="stats_correct_guess_ratio">Correct guess ratio</string>
     <string name="stats_average_game_score">Average game score</string>
     <string name="stats_longest_fast_row">Longest fast guess sequence</string>
-    <string name="stats_number_placeholder">000</string>
+    <string name="stats_number_placeholder">0</string>
     <string name="stats_top_scores">Top scores</string>
     <string name="stats_games_tab">Games stats</string>
-    <string name="stats_tracks_tab">Tracks stats</string>
+    <string name="stats_tracks_tab">Files stats</string>
     <string name="stats_toolbar_title">Statistics</string>
-    <string name="stats_track_guessed">Guessed</string>
+    <string name="stats_track_guessed">Guesses</string>
     <string name="stats_track_correct">Correct</string>
-    <string name="clear_statistics">Clear statistics</string>
-
-    <string name="err_database_error">An error occurred while opening the device database</string>
-    <string name="err_no_music">
-        Sorry, at least 5 music files on your local storage are necessary for this game.
-        Consider downloading more music to be able to play.
-    </string>
-    <string name="err_few_music">
-        It seems like you have less than %d music files on your device. It\'s OK to play, but for better
-        and more challenging experience we recommend to get more music :)
-    </string>
-    <string name="err_permissions_title">Vital permissions denied</string>
-    <string name="err_permissions_text">
-        Read external storage permission is required to scan your local music database, but it
-        was not granted. The application will be closed now.
-    </string>
-    <string name="err_music_io">
-        Oops, seems like some of music files on your device can\'t be read for some reason.
-        Please check if your files are available and not corrupted.
-    </string>
-    <string name="game_results_clean_game">Clean game! (Score x 1.5)</string>
-    <string name="game_results_new_highscore">New highscore!</string>
-    <string name="menu_audio_visualizer">Audio visualizer</string>
-    <string name="menu_metronome">Metronome</string>
     <string name="share_dialog_title">Share this app</string>
-    <string name="clear_black_list">Clear black list</string>
 
+    <string name="track_blacklist">Add to black list</string>
+    <string name="track_unblacklist">Remove from black list</string>
+    <string name="title_activity_playlist" translatable="false">PlaylistActivity</string>
+    <string name="title_activity_start" translatable="false">StartActivity</string>
+    <string name="title_activity_sync" translatable="false">SyncActivity</string>
     <string name="tooltip_playlist">Playlist</string>
     <string name="tooltip_play">Play</string>
     <string name="tooltip_stats">Statistics</string>
     <string name="tooltip_rate">Rate this app on Play Market</string>
     <string name="tooltip_share">Share this app with friends</string>
-    <string name="menu_tooltips">Show tooltips</string>
+    <!-- don't translate! -->
+    <string name="tag_item_pos" translatable="false">item pos</string>
+
+    <string name="updating_music_dialog">Updating your music library, please wait a sec..</string>
 </resources>

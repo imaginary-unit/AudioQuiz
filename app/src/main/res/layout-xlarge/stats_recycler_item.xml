@@ -13,7 +13,6 @@
         app:layout_columnSpan="2"
         android:ellipsize="marquee"
         android:maxLines="1"
-        android:text="Track artist - Track title"
         android:textSize="32sp"
         android:textColor="@color/colorForeground" />
 
@@ -26,7 +25,6 @@
         android:layout_margin="10dp"
         android:ellipsize="marquee"
         android:maxLines="1"
-        android:text="Guessed: 112;"
         android:textSize="28sp"
         android:textColor="@color/colorForeground" />
 
@@ -39,7 +37,6 @@
         android:layout_margin="10dp"
         android:ellipsize="marquee"
         android:maxLines="1"
-        android:text="Correct: 107 (96%)"
         android:textSize="28sp"
         android:textColor="@color/colorAccent" />
 

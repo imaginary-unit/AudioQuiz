@@ -149,7 +149,10 @@ public class GameActivity extends AppCompatActivity
 
     private void requestNewAd() {
         if (mAdsEnabled) {
-            AdRequest adRequest = new AdRequest.Builder().build();
+            // TODO: remove test to show actual ads
+            AdRequest adRequest = new AdRequest.Builder().
+                    addTestDevice(AdRequest.DEVICE_ID_EMULATOR).
+                    build();
             mIntAd.loadAd(adRequest);
         }
     }
