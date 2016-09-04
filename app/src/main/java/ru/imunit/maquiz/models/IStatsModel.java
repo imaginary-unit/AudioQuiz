@@ -16,4 +16,6 @@ public interface IStatsModel {
     float getCorrectGuessRatio();
     int getAverageScore();
     int getLongestFastGuessRow();
+    int getFastestGuessTime();
+    int getAverageGuessTime();
 }

@@ -33,5 +33,7 @@ public interface IDataSource {
     float getCorrectGuessRatio();
     int getAverageScore();
     int getLongestFastGuessRow();
+    int getFastestGuessTime();
+    int getAverageGuessTime();
     void clearStats();
 }

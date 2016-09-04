@@ -99,6 +99,9 @@
     <string name="stats_track_guessed">Guesses</string>
     <string name="stats_track_correct">Correct</string>
     <string name="share_dialog_title">Share this app</string>
+    <string name="stats_fastest_guess_time">Fastest guess time</string>
+    <string name="stats_average_guess_time">Average guess time</string>
+    <string name="seconds_abbr">s</string>
 
     <string name="track_blacklist">Add to black list</string>
     <string name="track_unblacklist">Remove from black list</string>

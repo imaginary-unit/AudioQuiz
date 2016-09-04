@@ -36,6 +36,7 @@
                         app:layout_gravity="center"
                         android:textSize="28sp"
                         android:textColor="@color/colorForeground"
+                        android:textStyle="bold"
                         android:text="@string/stats_top_scores"/>
                 </android.support.v7.widget.GridLayout>
             </android.support.v7.widget.CardView>
@@ -106,6 +107,28 @@
                         android:textColor="@color/colorForeground"
                         android:text="@string/stats_longest_fast_row"/>
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        app:layout_row="5"
+                        app:layout_column="0"
+                        app:layout_columnWeight="1"
+                        app:layout_gravity="center_vertical"
+                        android:textSize="28dp"
+                        android:textColor="@color/colorForeground"
+                        android:text="@string/stats_fastest_guess_time"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        app:layout_row="6"
+                        app:layout_column="0"
+                        app:layout_columnWeight="1"
+                        app:layout_gravity="center_vertical"
+                        android:textSize="28dp"
+                        android:textColor="@color/colorForeground"
+                        android:text="@string/stats_average_guess_time"/>
+                    <TextView
                         android:id="@+id/textGamesCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -159,6 +182,30 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         app:layout_row="4"
+                        app:layout_column="1"
+                        app:layout_columnWeight="1"
+                        app:layout_gravity="center"
+                        android:textSize="28dp"
+                        android:textColor="@color/colorForeground"
+                        android:text="@string/stats_number_placeholder"/>
+                    <TextView
+                        android:id="@+id/textFastestGuessTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        app:layout_row="5"
+                        app:layout_column="1"
+                        app:layout_columnWeight="1"
+                        app:layout_gravity="center"
+                        android:textSize="28dp"
+                        android:textColor="@color/colorForeground"
+                        android:text="@string/stats_number_placeholder"/>
+                    <TextView
+                        android:id="@+id/textAverageGuessTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        app:layout_row="6"
                         app:layout_column="1"
                         app:layout_columnWeight="1"
                         app:layout_gravity="center"

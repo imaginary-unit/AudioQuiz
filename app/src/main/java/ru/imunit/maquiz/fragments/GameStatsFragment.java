@@ -133,11 +133,17 @@ public class GameStatsFragment extends Fragment implements
         TextView cgr = (TextView)getView().findViewById(R.id.textCorrectGuessRatio);
         TextView ags = (TextView)getView().findViewById(R.id.textAverageScore);
         TextView lfgr = (TextView)getView().findViewById(R.id.textLongestFastGuessRow);
+        TextView fgt = (TextView)getView().findViewById(R.id.textFastestGuessTime);
+        TextView agt = (TextView)getView().findViewById(R.id.textAverageGuessTime);
         gc.setText(String.valueOf(mModel.getGamesCount()));
         cgc.setText(String.valueOf(mModel.getCleanGamesCount()));
         cgr.setText(String.format(Locale.ENGLISH, "%d%%",
                 (int)(mModel.getCorrectGuessRatio() * 100)));
         ags.setText(String.valueOf(mModel.getAverageScore()));
         lfgr.setText(String.valueOf(mModel.getLongestFastGuessRow()));
+        fgt.setText(String.format(Locale.ENGLISH, "%.1f %s",
+                (float)mModel.getFastestGuessTime() / 1E3f, getString(R.string.seconds_abbr)));
+        agt.setText(String.format(Locale.ENGLISH, "%.1f %s",
+                (float)mModel.getAverageGuessTime() / 1E3f, getString(R.string.seconds_abbr)));
     }
 }

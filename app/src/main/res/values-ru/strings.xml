@@ -99,6 +99,9 @@
     <string name="stats_top_scores">Лучшие результаты</string>
     <string name="stats_track_correct">Верные</string>
     <string name="stats_track_guessed">Ответы</string>
+    <string name="seconds_abbr">с</string>
+    <string name="stats_average_guess_time">Среднее время ответа</string>
+    <string name="stats_fastest_guess_time">Лучшее время ответа</string>
 
     <string name="tooltip_play">Играть</string>
     <string name="tooltip_playlist">Список музыки</string>
@@ -109,4 +112,5 @@
     <string name="track_unblacklist">Убрать из черного списка</string>
 
     <string name="updating_music_dialog">Сеундочку.. Обновляем вашу аудио библиотеку</string>
+
 </resources>

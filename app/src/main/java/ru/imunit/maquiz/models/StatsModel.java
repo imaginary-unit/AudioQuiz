@@ -27,7 +27,8 @@ public class StatsModel implements IStatsModel {
     private float mCorrectGuessRatio;
     private int mAverageScore;
     private int mLongestFastGuessRow;
-
+    private int mFastestGuessTime;
+    private int mAverageGuessTime;
 
     public interface ModelUpdateListener {
         void onUpdateStarted();
@@ -105,6 +106,16 @@ public class StatsModel implements IStatsModel {
         return mLongestFastGuessRow;
     }
 
+    @Override
+    public int getFastestGuessTime() {
+        return mFastestGuessTime;
+    }
+
+    @Override
+    public int getAverageGuessTime() {
+        return mAverageGuessTime;
+    }
+
     private class UpdateTask extends AsyncTask<Integer, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Integer... params) {
@@ -136,6 +147,8 @@ public class StatsModel implements IStatsModel {
         mCorrectGuessRatio = 0;
         mAverageScore = 0;
         mLongestFastGuessRow = 0;
+        mFastestGuessTime = 0;
+        mAverageGuessTime = 0;
     }
 
     private boolean doClear() {
@@ -162,6 +175,8 @@ public class StatsModel implements IStatsModel {
         mCorrectGuessRatio = mDataSource.getCorrectGuessRatio();
         mAverageScore = mDataSource.getAverageScore();
         mLongestFastGuessRow = mDataSource.getLongestFastGuessRow();
+        mFastestGuessTime = mDataSource.getFastestGuessTime();
+        mAverageGuessTime = mDataSource.getAverageGuessTime();
         mDataSource.close();
         return true;
     }

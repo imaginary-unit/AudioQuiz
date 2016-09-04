@@ -380,6 +380,36 @@ public class MAQDataSource implements IDataSource {
     }
 
     @Override
+    public int getFastestGuessTime() {
+        String sql = String.format(Locale.ENGLISH, "select min(`%s`) from `%s`",
+                GamesTable.COLUMN_BEST_GUESS_TIME, GamesTable.TABLE_NAME);
+        Cursor cur = database.rawQuery(sql, null);
+        if (cur != null) {
+            cur.moveToFirst();
+            int val = cur.getInt(0);
+            cur.close();
+            return val;
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public int getAverageGuessTime() {
+        String sql = String.format(Locale.ENGLISH, "select avg(`%s`) from `%s`",
+                GamesTable.COLUMN_AVG_GUESS_TIME, GamesTable.TABLE_NAME);
+        Cursor cur = database.rawQuery(sql, null);
+        if (cur != null) {
+            cur.moveToFirst();
+            int val = Math.round(cur.getFloat(0));
+            cur.close();
+            return val;
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
     public void clearStats() {
         ContentValues cvals = new ContentValues();
         cvals.put(TracksTable.COLUMN_GUESS, 0);
