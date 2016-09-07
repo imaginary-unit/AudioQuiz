@@ -27,7 +27,7 @@ public class GameActivity extends AppCompatActivity
         ResultsFragment.ResultsFragmentListener {
 
     private static final int OPTIONS_COUNT = 5;
-    private static final int ROUNDS_COUNT = 2;
+    private static final int ROUNDS_COUNT = 10;
 
     private ModelRetainFragment mModelRetainFragment;
     private GameFragment mGameFragment;
@@ -151,7 +151,7 @@ public class GameActivity extends AppCompatActivity
         if (mAdsEnabled) {
             // TODO: remove test to show actual ads
             AdRequest adRequest = new AdRequest.Builder().
-                    addTestDevice(AdRequest.DEVICE_ID_EMULATOR).
+                    // addTestDevice(AdRequest.DEVICE_ID_EMULATOR).
                     build();
             mIntAd.loadAd(adRequest);
         }

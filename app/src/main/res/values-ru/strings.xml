@@ -77,6 +77,13 @@
         <item>Черный список</item>
         <item>Директории</item>
     </string-array>
+    <string name="playlist_dir_notification_message">
+        Если исключить эту директорию, вся текущая статистика по хранящимся в ней аудио-файлам будет
+        безвозвратно потеряна. Хотите продолжить?
+    </string>
+    <string name="playlist_dir_notification_dont_show">Больше не показывать</string>
+    <string name="playlist_dir_notification_yes">Да</string>
+    <string name="playlist_dir_notification_no">Нет</string>
 
     <string name="select_dirs">Директории аудио</string>
     <string name="settings_title">Настройки</string>

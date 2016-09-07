@@ -69,15 +69,22 @@
 
     <string name="ok">OK</string>
 
-    <string name="playlist_toolbar_title">Playlist</string>
     <string name="permission_storage_rationale">
         Read storage permission should be granted to scan and play your music files!
     </string>
+    <string name="playlist_toolbar_title">Playlist</string>
     <string-array name="playlist_view_options">
         <item>All tracks</item>
         <item>Black list</item>
         <item>Music directories</item>
     </string-array>
+    <string name="playlist_dir_notification_message">
+        If you disable this directory, all current statistics related to it\'s audio files will be
+        permanently erased. Would you like to continue?
+    </string>
+    <string name="playlist_dir_notification_dont_show">Don\'t show anymore</string>
+    <string name="playlist_dir_notification_yes">Yes</string>
+    <string name="playlist_dir_notification_no">No</string>
 
     <string name="statistics_toolbar_title">Statistics</string>
     <string name="start_toolbar_title">Menu</string>
