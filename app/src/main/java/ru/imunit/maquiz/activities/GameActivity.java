@@ -9,6 +9,8 @@ import android.view.Menu;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 
+import java.util.Random;
+
 import ru.imunit.maquiz.R;
 import ru.imunit.maquiz.exceptions.DatabaseException;
 import ru.imunit.maquiz.exceptions.NoMusicException;
@@ -28,6 +30,7 @@ public class GameActivity extends AppCompatActivity
 
     private static final int OPTIONS_COUNT = 5;
     private static final int ROUNDS_COUNT = 10;
+    private static final double AD_CHANCE = 0.4;
 
     private ModelRetainFragment mModelRetainFragment;
     private GameFragment mGameFragment;
@@ -101,7 +104,9 @@ public class GameActivity extends AppCompatActivity
     private void showResultsFragment() {
         // show ad
         if (mAdsEnabled && mIntAd != null && mIntAd.isLoaded()) {
-            mIntAd.show();
+            double rnd = new Random().nextDouble();
+            if (rnd <= AD_CHANCE)
+                mIntAd.show();
         }
 
         // unsubscribe game fragment from model if it is added
