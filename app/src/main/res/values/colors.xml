@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--<color name="colorBack0">#3949AB</color>-->
+    <color name="colorGradLightStart">#88afb8ec</color>
+    <color name="colorGradLightEnd">#00afb8ec</color>
+    <color name="colorGradDarkStart">#881A237E</color>
+    <color name="colorGradDarkEnd">#001A237E</color>
     <color name="colorBack1">#5C6BC0</color>
     <color name="colorPrimary">#283593</color>
     <color name="colorPrimaryDark">#1A237E</color>

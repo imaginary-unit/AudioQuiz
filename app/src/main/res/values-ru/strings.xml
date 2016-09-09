@@ -119,5 +119,6 @@
     <string name="track_unblacklist">Убрать из черного списка</string>
 
     <string name="updating_music_dialog">Сеундочку.. Обновляем вашу аудио библиотеку</string>
+    <string name="stats_highscore_placeholder">Здесь будут отображаться ваши рекорды</string>
 
 </resources>

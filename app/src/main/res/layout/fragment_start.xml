@@ -7,6 +7,19 @@
     android:clipToPadding="false"
     tools:context="ru.imunit.maquiz.fragments.StartFragment">
 
+    <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="200dp"-->
+        <!--android:src="@drawable/bg_grad_light"-->
+        <!--android:layout_alignParentBottom="true"/>-->
+
+    <!--<ImageView-->
+        <!--android:layout_width="200dp"-->
+        <!--android:layout_height="200dp"-->
+        <!--android:src="@drawable/bg_grad_dark"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_alignParentLeft="true"/>-->
+
     <ImageButton
         android:layout_width="80dp"
         android:layout_height="80dp"

@@ -124,4 +124,5 @@
     <string name="tag_item_pos" translatable="false">item pos</string>
 
     <string name="updating_music_dialog">Updating your music library, please wait a sec..</string>
+    <string name="stats_highscore_placeholder">Your best scores will be shown here</string>
 </resources>

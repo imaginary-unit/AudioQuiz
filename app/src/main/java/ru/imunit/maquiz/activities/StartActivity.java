@@ -44,6 +44,8 @@ public class StartActivity extends AppCompatActivity
         setContentView(R.layout.activity_start);
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.start_toolbar_title);
+        toolbar.setOverflowIcon(ContextCompat.getDrawable(
+                getApplicationContext(), R.drawable.settings));
         setSupportActionBar(toolbar);
         mRootLayout = findViewById(R.id.activity_start);
         if (checkStoragePermission()) {
