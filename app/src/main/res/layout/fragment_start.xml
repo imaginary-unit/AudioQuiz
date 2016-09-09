@@ -66,20 +66,6 @@
         app:srcCompat="@drawable/share_button"
         android:scaleType="fitCenter" />
 
-    <TextView
-        android:id="@+id/textTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/shareApp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
-        android:gravity="center"
-        android:textSize="52sp"
-        android:textStyle="bold"
-        android:textColor="@color/colorForeground"
-        style="@style/TextShadow"
-        android:text="Audio Quiz" />
-
     <ImageButton
         android:layout_width="120dp"
         android:layout_height="120dp"
@@ -90,5 +76,19 @@
         app:srcCompat="@drawable/ic_play_arrow"
         android:scaleType="fitCenter"
         android:layout_margin="20dp"/>
+
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/play"
+        android:layout_below="@id/shareApp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorForeground"
+        style="@style/TextShadow"
+        android:text="Audio Quiz" />
 
 </RelativeLayout>

@@ -45,8 +45,8 @@
             Не торопитесь!
         </item>
         <item>
-            используйте несколько секунд, пока играет метроном, чтобы пробежать глазами по
-            вариантам ответов - это поможет вам угадать песню быстрее.
+            используйте несколько секунд, пока играет метроном, чтобы просмотреть
+            варианты ответов - это поможет вам угадать песню быстрее.
         </item>
         <item>
             если верный ответ дан в первые 3, 5 или 10 секунд, это добавляет вам бонусные очки.
@@ -100,7 +100,7 @@
     <string name="stats_games_played">Количество игр</string>
     <string name="stats_games_tab">По играм</string>
     <string name="stats_tracks_tab">По файлам</string>
-    <string name="stats_longest_fast_row">Макс. число быстрых ответов подряд</string>
+    <string name="stats_longest_fast_row">Макс. быстрых ответов подряд</string>
     <string name="stats_number_placeholder">0</string>
     <string name="stats_toolbar_title">Статистика</string>
     <string name="stats_top_scores">Лучшие результаты</string>
