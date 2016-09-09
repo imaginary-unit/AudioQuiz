@@ -31,12 +31,27 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         app:layout_row="0"
+                        app:layout_column="0"
                         app:layout_columnSpan="2"
                         app:layout_columnWeight="1"
                         app:layout_gravity="center"
                         android:textStyle="bold"
                         android:textColor="@color/colorForeground"
                         android:text="@string/stats_top_scores"/>
+                    <TextView
+                        android:id="@+id/topScoresPlaceholder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        app:layout_row="1"
+                        app:layout_column="0"
+                        app:layout_columnSpan="2"
+                        app:layout_columnWeight="1"
+                        app:layout_gravity="center"
+                        android:text="Your best scores will be shown here"
+                        android:textSize="16dp"
+                        style="@style/OutlinedText"
+                        />
                 </android.support.v7.widget.GridLayout>
             </android.support.v7.widget.CardView>
 

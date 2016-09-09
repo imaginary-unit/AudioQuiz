@@ -81,11 +81,17 @@ public class GameStatsFragment extends Fragment implements
     private void updateContent() {
         // update top scores
         List<Integer> topScores = mModel.getTopScores();
+        int scoreCount = topScores.size();
         GridLayout gl = (GridLayout)getView().findViewById(R.id.topScoresLayout);
         // remove all views from top scores layout (except the title textview)
         int n = gl.getChildCount();
         for (int i=n-1; i >= 0; i--) {
             View v = gl.getChildAt(i);
+            if (v.getId() == R.id.topScoresPlaceholder) {
+                int vis = scoreCount > 0 ? View.GONE : View.VISIBLE;
+                v.setVisibility(vis);
+                continue;
+            }
             if (v.getId() != R.id.topScoresTitle) {
                 gl.removeView(v);
             }
@@ -98,8 +104,7 @@ public class GameStatsFragment extends Fragment implements
             textSize = 28f;
         }
         // add new line for each top score entry
-        n = topScores.size();
-        for (int i=0; i < n; i++) {
+        for (int i=0; i < scoreCount; i++) {
             TextView tNum = new TextView(getContext());
             GridLayout.LayoutParams params = new GridLayout.LayoutParams();
             params.width = GridLayout.LayoutParams.WRAP_CONTENT;

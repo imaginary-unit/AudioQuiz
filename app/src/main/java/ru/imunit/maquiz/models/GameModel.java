@@ -169,13 +169,19 @@ public class GameModel implements IGameModel {
         for (Integer val : mCorrectGuess.values())
             s += val;
         game.setCorrectGuess(s);
-        long gtAvg = 0;
         // calculating average and best guess time
-        for (Integer val : mGuessTime)
-            gtAvg += val;
-        gtAvg /= mGuessTime.size();
-        game.setAvgGuessTime(gtAvg);
-        game.setBestGuessTime(Collections.min(mGuessTime));
+        if (mGuessTime.size() > 0) {
+            long gtAvg = 0;
+            for (Integer val : mGuessTime)
+                gtAvg += val;
+            gtAvg /= mGuessTime.size();
+            game.setAvgGuessTime(gtAvg);
+            game.setBestGuessTime(Collections.min(mGuessTime));
+        }
+        else {
+            game.setAvgGuessTime(0);
+            game.setBestGuessTime(0);
+        }
         // finding the longest fast row
         int max = 0;
         int cur = 0;

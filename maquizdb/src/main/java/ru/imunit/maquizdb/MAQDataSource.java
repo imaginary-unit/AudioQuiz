@@ -438,8 +438,10 @@ public class MAQDataSource implements IDataSource {
         cvals.put(GamesTable.COLUMN_SCORE, game.getScore());
         cvals.put(GamesTable.COLUMN_GUESS, game.getGuess());
         cvals.put(GamesTable.COLUMN_CORRECT_GUESS, game.getCorrectGuess());
-        cvals.put(GamesTable.COLUMN_AVG_GUESS_TIME, game.getAvgGuessTime());
-        cvals.put(GamesTable.COLUMN_BEST_GUESS_TIME, game.getBestGuessTime());
+        if (game.getAvgGuessTime() > 0)
+            cvals.put(GamesTable.COLUMN_AVG_GUESS_TIME, game.getAvgGuessTime());
+        if (game.getBestGuessTime() > 0)
+            cvals.put(GamesTable.COLUMN_BEST_GUESS_TIME, game.getBestGuessTime());
         cvals.put(GamesTable.COLUMN_LONGEST_FAST_ROW, game.getLongestFastRow());
         database.insert(GamesTable.TABLE_NAME, null, cvals);
     }
